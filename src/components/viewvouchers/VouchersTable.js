@@ -35,7 +35,7 @@ import errorHandler from '../toasts/errorHandler'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#375EC0',
+    backgroundColor: '#005739',
     color: theme.palette.common.white,
     fontFamily: 'Poppins',
   },
@@ -304,11 +304,11 @@ export default function CustomPaginationActionsTable() {
                                 sx={{
                                   textTransform: 'none',
                                   backgroundColor: 'rgba(55,94,192, 0.1)',
-                                  border: '2px solid #375EC0',
+                                  border: '2px solid #005739',
                                   borderRadius: '50px',
-                                  color: '#375EC0',
+                                  color: '#005739',
                                   '&:hover': {
-                                    backgroundColor: '#375EC0',
+                                    backgroundColor: '#005739',
                                     color: '#fff',
                                   },
                                   paddingRight: 2,
@@ -543,8 +543,12 @@ export default function CustomPaginationActionsTable() {
                                           successHandler(res.data.message)
                                           setOpen(false)
                                         })
-                                        .catch((e) => {console.log(e)
-                                         errorHandler('Voucher could not be revoked')})
+                                        .catch((e) => {
+                                          console.log(e)
+                                          errorHandler(
+                                            'Voucher could not be revoked'
+                                          )
+                                        })
                                     }}
                                   >
                                     Revoke

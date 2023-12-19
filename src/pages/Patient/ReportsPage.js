@@ -2,10 +2,10 @@ import React from 'react'
 import SideDrawer from '../../components/sidebar/Sidebar'
 
 
-export default function AllPatients() {
+export default function Reports() {
   return (
     <SideDrawer>
-    all patients
+   reports
     </SideDrawer>
   )
 }

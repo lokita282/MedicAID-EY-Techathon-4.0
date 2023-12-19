@@ -13,14 +13,14 @@ const styles = {
     width: '70%',
   },
   gradientText: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     fontFamily: 'Poppins',
     padding: '15px 0px',
   },
   createBtn: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     color: '#fff',
     padding: '10px 20px',
     border: 'none',
@@ -43,7 +43,7 @@ const ViewVouchers = () => {
         container
         spacing={2}
         direction="column"
-        sx={{padding: '0px 25px'}}
+        sx={{ padding: '0px 25px' }}
         // alignItems="center"
         // justifyContent="center"
       >
@@ -52,10 +52,10 @@ const ViewVouchers = () => {
           <Typography variant="h4" style={styles.gradientText}>
             <b>Vouchers</b>
           </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <VouchersTable />
-            </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <VouchersTable />
+        </Grid>
 
         {/* </Paper> */}
       </Grid>

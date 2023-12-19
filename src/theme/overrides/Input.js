@@ -7,14 +7,22 @@ export default function Input(theme) {
     MuiInputBase: {
       styleOverrides: {
         root: {
+          borderColor: 'orange',
           '&.Mui-disabled': {
             '& svg': { color: theme.palette.text.disabled },
+          },
+          '&.Mui-focused': {
+            backgroundColor: '#00603F',
+            color: '#00603F',
           },
         },
         input: {
           '&::placeholder': {
             opacity: 1,
             color: theme.palette.text.disabled,
+          },
+          '&$focused': {
+            color: '#00603F',
           },
         },
       },
@@ -25,12 +33,16 @@ export default function Input(theme) {
           '&:before': {
             borderBottomColor: alpha(theme.palette.grey[500], 0.56),
           },
+          '&$focused': {
+            color: '#00603F',
+          },
         },
       },
     },
     MuiFilledInput: {
       styleOverrides: {
         root: {
+          borderColor: 'orange',
           backgroundColor: alpha(theme.palette.grey[500], 0.12),
           '&:hover': {
             backgroundColor: alpha(theme.palette.grey[500], 0.16),
@@ -41,6 +53,9 @@ export default function Input(theme) {
           '&.Mui-disabled': {
             backgroundColor: theme.palette.action.disabledBackground,
           },
+          // '&$focused': {
+          //   color: '#00603F',
+          // },
         },
         underline: {
           '&:before': {
@@ -60,8 +75,21 @@ export default function Input(theme) {
               borderColor: theme.palette.action.disabledBackground,
             },
           },
+          '&$focused': {
+            color: '#00603F',
+          },
         },
       },
     },
-  };
+    MuiFormLabel: {
+      root: {
+        '&$focused': {
+          color: '#00603F',
+          fontWeight: 'bold',
+        },
+      },
+
+      focused: {},
+    },
+  }
 }

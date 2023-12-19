@@ -28,7 +28,7 @@
 </mask>
 <g mask="url(#mask0_434_15)">
 <g id="Rectangle 22_2" filter="url(#filter2_d_434_15)">
-<rect x="1608" y="1856" width="472" height="322" rx="5" fill="#375EC0"/>
+<rect x="1608" y="1856" width="472" height="322" rx="5" fill="#005739"/>
 </g>
 </g>
 </g>
@@ -116,8 +116,8 @@
 <use xlink:href="#image4_434_15" transform="matrix(0.0026683 0 0 0.00316456 -0.0346951 0)"/>
 </pattern>
 <linearGradient id="paint0_linear_434_15" x1="134" y1="1137" x2="3356.5" y2="1125.32" gradientUnits="userSpaceOnUse">
-<stop stop-color="#7E8AFF"/>
-<stop offset="1" stop-color="#375EC0"/>
+<stop stop-color="#069B67"/>
+<stop offset="1" stop-color="#005739"/>
 </linearGradient>
 <clipPath id="clip0_434_15">
 <rect width="2497" height="2532" fill="white" transform="translate(134)"/>

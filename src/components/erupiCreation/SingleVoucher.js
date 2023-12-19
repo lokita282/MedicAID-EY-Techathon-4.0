@@ -43,14 +43,14 @@ const styles = {
     width: '70%',
   },
   gradientText: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     fontFamily: 'Poppins',
     padding: '15px 0px',
   },
   createBtn: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     color: '#fff',
     padding: '10px 20px',
     border: 'none',
@@ -198,7 +198,6 @@ const SingleVoucher = () => {
   function onChangeCaptcha(value) {
     console.log('Captcha value:', value)
   }
-
 
   return (
     <Grid
@@ -513,7 +512,15 @@ const SingleVoucher = () => {
             />
           </Grid>
           <Grid item xs={6}></Grid>
-          <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end', paddingBottom: '20px' }}>
+          <Grid
+            item
+            xs={6}
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+              paddingBottom: '20px',
+            }}
+          >
             {load ? (
               <Box sx={df_jc_ac}>
                 <Button sx={btn_bank} onClick={handleSubmit}>

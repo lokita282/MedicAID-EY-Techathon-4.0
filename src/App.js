@@ -1,31 +1,32 @@
-import { useState } from 'react';
-import './App.css';
-import { codivascontext } from './context/MainContext';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import MainRouter from './router/MainRouter';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { useEffect } from 'react';
-
+import { useState } from 'react'
+import './App.css'
+import { eycontext } from './context/MainContext'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import MainRouter from './router/MainRouter'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { useEffect } from 'react'
 
 function App() {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
 
   const context = {
-    user, setUser,
-    token, setToken
+    user,
+    setUser,
+    token,
+    setToken,
   }
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('codivasUser')))
-    setToken(localStorage.getItem('codivasToken'))
+    setUser(JSON.parse(localStorage.getItem('eyUser')))
+    setToken(localStorage.getItem('eyToken'))
   }, [])
 
   return (
-    <codivascontext.Provider value={context}>
+    <eycontext.Provider value={context}>
       <ToastContainer
-        position="bottom-left"
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -40,8 +41,8 @@ function App() {
         <MainRouter />
         {/* </SideDrawer> */}
       </Router>
-    </codivascontext.Provider>
-  );
+    </eycontext.Provider>
+  )
 }
 
-export default App;
+export default App

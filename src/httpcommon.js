@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export default axios.create({
-    baseURL: `https://ez-rupi.onrender.com/api`,
+  baseURL: `https://ey-medicaid.onrender.com/api`,
 
   headers: {
     'Content-type': 'application/json',

@@ -41,13 +41,13 @@ const styles = {
     verticalAlign: 'middle',
   },
   gradientText: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     fontFamily: 'Poppins',
   },
   gradientTextH2: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     paddingLeft: 20,
@@ -62,10 +62,10 @@ const styles = {
     alignItems: 'center',
     textAlign: 'left',
     verticalAlign: 'middle',
-    boxShadow: '0px 1px 26px rgba(94, 99, 116, 0.21)'
+    boxShadow: '0px 1px 26px rgba(94, 99, 116, 0.21)',
   },
   payBtn: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     color: '#fff',
     padding: '10px 20px',
     border: 'none',
@@ -88,7 +88,11 @@ const UserDashboardPage = () => {
     },
   }
   return (
-    <Grid container spacing={2} sx={{ height: '80vh', padding: '0', margin: '0' }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{ height: '80vh', padding: '0', margin: '0' }}
+    >
       <Grid item xs={12} md={5} sx={df_jfs_ac_fdc}>
         <Paper style={styles.paperContainer} elevation={0}>
           <Typography variant="h2" style={styles.gradientText}>
@@ -101,14 +105,30 @@ const UserDashboardPage = () => {
           >
             Empowering Seamless Transactions, the eZ-RUPI Way!
           </Typography>
-          <Link style={{...styles.payBtn, width:'auto'}} to="/user/getstarted">
-            <Button sx={{ color: '#fff', fontFamily: 'Poppins', width:'auto' }}>
+          <Link
+            style={{ ...styles.payBtn, width: 'auto' }}
+            to="/user/getstarted"
+          >
+            <Button
+              sx={{ color: '#fff', fontFamily: 'Poppins', width: 'auto' }}
+            >
               <b>Get Started ➤</b>
             </Button>
           </Link>
         </Paper>
       </Grid>
-      <Grid item xs={0} md={7} sx={{ padding: '0', position: 'relative', margin: '0', display: 'flex', justifyContent: 'flex-end' }}>
+      <Grid
+        item
+        xs={0}
+        md={7}
+        sx={{
+          padding: '0',
+          position: 'relative',
+          margin: '0',
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+      >
         {/* <Lottie
           options={defaultOptions}
           height={500}
@@ -116,7 +136,10 @@ const UserDashboardPage = () => {
           speed={0.25}
         /> */}
         <img style={{ marginTop: '-35px', height: '89vh' }} src={gipphy} />
-        <img src={giphy} style={{ position: 'absolute', top: '165px', left: '150px' }} />
+        <img
+          src={giphy}
+          style={{ position: 'absolute', top: '165px', left: '150px' }}
+        />
       </Grid>
       {/* <Grid item xs={12}>
         <Typography variant="h5" style={{ ...styles.gradientTextH2, marginTop: '10%' }}>
@@ -168,4 +191,3 @@ const UserDashboardPage = () => {
 }
 
 export default UserDashboardPage
-

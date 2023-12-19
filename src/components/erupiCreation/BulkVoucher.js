@@ -1,6 +1,6 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 import { Paper, Typography, Grid, Button, TextField } from '@mui/material'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import {
   bold_name,
   btn_connect,
@@ -30,15 +30,15 @@ const styles = {
     padding: '10px 30px',
     maxWidth: '70%',
   },
-  gradientText: { 
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+  gradientText: {
+    background: 'radial-gradient( #069B67, #005739)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     fontFamily: 'Poppins',
     padding: '10px 0px',
   },
   downloadBtn: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     color: '#fff',
     padding: '20px 20px',
     border: 'none',
@@ -50,7 +50,7 @@ const styles = {
     fontFamily: 'Poppins',
   },
   submitBtn: {
-    background: 'radial-gradient( #7E8AFF, #375EC0)',
+    background: 'radial-gradient( #069B67, #005739)',
     color: '#fff',
     padding: '20px 20px',
     border: 'none',
@@ -77,16 +77,16 @@ const BulkVoucher = () => {
     let bytesLength = byteCharacters.length
     let slicesCount = Math.ceil(bytesLength / sliceSize)
     let byteArrays = new Array(slicesCount)
-    for(let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
       let begin = sliceIndex * sliceSize
       let end = Math.min(begin + sliceSize, bytesLength)
-      let bytes = new Array(end-begin)
-      for (var offset = begin, i=0; offset<end; ++i, ++offset) {
+      let bytes = new Array(end - begin)
+      for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
         bytes[i] = byteCharacters[offset].charCodeAt(0)
       }
       byteArrays[sliceIndex] = new Uint8Array(bytes)
     }
-    let blob = new Blob(byteArrays, {type: 'application/vnd.ms-excel'})
+    let blob = new Blob(byteArrays, { type: 'application/vnd.ms-excel' })
     fileSaver.saveAs(new Blob([blob], {}), 'Bulk-Voucher-Template.csv')
   }
 
@@ -96,11 +96,10 @@ const BulkVoucher = () => {
   }
 
   const handleSubmit = async () => {
-    
     var myHeaders = new Headers()
     myHeaders.append(
       'Authorization',
-      `Bearer ${localStorage.getItem('codivasToken')}`
+      `Bearer ${localStorage.getItem('eyToken')}`
     )
 
     var formdata = new FormData()
@@ -128,8 +127,8 @@ const BulkVoucher = () => {
     // await createBulkErupi({formData}).then((res) => {
     //   console.log('first')
     //   console.log(res.data)
-    //   // localStorage.setItem('codivasToken', res.data.token)
-    //   // localStorage.setItem('codivasUser', JSON.stringify(res.data.user))
+    //   // localStorage.setItem('eyToken', res.data.token)
+    //   // localStorage.setItem('eyUser', JSON.stringify(res.data.user))
     //   // ###########successHandler(res.data.message)
     //   // navigate('/dashboard')
     //   // ###########setLoad(false)
@@ -144,12 +143,12 @@ const BulkVoucher = () => {
   function onChangeCaptcha(value) {
     console.log('Captcha value:', value)
   }
-  
+
   return (
     <>
       <Grid
         container
-        sx={{display:'flex', justifyContent:'center', width:'90vw'}}
+        sx={{ display: 'flex', justifyContent: 'center', width: '90vw' }}
       >
         <Paper style={styles.paperContainer}>
           <Grid container spacing={2}>
@@ -162,15 +161,27 @@ const BulkVoucher = () => {
                 sx={{
                   color: '#a2a2a2',
                   fontFamily: 'Poppins',
-                  ...ptag
+                  ...ptag,
                 }}
               >
                 Generate multiple e-₹UPI vouchers by CSV upload. Download the
                 template to get started!
               </Typography>
             </Grid>
-            <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems:'center'}}>
-              <Button size='small' onClick={handleDownload} sx={{...btn_connect, height:'60%', width:'auto'}}>
+            <Grid
+              item
+              xs={3}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Button
+                size="small"
+                onClick={handleDownload}
+                sx={{ ...btn_connect, height: '60%', width: 'auto' }}
+              >
                 Download Template
               </Button>
             </Grid>
@@ -205,12 +216,14 @@ const BulkVoucher = () => {
               {/* </Button> */}
             </Grid>
             <Grid item xs={12}>
-            <ReCAPTCHA
-              sitekey="6LeuTKImAAAAAHGzGmP26m4V8IAO55NVL-Pc4EoO"
-              onChange={onChangeCaptcha}
-            />
+              <ReCAPTCHA
+                sitekey="6LeuTKImAAAAAHGzGmP26m4V8IAO55NVL-Pc4EoO"
+                onChange={onChangeCaptcha}
+              />
             </Grid>
-            <Grid item xs={8}> </Grid>
+            <Grid item xs={8}>
+              {' '}
+            </Grid>
             <Grid
               item
               xs={4}
@@ -220,7 +233,11 @@ const BulkVoucher = () => {
                 paddingBottom: '20px',
               }}
             >
-              <Button sx={btn_bank} startIcon={<CloudUploadIcon />} onClick={handleSubmit}>
+              <Button
+                sx={btn_bank}
+                startIcon={<CloudUploadIcon />}
+                onClick={handleSubmit}
+              >
                 Upload Data
               </Button>{' '}
             </Grid>

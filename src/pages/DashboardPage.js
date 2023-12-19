@@ -1,23 +1,17 @@
 import React, { useContext } from 'react'
 import SideDrawer from '../components/sidebar/Sidebar'
-import { codivascontext } from '../context/MainContext'
-import BeneDashboard from '../components/dashboard/BeneDashboard'
-import BankDashboardPage from './BankDashboardPage'
+import { eycontext } from '../context/MainContext'
+import PatientDashboardPage from './PatientDashboardPage'
 import OrgDashboard from '../components/dashboard/OrgDashboard'
 import DoctorDashboardPage from './DoctorDashboardPage'
 import MyComponent from '../services/encryptdecrypt'
 
 export default function DashboardPage() {
-    const { user } = useContext(codivascontext)
-    return (
-      <SideDrawer>
-        <DoctorDashboardPage />
-        {/* {
-                user?.type === "beneficiary" ? <UserDashboardPage />
-                    : user?.type === "bank" ? <BankDashboardPage />
-                        : <OrgDashboard />
-            } */}
-        <MyComponent />
-      </SideDrawer>
-    )
+  const { user } = useContext(eycontext)
+  return (
+    <SideDrawer>
+      { user?.role === "doctor" ? <DoctorDashboardPage />: <PatientDashboardPage /> }
+      <MyComponent />
+    </SideDrawer>
+  )
 }
