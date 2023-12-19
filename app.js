@@ -12,6 +12,7 @@ import cors from 'cors'
 // const cron = require('node-cron')
 
 const port = process.env.PORT || 5000
+const router = new express.Router()
 
 await db()
 
@@ -26,6 +27,11 @@ app.use(express.json())
 
 
 app.use('/api/user', userRouter)
+
+//for cron job
+app.get('/api', (req, res, next) => {
+  res.send('Hello Express!')
+}) 
 
 
 const server = app.listen(port, () =>
