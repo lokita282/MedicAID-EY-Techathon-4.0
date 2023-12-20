@@ -5,7 +5,7 @@ import SideDrawer from '../../components/sidebar/Sidebar'
 export default function Reports() {
   return (
     <SideDrawer>
-   reports
+        Hello there
     </SideDrawer>
   )
 }
