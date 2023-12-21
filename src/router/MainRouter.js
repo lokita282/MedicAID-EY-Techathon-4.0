@@ -16,6 +16,7 @@ import SchemeDetsPage from '../pages/SchemeDetsPage'
 import UtilityVoucherPage from '../pages/UtilityVoucherPage'
 import MerchantList from '../pages/MerchantList'
 import TransactionPage from '../pages/TransactionPage'
+import SinglePatientPage from '../pages/Doctor/SinglePatientPage'
 
 export default function MainRouter() {
   const { user, setUser, setOpen } = useContext(eycontext)
@@ -54,6 +55,10 @@ export default function MainRouter() {
 
         <Route path="/appointments" element={<PrivateRouter />}>
           <Route exact path="/appointments" element={<AppointmentsPage />} />
+        </Route>
+
+        <Route path="/patient_details" element={<PrivateRouter />}>
+          <Route exact path="/patient_details" element={<SinglePatientPage />} />
         </Route>
 
         {/* Patients */}
