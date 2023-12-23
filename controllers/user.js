@@ -1,4 +1,6 @@
 import User from '../models/User.js'
+import Appointments from '../models/Appointments.js'
+
 // import { sendWelcomeEmail } from '../emails/account.js'
 
 //Register a user
@@ -71,6 +73,29 @@ const getUsers = async (req, res) => {
     })
   }
 }
+
+//get all patients of a particular doctor
+const getPatients = async (req, res) => {
+  var patients = []
+  const patientIds = await Appointments.find({doctorId: req.user._id}).distinct("patientId")
+  try {
+    for (let i = 0; i < patientIds.length; i++) {
+      patients.push(await User.findOne({ _id: patientIds[i] }))
+      console.log(patients)
+    }
+    await res.status(200).json({
+      message: 'View all patients!',
+      patients,
+    })
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+
 
 //Get Personal Profile
 const getProfile = async (req, res) => {
@@ -155,6 +180,7 @@ export {
   loginUser,
   logoutUser,
   getUsers,
+  getPatients,
   getProfile,
   updateUser,
   deleteUser,

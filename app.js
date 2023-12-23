@@ -7,12 +7,12 @@ const app = express()
 import db from './config/db.js'
 import morgan from 'morgan'
 import userRouter from './routes/user.js'
+import appointmentsRouter from './routes/appointments.js'
 
 import cors from 'cors'
 // const cron = require('node-cron')
 
 const port = process.env.PORT || 5000
-const router = new express.Router()
 
 await db()
 
@@ -27,22 +27,16 @@ app.use(express.json())
 
 
 app.use('/api/user', userRouter)
+app.use('/api/appointments', appointmentsRouter)
 
 //for cron job
 app.get('/api', (req, res, next) => {
   res.send('Hello Express!')
 }) 
 
-
 const server = app.listen(port, () =>
   console.log(`server has started on port ${port}`)
 )
-
-// const { setAllVoucherStatus } = require('./utils/cron-jobs')
-
-// cron.schedule('0 0 0 * * *', () => {
-//   setAllVoucherStatus()
-// })
 
 export default server
 

@@ -38,6 +38,24 @@ const userSchema = mongoose.Schema(
     medicalId: {
       type: String,
     },
+    patientDemographics: {
+      age: {
+        type: Number,
+      },
+      gender: {
+        type: String,
+        enum: ['male', 'female'],
+      },
+      height: {
+        type: String,
+      },
+      weight: {
+        type: String,
+      },
+      address: {
+        type: String,
+      },
+    },
   },
   { timestamps: true }
 )
