@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
 import SideDrawer from '../../components/sidebar/Sidebar'
 
 // MUI imports 
@@ -13,13 +14,46 @@ import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 
+// INTEGRATION IMPORTS
+import { getAllAppointments, getAllPatients } from '../../services/doctorService';
+import { eycontext } from '../../context/MainContext'
+
+
 // Images
 import image_1 from "../../images/medicAID/patient_details.png"
 
 export default function AllPatients() {
 
-  const appointmentDetails = [1, 2, 3, 4]
-  const patientDetails = [1, 2, 3, 4, 5, 6, 7]
+
+
+  const [appointments, setAppointments] = useState([])
+  const [patients, setPatients] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    const func = async () => {
+      await getAllPatients().then((res) => {
+        console.log(res.data.patients)
+        setPatients(res.data.patients)
+      })
+      setLoading(false)
+    }
+    func()
+  }, [])
+
+  useEffect(() => {
+    setLoading(true)
+    const func = async () => {
+      await getAllAppointments().then((res) => {
+        // console.log(res.data.appointments)
+        setAppointments(res.data.appointments)
+      })
+      setLoading(false)
+    }
+    func()
+  }, [])
+
 
   return (
     <SideDrawer>
@@ -55,13 +89,13 @@ export default function AllPatients() {
               <Grid item xs={10}>
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
                   <Grid container direction="column">
-                    {patientDetails?.map((pd) => (
-                      <Grid item key={pd} sx={{ mt: 2 }} >
+                    {patients?.map((patient) => (
+                      <Grid item key={patient?._id} sx={{ mt: 2 }} >
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <Box>
                             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
                               <Avatar sx={{ width: 36, height: 36, bgcolor: deepPurple[500] }} >P</Avatar>
-                              <Typography sx={{ fontWeight: "bold" }} > Patient's Name </Typography>
+                              <Typography sx={{ fontWeight: "bold" }} >{patient?.name} </Typography>
                             </Stack>
                           </Box>
                           <Typography>
@@ -97,8 +131,8 @@ export default function AllPatients() {
 
               <Grid container spacing={3} direction={"column"} >
 
-                {appointmentDetails.map((ad) => (
-                  <Grid item key={ad}>
+                {appointments.map((patient) => (
+                  <Grid item key={patient?._id}>
                     <Box sx={{ mt: 1 }}>
                       <Grid container spacing={2}>
                         <Grid item xs={3} >
@@ -108,11 +142,11 @@ export default function AllPatients() {
                         </Grid>
                         <Grid item xs={9} sx={{ textAlign: "start", }}>
                           <Box sx={{ textAlign: "start", display: "flex", flexDirection: "row", justifyContent: "space-between" }} >
-                            <Typography sx={{ fontWeight: "bold" }} >Name</Typography>
-                            <Typography>Appointment Time</Typography>
+                            <Typography sx={{ fontWeight: "bold" }} > {patient?.patientId.name} </Typography>
+                            <Typography> {patient?.date}  {patient?.time} </Typography>
                           </Box>
                           <Typography>Sex, Age</Typography>
-                          <Typography>Treatment Type</Typography>
+                          <Typography> {patient?.status} </Typography>
                           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 1 }}>
                             <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
                             <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button>
