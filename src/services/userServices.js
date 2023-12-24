@@ -6,7 +6,7 @@ export const login = (data) => {
 }
 
 export const signup = (data) => {
-  return httpcommon.post(`/user/register/signup`, data)
+  return httpcommon.post(`/user/register`, data)
 }
 
 export const getAllCoupons = () => {

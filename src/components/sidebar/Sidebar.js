@@ -96,8 +96,8 @@ export default function SideDrawer(props) {
   const url = window.location.href.split('/')[3]
   const { user, setUser, setToken } = useContext(eycontext)
   const navigate = useNavigate()
-  console.log(url)
-  console.log(user)
+  // console.log(url)
+  // console.log(user)
   const isDoc = user ? (user.role === 'doctor' ? true : false) : ('')
 
   return (
@@ -227,7 +227,7 @@ export default function SideDrawer(props) {
                       sx={{ display: 'block', marginTop: '20%' }}
                     >
                       <ListItemButton sx={listItemBtn}>
-                        <ListItemIcon sx={listItemIco}>
+                        <ListItemIcon sx={listItemIco}>    
                           <Icon
                             color={url.includes('reports') ? '#005739' : '#6A707F'}
                             icon="fluent:notepad-28-filled"

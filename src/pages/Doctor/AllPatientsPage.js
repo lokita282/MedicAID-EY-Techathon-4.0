@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import SideDrawer from '../../components/sidebar/Sidebar'
+import { Link } from 'react-router-dom'
 
 // MUI imports 
 import Box from '@mui/material/Box';
@@ -21,6 +22,8 @@ import { eycontext } from '../../context/MainContext'
 
 // Images
 import image_1 from "../../images/medicAID/patient_details.png"
+
+
 
 export default function AllPatients() {
 
@@ -58,18 +61,14 @@ export default function AllPatients() {
   return (
     <SideDrawer>
       <Box>
-        <Grid
-          container
-          spacing={3}
-        >
-          <Grid item xs={8} >
-            <Grid container spacing={2} direction={"column"} >
+        <Grid container spacing={3}>
+          <Grid item xs={8}>
+            <Grid container spacing={2} direction={'column'}>
               <Grid item xs={2}>
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
                   <Grid container>
-
                     <Grid item xs={9}>
-                      <Typography variant='h4' sx={{ fontWeight: "bold" }} >
+                      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                         View all patient details
                         <br />
                         below
@@ -90,22 +89,60 @@ export default function AllPatients() {
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
                   <Grid container direction="column">
                     {patients?.map((patient) => (
-                      <Grid item key={patient?._id} sx={{ mt: 2 }} >
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Grid item key={patient?._id} sx={{ mt: 2 }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
                           <Box>
-                            <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-                              <Avatar sx={{ width: 36, height: 36, bgcolor: deepPurple[500] }} >P</Avatar>
-                              <Typography sx={{ fontWeight: "bold" }} >{patient?.name} </Typography>
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              sx={{ alignItems: 'center' }}
+                            >
+                              <Avatar
+                                sx={{
+                                  width: 36,
+                                  height: 36,
+                                  bgcolor: deepPurple[500],
+                                }}
+                              >
+                                P
+                              </Avatar>
+                              <Typography sx={{ fontWeight: 'bold' }}>
+                                {patient?.name}{' '}
+                              </Typography>
                             </Stack>
                           </Box>
                           <Typography>
-                            Age, Sex
+                            {patient.patientDemographics?.age},{' '}
+                            {patient.patientDemographics?.gender}
                           </Typography>
-                          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <Button sx={{ backgroundColor: "rgba(0, 87, 57, 0.1)", color: "rgba(0,87,57,1)", mr: 10 }} >
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Button
+                              sx={{
+                                backgroundColor: 'rgba(0, 87, 57, 0.1)',
+                                color: 'rgba(0,87,57,1)',
+                                mr: 10,
+                              }}
+                            >
                               CONSULTATION
                             </Button>
-                            <Typography> Details {">"}</Typography>
+                             <Link
+                              style={{ textDecoration: 'none' }}
+                              to={`/patient_details/${patient?._id}`}
+                            >
+                            <Typography> Details {'>'}</Typography>
+                            </Link>
                           </Box>
                         </Box>
                         <Divider sx={{ mt: 1 }} />
@@ -118,47 +155,77 @@ export default function AllPatients() {
           </Grid>
 
           <Grid item xs={4}>
-            <Paper sx={{
-              p: 3,
-              textAlign: "center",
-              borderRadius: 3,
-              // boxShadow: 4
-            }}>
+            <Paper
+              sx={{
+                p: 3,
+                textAlign: 'center',
+                borderRadius: 3,
+                // boxShadow: 4
+              }}
+            >
               <Typography variant="h5" fontWeight="bold">
                 Appointment Requests
               </Typography>
               <Divider sx={{ mt: 3 }} />
 
-              <Grid container spacing={3} direction={"column"} >
-
+              <Grid container spacing={3} direction={'column'}>
                 {appointments.map((patient) => (
                   <Grid item key={patient?._id}>
                     <Box sx={{ mt: 1 }}>
                       <Grid container spacing={2}>
-                        <Grid item xs={3} >
+                        <Grid item xs={3}>
                           <Stack direction="row" spacing={2}>
-                            <Avatar sx={{ width: 56, height: 56, bgcolor: deepOrange[500] }} >PR</Avatar>
+                            <Avatar
+                              sx={{
+                                width: 56,
+                                height: 56,
+                                bgcolor: deepOrange[500],
+                              }}
+                            >
+                              PR
+                            </Avatar>
                           </Stack>
                         </Grid>
-                        <Grid item xs={9} sx={{ textAlign: "start", }}>
-                          <Box sx={{ textAlign: "start", display: "flex", flexDirection: "row", justifyContent: "space-between" }} >
-                            <Typography sx={{ fontWeight: "bold" }} > {patient?.patientId.name} </Typography>
-                            <Typography> {patient?.date}  {patient?.time} </Typography>
+                        <Grid item xs={9} sx={{ textAlign: 'start' }}>
+                          <Box
+                            sx={{
+                              textAlign: 'start',
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <Typography sx={{ fontWeight: 'bold' }}>
+                              {patient?.patientId.name}
+                            </Typography>
+                            <Typography>{patient?.start}</Typography>
                           </Box>
                           <Typography>Sex, Age</Typography>
                           <Typography> {patient?.status} </Typography>
-                          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 1 }}>
-                            <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
-                            <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button>
-
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              mt: 1,
+                            }}
+                          >
+                            {/* <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
+                            <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button> */}
+                            <Link
+                              style={{ textDecoration: 'none' }}
+                              to={`/appointment_details/${patient?._id}`}
+                            >
+                              <Typography variant="body1" color="initial">
+                                Details {'>'}
+                              </Typography>
+                            </Link>
                           </Box>
                         </Grid>
                       </Grid>
                     </Box>
                   </Grid>
-
                 ))}
-
               </Grid>
             </Paper>
           </Grid>

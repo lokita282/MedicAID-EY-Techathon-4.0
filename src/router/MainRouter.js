@@ -16,7 +16,8 @@ import SchemeDetsPage from '../pages/SchemeDetsPage'
 import UtilityVoucherPage from '../pages/UtilityVoucherPage'
 import MerchantList from '../pages/MerchantList'
 import TransactionPage from '../pages/TransactionPage'
-import SinglePatientPage from '../pages/Doctor/SinglePatientPage'
+import AppointmentDetailsPage from '../pages/Doctor/AppointmentDetailsPage'
+import PatientDetailsPage from '../pages/Doctor/PatientDetailsPage'
 
 export default function MainRouter() {
   const { user, setUser, setOpen } = useContext(eycontext)
@@ -57,8 +58,12 @@ export default function MainRouter() {
           <Route exact path="/appointments" element={<AppointmentsPage />} />
         </Route>
 
-        <Route path="/patient_details" element={<PrivateRouter />}>
-          <Route exact path="/patient_details" element={<SinglePatientPage />} />
+        <Route path="/appointment_details/:id" element={<PrivateRouter />}>
+          <Route exact path="/appointment_details/:id" element={<AppointmentDetailsPage />} />
+        </Route>
+
+        <Route path="/patient_details/:id" element={<PrivateRouter />}>
+          <Route exact path="/patient_details/:id" element={<PatientDetailsPage />} />
         </Route>
 
         {/* Patients */}

@@ -15,3 +15,11 @@ export const getAllAppointments = () => {
       },
     })
   }
+
+  export const getSingleAppointmentDetails = (id) => {
+    return httpcommon.get(`/appointments/get_appointment/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
