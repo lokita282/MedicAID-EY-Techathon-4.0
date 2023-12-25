@@ -7,10 +7,8 @@ import img1 from '../images/img2.png'
 import img2 from '../images/img3.png'
 import img3 from '../images/img4.png'
 import { createMuiTheme } from "@material-ui/core"
-import SignupBene from '../components/auth/SignupBene'
-import SignupMerchant from '../components/auth/SignupMerchant'
-import SignupBank from '../components/auth/SignupBank'
-import SignupOrg from '../components/auth/SignupOrg'
+import SignupDoc from '../components/auth/SignupDoc'
+import SignupPatient from '../components/auth/SignupPatient'
 
 const defaultTheme = createMuiTheme()
 const { breakpoints, typography: { pxToRem } } = defaultTheme
@@ -65,7 +63,7 @@ function SignupPage() {
             </Grid>
             <Grid item md={7} sm={6} xs={12}>
                 {
-                    url === 'merchant' ? <SignupMerchant /> : url === 'bank' ? <SignupBank /> : url === 'organisation' ? <SignupOrg /> : <SignupBene />
+                    url === 'doctor' ?<SignupDoc /> : <SignupPatient />
                 }
 
             </Grid>

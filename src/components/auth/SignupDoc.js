@@ -78,7 +78,7 @@ export default function SignupBene() {
         <Grid container spacing={3}>
           <Grid item md={12}>
             <Typography variant="h5" sx={{ ...bold_name }}>
-              Good to see you!
+              Good to see you doctor!
             </Typography>
           </Grid>
           <Grid item md={6}>
@@ -88,10 +88,10 @@ export default function SignupBene() {
               name="name"
               onChange={handleChange}
               sx={textField}
-              placeholder="Enter your name"
+              placeholder="Enter your full name"
             />
           </Grid>
-          <Grid item md={6}>
+          {/* <Grid item md={6}>
             <p style={ptag}>Aadhar number</p>
             <TextField
               value={json.aadhar}
@@ -100,8 +100,8 @@ export default function SignupBene() {
               sx={textField}
               placeholder="Enter your aadhar number"
             />
-          </Grid>
-          <Grid item md={6}>
+          </Grid> */}
+          {/* <Grid item md={6}>
             <p style={ptag}>PAN number</p>
             <TextField
               sx={textField}
@@ -110,7 +110,7 @@ export default function SignupBene() {
               onChange={handleChange}
               placeholder="Enter your PAN number"
             />
-          </Grid>
+          </Grid> */}
           <Grid item md={6}>
             <p style={ptag}>Phone number</p>
             <TextField
@@ -119,6 +119,16 @@ export default function SignupBene() {
               onChange={handleChange}
               sx={textField}
               placeholder="Enter your phone number"
+            />
+          </Grid>
+          <Grid item md={6}>
+            <p style={ptag}>Medical registration number</p>
+            <TextField
+              sx={textField}
+              value={json.pan}
+              name="pan"
+              onChange={handleChange}
+              placeholder="Enter your medical registration number"
             />
           </Grid>
           <Grid item md={6}>
@@ -132,19 +142,18 @@ export default function SignupBene() {
               placeholder="Enter password"
             />
           </Grid>
-          <Grid item md={6}>
+          {/* <Grid item md={6}>
             <p style={ptag}>Confirm password</p>
             <TextField
               type="password"
               sx={textField}
               placeholder="Enter confirm password"
             />
-          </Grid>
+          </Grid> */}
           <Grid md={12} item sx={df_jfs_ac}>
             Already have an account? &nbsp;{' '}
             <p style={link} onClick={() => navigate('/login')}>
-              {' '}
-              Login{' '}
+              Login
             </p>
           </Grid>
           <Grid item md={12}>
@@ -154,9 +163,15 @@ export default function SignupBene() {
               </Box>
             ) : (
               <Button sx={btn_connect} onClick={clickSubmit}>
-                Signup as beneficiary
+                Signup as a doctor
               </Button>
             )}
+          </Grid>
+          <Grid md={12} item sx={df_jfs_ac}>
+            Not a doctor? &nbsp;{' '}
+            <p style={link} onClick={() => navigate('/signup/patient')}>
+              Signup as a patient
+            </p>
           </Grid>
         </Grid>
       </Box>

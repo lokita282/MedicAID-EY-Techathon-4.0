@@ -1,5 +1,7 @@
 import {React, useState, useEffect} from 'react'
 import SideDrawer from '../../components/sidebar/Sidebar'
+import Loading from '../../components/loader/Loading'
+import {df_jc_ac} from '../../theme/CssMy'
 
 //MUI Imports
 import Paper from "@mui/material/Paper"
@@ -37,7 +39,7 @@ const SinglePatientPage = () => {
     return (
       <SideDrawer>
         {appointment ? (
-          <Paper sx={{ p: 2, borderRadius: 3, boxShadow: 4, maxWidth: '80%', margin: 'auto' }}>
+          <Paper sx={{ p: 2, borderRadius: 3, boxShadow: 4 }}>
             <Box
               sx={{
                 display: 'flex',
@@ -62,8 +64,8 @@ const SinglePatientPage = () => {
             </Box>
 
             <Divider sx={{ my: 2 }}> </Divider>
-            <Grid container direction={'row'} spacing={3} alignItems="center" justifyContent="center">
-              {/* <Grid item xs={4}>
+            <Grid container direction={'row'} spacing={3}>
+              <Grid item xs={4}>
                 <Paper
                   sx={{
                     boxShadow: 'none',
@@ -75,9 +77,9 @@ const SinglePatientPage = () => {
                 >
                   <Box sx={{ textAlign: 'center', fontWeight: 550 }}> Date</Box>
                 </Paper>
-              </Grid> */}
+              </Grid>
 
-              <Grid item xs={12} sx={{ pr: 6 }}>
+              <Grid item xs={8} sx={{ pr: 6 }}>
                 <Paper
                   sx={{
                     boxShadow: 'none',
@@ -97,15 +99,29 @@ const SinglePatientPage = () => {
                     }}
                   >
                     <Stack direction="column" spacing={1}>
-                      <Box> Age: {appointment.patientId.patientDemographics.age}</Box>
-                      <Box> Gender: {appointment.patientId.patientDemographics.gender}</Box>
+                      <Box>
+                        Age: {appointment.patientId.patientDemographics.age}
+                      </Box>
+                      <Box>
+                        Gender:
+                        {appointment.patientId.patientDemographics.gender}
+                      </Box>
                     </Stack>
                     <Stack direction="column" spacing={1}>
-                      <Box> Height: {appointment.patientId.patientDemographics.height}</Box>
-                      <Box> Weight: {appointment.patientId.patientDemographics.weight}</Box>
+                      <Box>
+                        Height:
+                        {appointment.patientId.patientDemographics.height}
+                      </Box>
+                      <Box>
+                        Weight:
+                        {appointment.patientId.patientDemographics.weight}
+                      </Box>
                     </Stack>
                     <Stack direction="column" spacing={1}>
-                      <Box> Address: {appointment.patientId.patientDemographics.address}</Box>
+                      <Box>
+                        Address:
+                        {appointment.patientId.patientDemographics.address}
+                      </Box>
                       <Box> Contact: {appointment.patientId.contact}</Box>
                     </Stack>
                   </Box>
@@ -115,10 +131,9 @@ const SinglePatientPage = () => {
                     sx={{ mt: 4, alignItems: 'center' }}
                   >
                     <Box sx={{ fontSize: 20, fontWeight: 600 }}>Symptoms:</Box>
-                    {appointment.symptoms.map((symptom) => {return (
-                        <Box> {symptom} </Box>
-                    )})}
-                    
+                    {appointment.symptoms.map((symptom) => {
+                      return <Box> {symptom} </Box>
+                    })}
                   </Stack>
                   <Box
                     sx={{
@@ -192,7 +207,9 @@ const SinglePatientPage = () => {
             </Grid>
           </Paper>
         ) : (
-          'Loading...'
+          <Box sx={{ ...df_jc_ac, height: '80vh' }}>
+            <Loading />
+          </Box>
         )}
       </SideDrawer>
     )

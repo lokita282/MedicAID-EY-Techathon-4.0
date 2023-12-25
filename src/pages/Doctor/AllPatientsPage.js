@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import SideDrawer from '../../components/sidebar/Sidebar'
+import Loading from '../../components/loader/Loading'
+import { df_jc_ac } from '../../theme/CssMy'
 import { Link } from 'react-router-dom'
 
 // MUI imports 
@@ -88,39 +90,13 @@ export default function AllPatients() {
               <Grid item xs={10}>
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
                   <Grid container direction="column">
-                    {patients?.map((patient) => (
-                      <Grid item key={patient?._id} sx={{ mt: 2 }}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Box>
-                            <Stack
-                              direction="row"
-                              spacing={2}
-                              sx={{ alignItems: 'center' }}
-                            >
-                              <Avatar
-                                sx={{
-                                  width: 36,
-                                  height: 36,
-                                  bgcolor: deepPurple[500],
-                                }}
-                              >
-                                P
-                              </Avatar>
-                              <Typography sx={{ fontWeight: 'bold' }}>
-                                {patient?.name}{' '}
-                              </Typography>
-                            </Stack>
-                          </Box>
-                          <Typography>
-                            {patient.patientDemographics?.age},{' '}
-                            {patient.patientDemographics?.gender}
-                          </Typography>
+                    {loading ? (
+                      <Box sx={{ ...df_jc_ac }}>
+                        <Loading />
+                      </Box>
+                    ) : (
+                      patients.map((patient) => (
+                        <Grid item key={patient?._id} sx={{ mt: 2 }}>
                           <Box
                             sx={{
                               display: 'flex',
@@ -128,26 +104,58 @@ export default function AllPatients() {
                               alignItems: 'center',
                             }}
                           >
-                            <Button
+                            <Box>
+                              <Stack
+                                direction="row"
+                                spacing={2}
+                                sx={{ alignItems: 'center' }}
+                              >
+                                <Avatar
+                                  sx={{
+                                    width: 36,
+                                    height: 36,
+                                    bgcolor: deepPurple[500],
+                                  }}
+                                >
+                                  P
+                                </Avatar>
+                                <Typography sx={{ fontWeight: 'bold' }}>
+                                  {patient?.name}{' '}
+                                </Typography>
+                              </Stack>
+                            </Box>
+                            <Typography>
+                              {patient.patientDemographics?.age},{' '}
+                              {patient.patientDemographics?.gender}
+                            </Typography>
+                            <Box
                               sx={{
-                                backgroundColor: 'rgba(0, 87, 57, 0.1)',
-                                color: 'rgba(0,87,57,1)',
-                                mr: 10,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                               }}
                             >
-                              CONSULTATION
-                            </Button>
-                             <Link
-                              style={{ textDecoration: 'none' }}
-                              to={`/patient_details/${patient?._id}`}
-                            >
-                            <Typography> Details {'>'}</Typography>
-                            </Link>
+                              <Button
+                                sx={{
+                                  backgroundColor: 'rgba(0, 87, 57, 0.1)',
+                                  color: 'rgba(0,87,57,1)',
+                                  mr: 10,
+                                }}
+                              >
+                                CONSULTATION
+                              </Button>
+                              <Link
+                                style={{ textDecoration: 'none' }}
+                                to={`/patient_details/${patient?._id}`}
+                              >
+                                <Typography> Details {'>'}</Typography>
+                              </Link>
+                            </Box>
                           </Box>
-                        </Box>
-                        <Divider sx={{ mt: 1 }} />
-                      </Grid>
-                    ))}
+                          <Divider sx={{ mt: 1 }} />
+                        </Grid>
+                      ))
+                    )}
                   </Grid>
                 </Paper>
               </Grid>
@@ -169,63 +177,72 @@ export default function AllPatients() {
               <Divider sx={{ mt: 3 }} />
 
               <Grid container spacing={3} direction={'column'}>
-                {appointments.map((patient) => (
-                  <Grid item key={patient?._id}>
-                    <Box sx={{ mt: 1 }}>
-                      <Grid container spacing={2}>
-                        <Grid item xs={3}>
-                          <Stack direction="row" spacing={2}>
-                            <Avatar
+                {loading ? (
+                  <Box sx={{ ...df_jc_ac, height: '80vh' }}>
+                    <Loading />
+                  </Box>
+                ) : (
+                  appointments.map((patient) => (
+                    <Grid item key={patient?._id}>
+                      <Box sx={{ mt: 1 }}>
+                        <Grid container spacing={2}>
+                          <Grid item xs={3}>
+                            <Stack direction="row" spacing={2}>
+                              <Avatar
+                                sx={{
+                                  width: 56,
+                                  height: 56,
+                                  bgcolor: deepOrange[500],
+                                }}
+                              >
+                                PR
+                              </Avatar>
+                            </Stack>
+                          </Grid>
+                          <Grid item xs={9} sx={{ textAlign: 'start' }}>
+                            <Box
                               sx={{
-                                width: 56,
-                                height: 56,
-                                bgcolor: deepOrange[500],
+                                textAlign: 'start',
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
                               }}
                             >
-                              PR
-                            </Avatar>
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={9} sx={{ textAlign: 'start' }}>
-                          <Box
-                            sx={{
-                              textAlign: 'start',
-                              display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Typography sx={{ fontWeight: 'bold' }}>
-                              {patient?.patientId.name}
-                            </Typography>
-                            <Typography>{patient?.start}</Typography>
-                          </Box>
-                          <Typography>Sex, Age</Typography>
-                          <Typography> {patient?.status} </Typography>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              mt: 1,
-                            }}
-                          >
-                            {/* <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
-                            <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button> */}
-                            <Link
-                              style={{ textDecoration: 'none' }}
-                              to={`/appointment_details/${patient?._id}`}
-                            >
-                              <Typography variant="body1" color="initial">
-                                Details {'>'}
+                              <Typography sx={{ fontWeight: 'bold' }}>
+                                {patient?.patientId.name}
                               </Typography>
-                            </Link>
-                          </Box>
+                              <Typography>{patient?.start}</Typography>
+                            </Box>
+                            <Typography>
+                              {patient.patientId.patientDemographics?.gender},{' '}
+                              {patient.patientId.patientDemographics?.age}
+                            </Typography>
+                            <Typography> {patient?.status} </Typography>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                mt: 1,
+                              }}
+                            >
+                              {/* <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
+                            <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button> */}
+                              <Link
+                                style={{ textDecoration: 'none' }}
+                                to={`/appointment_details/${patient?._id}`}
+                              >
+                                <Typography variant="body1" color="initial">
+                                  Details {'>'}
+                                </Typography>
+                              </Link>
+                            </Box>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </Box>
-                  </Grid>
-                ))}
+                      </Box>
+                    </Grid>
+                  ))
+                )}
               </Grid>
             </Paper>
           </Grid>

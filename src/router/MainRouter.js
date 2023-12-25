@@ -42,7 +42,8 @@ export default function MainRouter() {
   return (
     <>
       <Routes>
-        <Route exact path="/signup/beneficiary" element={<SignupPage />} />
+        <Route exact path="/signup/doctor" element={<SignupPage />} />
+        <Route exact path="/signup/patient" element={<SignupPage />} />
         <Route exact path="/login" element={<LoginPage />} />
 
         <Route path="/" element={<PrivateRouter />}>
@@ -112,12 +113,6 @@ export default function MainRouter() {
         <Route path="/transactions" element={<PrivateRouter />}>
           <Route exact path="/transactions" element={<TransactionPage />} />
         </Route>
-
-        {/* not needed for now */}
-        <Route exact path="/signup/merchant" element={<SignupPage />} />
-        <Route exact path="/signup/bank" element={<SignupPage />} />
-        <Route exact path="/signup/organisation" element={<SignupPage />} />
-        {/* not needed for now */}
       </Routes>
     </>
   )
