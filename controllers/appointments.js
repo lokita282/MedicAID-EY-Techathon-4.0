@@ -138,6 +138,10 @@ const getAppointmentsDoctor = async (req, res) => {
         // end: new Date(appointments[i].end).toString(),
         start: appointments[i].start,
         end: appointments[i].end,
+        patient_name: appointments[i].patientId.name,
+        patient_age: appointments[i].patientId.patientDemographics.age,
+        patient_gender: appointments[i].patientId.patientDemographics.gender,
+        symptoms: appointments[i].symptoms
       })
       // console.log(new Date(appointments[i].start))
     }
