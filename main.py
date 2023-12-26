@@ -9,6 +9,7 @@ from fastapi_utilities import repeat_at, repeat_every
 ## function and data type imports from other modules
 from utils.data_model import *
 from utils.chatbot import *
+from models.ddig import *
 
 app = FastAPI()
 router = APIRouter()
@@ -22,21 +23,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 ## cron job ##
-@router.on_event('startup')
+@router.on_event("startup")
 @repeat_every(seconds=20)
 async def print_hello():
     print("hello")
 
+
 @app.get("/")
 async def home():
-    return {"message":"headless api base url, visit /docs for swagger documentation."}
+    return {"message": "headless api base url, visit /docs for swagger documentation."}
 
 
 @app.post("/chatbot")
 async def chatbot(request: NeurocognitionRequest):
     query = request.text
     result = await chat(query)
-    print(result)
     return NeuroResponse(response=result)
 
+
+@app.post("/diagnosis")
+async def diagnosis(request: DiagnosisRequest):
+    psymptoms = request.symptoms
+    tailing_zeros = 17 - len(psymptoms)
+    # Add trailing zeros
+    psymptoms = psymptoms + [0] * tailing_zeros
+    result = predd(psymptoms)
+    return DiagnosisResponse(response=result)
