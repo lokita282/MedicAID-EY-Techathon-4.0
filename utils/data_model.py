@@ -12,8 +12,7 @@ class Text(BaseModel):
 
 
 class NeurocognitionRequest(BaseModel):
-    profile: str
-    symptoms: str
+    text: str
 
 class NeuroResponse(BaseModel):
     response: str
