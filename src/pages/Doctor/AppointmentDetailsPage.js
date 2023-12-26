@@ -103,23 +103,23 @@ const SinglePatientPage = () => {
                         Age: {appointment.patientId.patientDemographics.age}
                       </Box>
                       <Box>
-                        Gender:
+                        Gender: 
                         {appointment.patientId.patientDemographics.gender}
                       </Box>
                     </Stack>
                     <Stack direction="column" spacing={1}>
                       <Box>
-                        Height:
+                        Height: 
                         {appointment.patientId.patientDemographics.height}
                       </Box>
                       <Box>
-                        Weight:
+                        Weight: 
                         {appointment.patientId.patientDemographics.weight}
                       </Box>
                     </Stack>
                     <Stack direction="column" spacing={1}>
                       <Box>
-                        Address:
+                        Address: 
                         {appointment.patientId.patientDemographics.address}
                       </Box>
                       <Box> Contact: {appointment.patientId.contact}</Box>

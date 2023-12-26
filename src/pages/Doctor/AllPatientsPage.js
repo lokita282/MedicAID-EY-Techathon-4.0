@@ -39,7 +39,6 @@ export default function AllPatients() {
     setLoading(true)
     const func = async () => {
       await getAllPatients().then((res) => {
-        console.log(res.data.patients)
         setPatients(res.data.patients)
       })
       setLoading(false)
