@@ -3,6 +3,9 @@ import json
 from fastapi import FastAPI, Request, Body, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 
+# deployment imports
+from fastapi_utilities import repeat_at
+
 ## function and data type imports from other modules
 from utils.data_model import *
 from utils.chatbot import *
@@ -18,7 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+@router.on_event("startup")
+@repeat_at(cron="*/2 * * * *") #every 2nd minute
 @app.get("/")
 async def home():
     return {"message":"headless api base url, visit /docs for swagger documentation."}
