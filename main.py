@@ -35,8 +35,8 @@ async def home():
 
 @app.post("/chatbot")
 async def chatbot(request: NeurocognitionRequest):
-    profile = request.profile
-    symptoms = request.symptoms
-    result = await chat(profile, symptoms)
-    return NeuroResponse(prediction=result)
+    query = request.text
+    result = await chat(query)
+    print(result)
+    return NeuroResponse(response=result)
 

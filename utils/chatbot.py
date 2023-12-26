@@ -24,34 +24,30 @@ headers = {
 
 
 # Chatbot functions
-async def chat(text, label, **kwargs):
+async def chat(text, **kwargs):
     system_prompt = """
 
     % INSTRUCTIONS
-        Imagine you are a Psychiatrist and General Physician who specializes in the correlation between mental health disorder and physical health condition. Your primary responsibility is to comprehend the user's physical health condition and mental health disorder. 
+        Imagine you are a Expert Multispecialist Dcotor who specializes providing healthcare advice. Your primary responsibility is to comprehend the user's query and provide correct information. 
         ##
-        Strictly, Don't mention that you are a Psychiatrist and General Physician.
+        Strictly, Don't mention that you are a Expert Multispecialist Dcotor.
         ##
-        Strictly do not ask the user to consult anyone for help or guidance or advice.
-
-        % LABEL NAME
-        {0}
+        Information provided by you should be factual and medically correct.
 
         % TEXT NAME
-        {1}
+        {0}
 
         % YOUR TASK
-        User is suffering from LABEL and TEXT.Your primary responsibility is to comprehend the user's physical health condition and mental health disorder the user is suffering from.
+        User is asking TEXT for medical help. Provide appropriate information.
         Strictly follow the given below guidelines:
         ##
-        If there is any correlation between the TEXT and LABEL, mention it to the user and also elucidate how TEXT and LABEL user is suffering from are interlinked or co-related and explain how the TEXT affects the LABEL,
-        Conclude your response with a reassuring and optimistic statement without asking the user to consult anyone. Additionally, convey the necessity of addressing LABEL and TEXT simultaneously in one sentence.
+        If the user indicates in TEXT that they need medical advice or help, provide them appropriate information.
         ##
-        IF the user indicates that he does not have any physical health condition or problem, then just acknowledge the user response in one short sentence without giving example.
+        ELSE answer the user's query in TEXT with correct information.
         
 """
 
-    messages = [{"role": "system", "content": system_prompt.format(label, text)}]
+    messages = [{"role": "system", "content": system_prompt.format(text)}]
     completion = {
         "model": "gpt-3.5-turbo",
         "messages": messages,
@@ -60,14 +56,14 @@ async def chat(text, label, **kwargs):
     response = requests.post(url, json=completion, headers=headers)
     response = response.json()
 
-    print(response)
+    # print(response)
 
     ######################## Type 1 ########################
     # print(response["choices"][0]["message"]["content"])
     # res = response["choices"][0]["message"]["content"]
 
     ######################## Type 2 ########################
-    print(response["result"])
+    # print(response["result"])
     res = response["result"]
 
     return res
