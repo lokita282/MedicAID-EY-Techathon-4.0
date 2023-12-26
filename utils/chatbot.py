@@ -24,7 +24,7 @@ headers = {
 
 
 # Chatbot functions
-async def neuro(text, label, **kwargs):
+async def chat(text, label, **kwargs):
     system_prompt = """
 
     % INSTRUCTIONS
