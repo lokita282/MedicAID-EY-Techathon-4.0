@@ -1,6 +1,7 @@
 import Appointments from '../models/Appointments.js'
 import User from '../models/User.js'
 import mongodb from 'mongodb'
+import moment from 'moment'
 
 //create an appointment
 const createNewAppointment = async (req, res) => {
@@ -131,10 +132,12 @@ const getAppointmentsDoctor = async (req, res) => {
         _id: appointments[i].patientId,
       })
       calendarEvents.push({
-        id: appointments[i]._id,
+        event_id: appointments[i]._id,
         title: appointments[i].title,
-        start: new Date(appointments[i].start).toString(),
-        end: new Date(appointments[i].end).toString(),
+        // start: new Date(appointments[i].start).toString(),
+        // end: new Date(appointments[i].end).toString(),
+        start: appointments[i].start,
+        end: appointments[i].end,
       })
       // console.log(new Date(appointments[i].start))
     }
