@@ -12,13 +12,24 @@ const appointmentsSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    startArr: [{
+      type: String,
+      required: true,
+    }], 
+    endArr: [{
+      type: String,
+      required: true,
+    }],
     start: {
       type: String,
       required: true,
+      // unique: [true, 'time slot already taken'],
     },
     end: {
       type: String,
       required: true,
+      // unique: [true, 'time slot already taken'],
+
     },
     title: {
       type: String,
