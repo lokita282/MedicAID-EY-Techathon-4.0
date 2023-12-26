@@ -1,16 +1,15 @@
-import {React, useState, useEffect} from 'react'
+import { React, useState, useEffect } from 'react'
 import SideDrawer from '../../components/sidebar/Sidebar'
 
-import { Scheduler } from "@aldabil/react-scheduler";
+import { Scheduler } from '@aldabil/react-scheduler'
 
-import { getAllAppointments } from '../../services/doctorService';
-
+import { getAllAppointments } from '../../services/doctorService'
 
 export default function Appointments() {
-
   const [loading, setLoading] = useState(false)
   const [appointments, setAppointments] = useState([])
-  const [events, setEvents] = useState([])
+  const [calEvents, setCalEvents] = useState()
+  var ev =  []
   // const events = []
   const arr = [
     {
@@ -32,19 +31,23 @@ export default function Appointments() {
     setLoading(true)
     const func = async () => {
       await getAllAppointments().then((res) => {
-        // console.log(res.data.appointments)
-        console.log(res.data.calendarEvents)
         setAppointments(res.data.appointments)
-        setEvents(res.data.calendarEvents)
+        res.data.calendarEvents.map((event) => {
+          event.start = new Date(event.start)
+          event.end = new Date(event.end)
+          console.log(event)
+          ev.push(event)
+        })
+        setCalEvents(ev)
       })
-      setLoading(false) 
+      setLoading(false)
     }
     func()
   }, [])
 
   return (
     <SideDrawer>
-      {events===[] ? 'loading' : <Scheduler view="week" events={arr} />}
+      {calEvents ? <Scheduler view="week" events={calEvents} /> : 'loading'}
     </SideDrawer>
   )
-} 
+}
