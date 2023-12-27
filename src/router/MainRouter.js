@@ -6,6 +6,7 @@ import SignupPage from '../pages/SignupPages'
 import DashboardPage from '../pages/DashboardPage'
 import AllPatientsPage from '../pages/Doctor/AllPatientsPage'
 import AppointmentsPage from '../pages/Doctor/AppointmentsPage'
+import MeetPage from '../pages/Doctor/MeetPage'
 import ReportsPage from '../pages/Patient/ReportsPage'
 import UserGetStartedPage from '../pages/UserGetStartedPage'
 import CreateErupi from '../pages/CreateErupi'
@@ -65,6 +66,10 @@ export default function MainRouter() {
 
         <Route path="/patient_details/:id" element={<PrivateRouter />}>
           <Route exact path="/patient_details/:id" element={<PatientDetailsPage />} />
+        </Route>
+
+        <Route path="/:id" element={<PrivateRouter />}>
+          <Route exact path="/:id" element={<MeetPage />} />
         </Route>
 
         {/* Patients */}
