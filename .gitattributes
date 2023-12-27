@@ -1,0 +1,4 @@
+*.h5 filter=lfs diff=lfs merge=lfs -text
+*.hdf5 filter=lfs diff=lfs merge=lfs -text
+models/assets/ct-scan/chest_CT_SCAN-DenseNet201.hdf5 filter=lfs diff=lfs merge=lfs -text
+models/assets/MRI/VGG16-Brain-Tumor-MRI-3.h5 filter=lfs diff=lfs merge=lfs -text
