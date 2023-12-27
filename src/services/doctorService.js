@@ -23,3 +23,11 @@ export const getAllAppointments = () => {
       },
     })
   }
+
+  export const getAppointmentHistory = (id) => {
+    return httpcommon.get(`/appointments/get_patient_history/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
