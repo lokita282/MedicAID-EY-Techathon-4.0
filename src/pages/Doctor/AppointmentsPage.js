@@ -61,6 +61,7 @@ export default function Appointments() {
       {calEvents ? (
         <Scheduler
           view="week"
+          draggable={false}
           events={calEvents}
           fields={[
             // {
