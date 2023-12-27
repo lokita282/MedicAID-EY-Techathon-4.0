@@ -1,4 +1,5 @@
 import httpcommon from '../httpcommon'
+import httpcommonml from '../httpcommon-ml'
 
 export const getAllAppointments = () => {
     return httpcommon.get(`/appointments/get`, {
@@ -31,3 +32,8 @@ export const getAllAppointments = () => {
       },
     })
   }
+
+  export const getDifferentialDiagnoses = (data) => {
+    return httpcommonml.post(`/diagnosis`, data)
+  }
+  

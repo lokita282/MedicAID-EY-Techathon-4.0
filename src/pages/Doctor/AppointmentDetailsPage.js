@@ -24,22 +24,31 @@ import TimelineOppositeContent, {
 } from '@mui/lab/TimelineOppositeContent';
 
 //Integration imports
-import { getSingleAppointmentDetails, getAppointmentHistory } from '../../services/doctorService'
+import { getSingleAppointmentDetails, getAppointmentHistory, getDifferentialDiagnoses } from '../../services/doctorService'
 import {Link} from "react-router-dom"
 
 const SinglePatientPage = () => {
   const [loading, setLoading] = useState(false)
   const [appointment, setAppointment] = useState()
   const [appointmentHistory, setAppointmentHistory] = useState([])
+  const [diagnoses,setDiagnoses] = useState()
   const id = window.location.href.split('/')[4]
 
   useEffect(() => {
     setLoading(true)
     const func = async () => {
       await getSingleAppointmentDetails(id).then(async (res) => {
+        console.log(res.data.appointment.symptoms)
+        var x = {
+          "symptoms" : [res.data.appointment.symptoms[0]]
+        }
         setAppointment(res.data.appointment)
         getAppointmentHistory(res.data.appointment.patientId._id).then((res) => {
           setAppointmentHistory(res.data.appointments)
+        })
+        getDifferentialDiagnoses(x).then((res)=>{
+            console.log(res)
+            setDiagnoses(res.data.response)
         })
       })
       setLoading(false)
@@ -47,7 +56,9 @@ const SinglePatientPage = () => {
     func()
   }, [])
 
-  const diagnoses = [1, 2, 3, 4]
+  // const diagnoses = [1, 2, 3, 4]
+
+
 
   return (
     <SideDrawer>
@@ -217,7 +228,7 @@ const SinglePatientPage = () => {
                   </Button>
                 </Box>
                 <Box sx={{ mt: 1 }}>
-                  {diagnoses.map((d) => (
+                  {diagnoses?.Disease.map((d) => (
                     <Box
                       key={d}
                       direction="column"
@@ -233,7 +244,7 @@ const SinglePatientPage = () => {
                           fontWeight: 'bold',
                         }}
                       >
-                        Flu
+                        {d}
                       </Box>
                       <Box
                         sx={{
@@ -250,7 +261,7 @@ const SinglePatientPage = () => {
                         spacing={2}
                         sx={{ px: 1, py: 1 }}
                       >
-                        <Chip label="Value 1" />
+                        <Chip label="${}" />
                         <Chip
                           label="Most Probable"
                           sx={{
