@@ -38,12 +38,6 @@ class NumpyInt64Encoder(json.JSONEncoder):
             return int(obj)
         return super().default(obj)
 
-## cron job ##
-@router.on_event("startup")
-@repeat_every(seconds=20)
-async def print_hello():
-    print("hello")
-
 # Load the model
 ctmodel_path = 'models/assets/ct-scan/chest_CT_SCAN-DenseNet201.hdf5'
 ctmodel = load_model(ctmodel_path)
