@@ -29,7 +29,7 @@ import {Link} from "react-router-dom"
 
 const SinglePatientPage = () => {
   const [loading, setLoading] = useState(false)
-  const [appointment, setAppointment] = useState()
+  const [appointment, setAppointment] = useState() 
   const [appointmentHistory, setAppointmentHistory] = useState([])
   const id = window.location.href.split('/')[4]
 
@@ -99,7 +99,7 @@ const SinglePatientPage = () => {
                       },
                     }}
                   >
-                    {appointmentHistory?.map((appointment) => (
+                    {appointmentHistory? (appointmentHistory.map((appointment) => (
                       <TimelineItem key={appointment._id} >
                         <TimelineOppositeContent
                         >
@@ -133,7 +133,9 @@ const SinglePatientPage = () => {
                           </Paper>
                         </TimelineContent>
                       </TimelineItem>
-                    ))}
+                    ))): (<Box sx={{ ...df_jc_ac, height: '80vh' }}>
+          <Loading />
+        </Box>)}
                   </Timeline>
                 </Box>
               </Paper>
