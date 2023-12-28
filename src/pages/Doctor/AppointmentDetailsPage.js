@@ -25,13 +25,15 @@ import TimelineOppositeContent, {
 
 //Integration imports
 import { getSingleAppointmentDetails, getAppointmentHistory, getDifferentialDiagnoses } from '../../services/doctorService'
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const SinglePatientPage = () => {
   const [loading, setLoading] = useState(false)
-  const [appointment, setAppointment] = useState() 
+  const [appointment, setAppointment] = useState()
   const [appointmentHistory, setAppointmentHistory] = useState([])
-  const [diagnoses,setDiagnoses] = useState()
+  const [diagnoses, setDiagnoses] = useState()
+  const [tabSwitch, setTabSwitch] = useState(false)
+
   const id = window.location.href.split('/')[4]
 
   useEffect(() => {
@@ -40,15 +42,15 @@ const SinglePatientPage = () => {
       await getSingleAppointmentDetails(id).then(async (res) => {
         console.log(res.data.appointment.symptoms)
         var x = {
-          "symptoms" : [res.data.appointment.symptoms[0]]
+          "symptoms": [res.data.appointment.symptoms[0]]
         }
         setAppointment(res.data.appointment)
         getAppointmentHistory(res.data.appointment.patientId._id).then((res) => {
           setAppointmentHistory(res.data.appointments)
         })
-        getDifferentialDiagnoses(x).then((res)=>{
-            console.log(res)
-            setDiagnoses(res.data.response)
+        getDifferentialDiagnoses(x).then((res) => {
+          console.log(res)
+          setDiagnoses(res.data.response)
         })
       })
       setLoading(false)
@@ -106,11 +108,11 @@ const SinglePatientPage = () => {
                     sx={{
                       [`& .${timelineOppositeContentClasses.root}`]: {
                         flex: 0.2,
-                      
+
                       },
                     }}
                   >
-                    {appointmentHistory? (appointmentHistory.map((appointment) => (
+                    {appointmentHistory ? (appointmentHistory.map((appointment) => (
                       <TimelineItem key={appointment._id} >
                         <TimelineOppositeContent
                         >
@@ -130,23 +132,23 @@ const SinglePatientPage = () => {
                                 spacing={1}
                                 sx={{ mt: 1, alignItems: 'center' }}
                               >
-                                <Box sx={{fontWeight: 600,  }}>Symptoms:</Box>
+                                <Box sx={{ fontWeight: 600, }}>Symptoms:</Box>
                                 {appointment.symptoms.map((symptom) => {
-                                  return <Box sx={{fontWeight: 500}} key={symptom} > {symptom} </Box>
+                                  return <Box sx={{ fontWeight: 500 }} key={symptom} > {symptom} </Box>
                                 })}
                               </Stack>
                             </Stack>
-                            <Stack  spacing={3} direction="row"  sx={{justifyContent: 'space-between', mt : 1, pr : 1}}>
-                                    <Button variant="contained" color="error"> PDF </Button>
-                                    <Link style={{marginTop : "16px"}} >    Details {">"} </Link>
+                            <Stack spacing={3} direction="row" sx={{ justifyContent: 'space-between', mt: 1, pr: 1 }}>
+                              <Button variant="contained" color="error"> PDF </Button>
+                              <Link style={{ marginTop: "16px" }} >    Details {">"} </Link>
 
                             </Stack>
                           </Paper>
                         </TimelineContent>
                       </TimelineItem>
-                    ))): (<Box sx={{ ...df_jc_ac, height: '80vh' }}>
-          <Loading />
-        </Box>)}
+                    ))) : (<Box sx={{ ...df_jc_ac, height: '80vh' }}>
+                      <Loading />
+                    </Box>)}
                   </Timeline>
                 </Box>
               </Paper>
@@ -205,76 +207,106 @@ const SinglePatientPage = () => {
                 >
                   <Box sx={{ fontSize: 20, fontWeight: 600 }}>Symptoms:</Box>
                   {appointment.symptoms.map((symptom) => {
-                    return <Box> {symptom} </Box>
+                    return <Box key={symptom} > {symptom} </Box>
                   })}
                 </Stack>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    mt: 3,
-                  }}
-                >
-                  <Box sx={{ fontSize: 20, fontWeight: 600 }}>
-                    Possible Differential Diagnoses:
-                  </Box>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      borderColor: 'rgb(0,87,57)',
-                      color: 'rgb(0,87,57)',
-                      boxShadow: 'none',
-                    }}
-                  >
-                    <Box sx={{ fontWeight: 20 }}> View Files </Box>
-                  </Button>
-                </Box>
-                <Box sx={{ mt: 1 }}>
-                  {diagnoses?.Disease.map((d) => (
+
+                {tabSwitch ?
+                  (<>
                     <Box
-                      key={d}
-                      direction="column"
-                      sx={{ boxShadow: 1, borderRadius: 4, mt: 2 }}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        mt: 3,
+                      }}
                     >
-                      <Box
-                        sx={{
-                          backgroundColor: '#EAEAEA',
-                          px: 2,
-                          py: 1,
-                          borderTopLeftRadius: 14,
-                          borderTopRightRadius: 14,
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {d}
+                      <Box sx={{ fontSize: 20, fontWeight: 600 }}>
+                        Uploaded Files:
                       </Box>
-                      <Box
+                      <Button
+                        variant="outlined"
                         sx={{
-                          px: 2,
-                          py: 1,
-                          borderBottomLeftRadius: 14,
-                          borderBottomRightRadius: 14,
+                          borderColor: 'rgb(0,87,57)',
+                          color: 'rgb(0,87,57)',
+                          boxShadow: 'none',
                         }}
+                        onClick={(e) => setTabSwitch(false)}
                       >
-                        Description
-                      </Box>
-                      <Stack
-                        direction="row"
-                        spacing={2}
-                        sx={{ px: 1, py: 1 }}
-                      >
-                        <Chip label="${}" />
-                        <Chip
-                          label="Most Probable"
-                          sx={{
-                            color: 'rgb(74,177,102)',
-                            backgroundColor: 'rgba(74,177,102,0.2)',
-                          }}
-                        />
-                      </Stack>
+                        <Box sx={{ fontWeight: 20 }}> View Diagnoses </Box>
+                      </Button>
                     </Box>
-                  ))}
-                </Box>
+                  </>)
+                  :
+                  (<>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        mt: 3,
+                      }}
+                    >
+                      <Box sx={{ fontSize: 20, fontWeight: 600 }}>
+                        Possible Differential Diagnoses:
+                      </Box>
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          borderColor: 'rgb(0,87,57)',
+                          color: 'rgb(0,87,57)',
+                          boxShadow: 'none',
+                        }}
+                        onClick={(e) => setTabSwitch(true)}
+                      >
+                        <Box sx={{ fontWeight: 20 }}> View Files </Box>
+                      </Button>
+                    </Box>
+                    <Box sx={{ mt: 1 }}>
+                      {diagnoses?.Disease.map((d) => (
+                        <Box
+                          key={d}
+                          direction="column"
+                          sx={{ boxShadow: 1, borderRadius: 4, mt: 2 }}
+                        >
+                          <Box
+                            sx={{
+                              backgroundColor: '#EAEAEA',
+                              px: 2,
+                              py: 1,
+                              borderTopLeftRadius: 14,
+                              borderTopRightRadius: 14,
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            {d}
+                          </Box>
+                          <Box
+                            sx={{
+                              px: 2,
+                              py: 1,
+                              borderBottomLeftRadius: 14,
+                              borderBottomRightRadius: 14,
+                            }}
+                          >
+                            Description
+                          </Box>
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            sx={{ px: 1, py: 1 }}
+                          >
+                            <Chip label="${}" />
+                            <Chip
+                              label="Most Probable"
+                              sx={{
+                                color: 'rgb(74,177,102)',
+                                backgroundColor: 'rgba(74,177,102,0.2)',
+                              }}
+                            />
+                          </Stack>
+                        </Box>
+                      ))}
+                    </Box>
+                  </>)}
               </Paper>
             </Grid>
           </Grid>
