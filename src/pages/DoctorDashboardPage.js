@@ -16,6 +16,19 @@ import { CardMedia } from '@mui/material'
 import gipphy from '../images/dangerGif.svg'
 import giphy from '../images/giphy.gif'
 import { df_jfs_ac_fdc } from '../theme/CssMy'
+// import { Augnito, AugnitoConfig, AugnitoAPIServer } from 'augnitosdk'
+
+// const augnitoConfig = {
+//   server: 'india',
+//   accountCode: 'a67f3023-387f-4e82-9e6f-c1dcf79202aa',
+//   accessKey: 'ab51e160e42e453f87e003566a683239',
+//   userTag: 'Prateek Ranka',
+//   sourceApp: 'medicaid',
+//   lmId: '111801200',
+// }
+
+// const augnito = new Augnito(augnitoConfig);
+
 
 const styles = {
   paperContainer: {
@@ -93,6 +106,7 @@ const UserDashboardPage = () => {
       spacing={2}
       sx={{ height: '80vh', padding: '0', margin: '0' }}
     >
+      {/* <Grid item={12}> {augnito.toggleListening()} </Grid> */}
       <Grid item xs={12} md={5} sx={df_jfs_ac_fdc}>
         <Paper style={styles.paperContainer} elevation={0}>
           <Typography variant="h2" style={styles.gradientText}>

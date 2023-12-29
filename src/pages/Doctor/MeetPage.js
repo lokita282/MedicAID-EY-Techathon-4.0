@@ -1,6 +1,9 @@
-import React from 'react'
+import { React, useContext } from 'react'
+import { useNavigate } from 'react-router'
+import { eycontext } from '../../context/MainContext'
 import SideDrawer from '../../components/sidebar/Sidebar'
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt'
+import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder'
 
 function randomID(len) {
   let result = ''
@@ -15,8 +18,33 @@ function randomID(len) {
   return result
 }
 
+const addAudioElement = (blob) => {
+  const url = URL.createObjectURL(blob)
+  const audio = document.createElement('audio')
+  audio.src = url
+  audio.controls = true
+  document.body.appendChild(audio)
+}
+
 export default function Meet() {
-  const roomId = window.location.href.split('=')[1]
+  const navigate = useNavigate()
+  const { user } = useContext(eycontext)
+  const recorderControls = useAudioRecorder()
+  console.log(recorderControls.isRecording)
+
+  function onLeave() {
+   
+    recorderControls.stopRecording()
+    // addAudioElement()
+    navigate('/prescription')
+  }
+  function onJoin() {
+    // navigate('/prescription')
+    recorderControls.startRecording()    
+  }
+
+  // const roomId = window.location.href.split('=')[1]
+  const roomId = '12345'
 
   let myMeeting = async (element) => {
     // generate Kit Token
@@ -27,12 +55,12 @@ export default function Meet() {
       serverSecret,
       roomId,
       randomID(5),
-      randomID(5)
+      user.name
     )
 
     // Create instance object from Kit Token.
     const zp = ZegoUIKitPrebuilt.create(kitToken)
-    console.log(zp)
+    // console.log(zp)
     // start the call
     zp.joinRoom({
       container: element,
@@ -40,8 +68,10 @@ export default function Meet() {
         {
           name: 'Personal link',
           url:
-           window.location.protocol + '//' +
-           window.location.host + window.location.pathname +
+            window.location.protocol +
+            '//' +
+            window.location.host +
+            window.location.pathname +
             '?roomID=' +
             roomId,
         },
@@ -49,20 +79,24 @@ export default function Meet() {
       scenario: {
         mode: ZegoUIKitPrebuilt.GroupCall, // To implement 1-on-1 calls, modify the parameter here to [ZegoUIKitPrebuilt.OneONoneCall].
       },
+      onLeaveRoom: () => onLeave(),
+      onJoinRoom: () => onJoin(),
     })
   }
   return (
     <SideDrawer>
-      Meet {roomId}
-      {console.log(
-        window.location.protocol +
-          '//' +
-          window.location.host +
-          window.location.pathname +
-          '?roomID=' +
-          roomId
-      )}
       <div ref={myMeeting} style={{ width: '80vw', height: '80vh' }} />
+      <AudioRecorder
+        // onRecordingComplete={addAudioElement}
+        // audioTrackConstraints={{
+        //   noiseSuppression: true,
+        //   echoCancellation: true,
+        // }}
+        downloadOnSavePress={true}
+        downloadFileExtension="mp3"
+        onRecordingComplete={(blob) => addAudioElement(blob)}
+        recorderControls={recorderControls}
+      />
     </SideDrawer>
   )
 }
