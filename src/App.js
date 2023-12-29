@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import './App.css'
-import { eycontext } from './context/MainContext'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import MainRouter from './router/MainRouter'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useState } from "react";
+import "./App.css";
+import { eycontext } from "./context/MainContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MainRouter from "./router/MainRouter";
+import { BrowserRouter as Router } from "react-router-dom";
+import { useEffect } from "react";
 // import { UIKitSettingsBuilder } from '@cometchat/uikit-shared'
 // import { CometChatUIKit } from '@cometchat/chat-uikit-react'
 
@@ -24,19 +24,19 @@ import { useEffect } from 'react'
 //   .build()
 
 function App() {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   const context = {
     user,
     setUser,
     token,
     setToken,
-  }
+  };
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('eyUser')))
-    setToken(localStorage.getItem('eyToken'))
+    setUser(JSON.parse(localStorage.getItem("eyUser")));
+    setToken(localStorage.getItem("eyToken"));
     //Initialize CometChat UIKit
     // CometChatUIKit.init(UIKitSettings)
     //   .then(() => {
@@ -44,7 +44,7 @@ function App() {
     //     // You can now call login function.
     //   })
     //   .catch(console.log)
-  }, [])
+  }, []);
 
   return (
     <eycontext.Provider value={context}>
@@ -65,7 +65,7 @@ function App() {
         {/* </SideDrawer> */}
       </Router>
     </eycontext.Provider>
-  )
+  );
 }
 
-export default App
+export default App;
