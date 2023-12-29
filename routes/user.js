@@ -8,6 +8,7 @@ import {
   getPatients,
   getDoctors,
   getProfile,
+  getDoctorsInteractedWith,
   updateUser,
   deleteUser,
 } from'../controllers/user.js'
@@ -29,8 +30,10 @@ router.get('/allpatients', auth.verifyJWT, getPatients)
 //get all doctors (for patients)
 router.get('/alldoctors', auth.verifyJWT, getDoctors)
 
-// //Get Personal Profile
-// router.get('/me', auth, getProfile)
+//Get Personal Profile
+router.get('/docs_interacted_with', auth.verifyJWT, getDoctorsInteractedWith)
+
+//Get doctors a patient interacted with
 
 // //update Profile
 // router.put('/update', auth, updateUser)

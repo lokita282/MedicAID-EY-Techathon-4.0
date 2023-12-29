@@ -108,9 +108,6 @@ const getDoctors = async (req, res) => {
   }
 }
 
-
-
-
 //Get Personal Profile
 const getProfile = async (req, res) => {
   try {
@@ -121,6 +118,27 @@ const getProfile = async (req, res) => {
     })
   } catch (e) {
     res.status(500).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+// Get doctors a patient interacted with
+const getDoctorsInteractedWith = async (req, res) => {
+  var doctors = []
+  const doctorIds = await Appointments.find({patientId: req.user._id}).distinct("doctorId")
+  try {
+    for (let i = 0; i < doctorIds.length; i++) {
+      doctors.push(await User.findOne({ _id: doctorIds[i] }))
+      console.log(doctors)
+    }
+    await res.status(200).json({
+      message: 'View all doctors you interacted with!',
+      doctors,
+    })
+  } catch (e) {
+    res.status(400).json({
       success: false,
       message: e.message,
     })
@@ -197,6 +215,7 @@ export {
   getPatients,
   getDoctors,
   getProfile,
+  getDoctorsInteractedWith,
   updateUser,
   deleteUser,
 }
