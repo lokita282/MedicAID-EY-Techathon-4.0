@@ -14,9 +14,48 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Pagination from "@mui/material/Pagination";
+import Modal from "@mui/material/Modal";
+
+import { getDoctorsInteractedWith } from "../../services/patientService";
+import { is } from "date-fns/locale";
+import AppointmentModal from "../../components/aptModal/AppointmentModal";
+
 export default function Reports() {
+  let subtitle;
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const doctors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  const docs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  const [intdoctors, setIntdoctors] = useState([{}]);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "50vw",
+    // height: "75vh",
+    bgcolor: "background.paper",
+    border: "0px solid #fff",
+    borderRadius: "10px",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const func = async () => {
+      await getDoctorsInteractedWith().then((res) => {
+        setIntdoctors(res.data.doctors);
+      });
+      setLoading(false);
+    };
+    func();
+  }, []);
+
   var prevEnable = 0;
   if (page !== 1) {
     prevEnable = 2;
@@ -25,14 +64,14 @@ export default function Reports() {
   }
 
   var nextEnable = 0;
-  if (page + 5 > doctors.length) {
+  if (page + 5 > intdoctors?.length) {
     nextEnable = 0;
   } else {
     nextEnable = 2;
   }
 
   const handleNext = (value) => {
-    if (value < doctors.length) {
+    if (value < intdoctors?.length) {
       setPage(value + 5);
     }
   };
@@ -67,9 +106,7 @@ export default function Reports() {
                   alignItems: "space-between",
                   marginBottom: 2,
                 }}>
-                <Typography
-                  variant="h6"
-                  sx={{ fontFamily: "Poppins", marginBottom: "1rem" }}>
+                <Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
                   Doctors you interacted with
                 </Typography>
                 <Box
@@ -152,7 +189,7 @@ export default function Reports() {
                 </Box>
               </Box>
               <Grid container spacing={2} wrap="nowrap" direction={"row"}>
-                {doctors?.slice(page - 1, page + 4).map((dc) => (
+                {intdoctors?.slice(page - 1, page + 4).map((dc) => (
                   <Grid item key={dc} xs={3}>
                     <Box>
                       <Stack
@@ -165,7 +202,7 @@ export default function Reports() {
                             height: 75,
                             marginBottom: "1rem",
                           }}
-                          alt="Remy Sharp"
+                          alt={dc?.name}
                           src="../../images/Avatar.png"
                         />
                         <Typography
@@ -177,7 +214,7 @@ export default function Reports() {
                             fontWeight: 500,
                             lineHeight: "normal",
                           }}>
-                          Doctor's Name
+                          {dc?.name}
                         </Typography>
                         <Box
                           sx={{
@@ -231,6 +268,87 @@ export default function Reports() {
                   </Grid>
                 ))}
               </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontVariantNumeric: "lining-nums tabular-nums",
+                  fontFamily: "Poppins",
+                  fontSize: 19.287,
+                  fontStyle: "normal",
+                  fontWeight: 500,
+                  lineHeight: "normal",
+                }}>
+                Upcoming Appointments
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  height: 100,
+                  justifyContent: "space-between",
+                  marignTop: 1,
+                }}>
+                <Typography
+                  sx={{
+                    color: "#A7A7A7",
+                    fontFamily: "Poppins",
+                    fontSize: 12,
+                    fontStyle: "normal",
+                    fontWeight: 400,
+                    lineHeight: "normal",
+                    marginTop: 1,
+                  }}>
+                  You have no upcoming appointments, make a new appointment to
+                  view it here
+                </Typography>
+                <AppointmentModal
+                  open={open}
+                  handleClose={handleClose}
+                  style={style}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    height: 100,
+                    marignTop: 1,
+                    padding: 1,
+                    justifyContent: "flex-end",
+                    alignItems: "end",
+                  }}>
+                  <Box onClick={handleOpen}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 44 45"
+                      fill="none">
+                      <path
+                        d="M38.5 11.7686V18.9186C35.6532 17.4643 32.4187 16.9494 29.261 17.4478C26.1033 17.9462 23.1848 19.4324 20.9243 21.6928C18.6638 23.9533 17.1777 26.8719 16.6792 30.0296C16.1808 33.1873 16.6957 36.4217 18.15 39.2686H6.875C5.05164 39.2686 3.30295 38.5442 2.01364 37.2549C0.724328 35.9656 0 34.2169 0 32.3936V11.7686H38.5ZM31.625 0.768555C33.4484 0.768555 35.197 1.49288 36.4864 2.7822C37.7757 4.07151 38.5 5.82019 38.5 7.64355V9.01855H0V7.64355C0 5.82019 0.724328 4.07151 2.01364 2.7822C3.30295 1.49288 5.05164 0.768555 6.875 0.768555H31.625ZM44 32.3936C44 35.6756 42.6962 38.8232 40.3754 41.144C38.0547 43.4648 34.9071 44.7686 31.625 44.7686C28.3429 44.7686 25.1953 43.4648 22.8746 41.144C20.5538 38.8232 19.25 35.6756 19.25 32.3936C19.25 29.1115 20.5538 25.9639 22.8746 23.6431C25.1953 21.3223 28.3429 20.0186 31.625 20.0186C34.9071 20.0186 38.0547 21.3223 40.3754 23.6431C42.6962 25.9639 44 29.1115 44 32.3936ZM33 26.8936C33 26.5289 32.8551 26.1791 32.5973 25.9213C32.3394 25.6634 31.9897 25.5186 31.625 25.5186C31.2603 25.5186 30.9106 25.6634 30.6527 25.9213C30.3949 26.1791 30.25 26.5289 30.25 26.8936V31.0186H26.125C25.7603 31.0186 25.4106 31.1634 25.1527 31.4213C24.8949 31.6791 24.75 32.0289 24.75 32.3936C24.75 32.7582 24.8949 33.108 25.1527 33.3658C25.4106 33.6237 25.7603 33.7686 26.125 33.7686H30.25V37.8936C30.25 38.2582 30.3949 38.608 30.6527 38.8658C30.9106 39.1237 31.2603 39.2686 31.625 39.2686C31.9897 39.2686 32.3394 39.1237 32.5973 38.8658C32.8551 38.608 33 38.2582 33 37.8936V33.7686H37.125C37.4897 33.7686 37.8394 33.6237 38.0973 33.3658C38.3551 33.108 38.5 32.7582 38.5 32.3936C38.5 32.0289 38.3551 31.6791 38.0973 31.4213C37.8394 31.1634 37.4897 31.0186 37.125 31.0186H33V26.8936Z"
+                        fill="#005739"
+                      />
+                    </svg>
+                  </Box>
+                </Box>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
+              <Typography
+                sx={{
+                  color: "#000",
+                  fontVariantNumeric: "lining-nums tabular-nums",
+                  fontFamily: "Poppins",
+                  fontSize: 19.287,
+                  fontStyle: "normal",
+                  fontWeight: 500,
+                  lineHeight: "normal",
+                }}>
+                Upload Documents
+              </Typography>
             </Paper>
           </Grid>
         </Grid>

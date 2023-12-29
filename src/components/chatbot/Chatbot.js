@@ -13,7 +13,6 @@ const Chatcomponent = (open) => {
 
   const loadMessages = () => {
     const messages = JSON.parse(localStorage.getItem("chat_messages"));
-    console.log(messages);
     return messages;
   };
 
