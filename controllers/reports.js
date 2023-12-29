@@ -36,4 +36,18 @@ const addReport = async (req, res) => {
   })
 }
 
-export {addReport}
+//Get all reports
+const getReports = async (req, res) => {
+  try {
+    const reports = await Reports.find({})
+    res.json(reports)
+  } catch (e) {
+    res.json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+
+export { addReport, getReports }

@@ -27,6 +27,7 @@ const createNewAppointment = async (req, res) => {
 
     const appointment = await new Appointments({
       patientId: req.user,
+      status: consultation,
       ...req.body,
       doctorId: doctor,
     })
