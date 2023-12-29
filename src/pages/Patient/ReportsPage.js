@@ -16,19 +16,31 @@ import CardMedia from "@mui/material/CardMedia";
 import Pagination from "@mui/material/Pagination";
 export default function Reports() {
   const [page, setPage] = useState(1);
-  var pageEnable = 0;
+  const doctors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  var prevEnable = 0;
   if (page !== 1) {
-    pageEnable = 2;
+    prevEnable = 2;
   } else {
-    pageEnable = 0;
+    prevEnable = 0;
   }
+
+  var nextEnable = 0;
+  if (page + 5 > doctors.length) {
+    nextEnable = 0;
+  } else {
+    nextEnable = 2;
+  }
+
   const handleNext = (value) => {
-    setPage(value + 1);
+    if (value < doctors.length) {
+      setPage(value + 5);
+    }
   };
   const handlePrev = (value) => {
-    setPage(value - 1);
+    if (value > 5) {
+      setPage(value - 5);
+    }
   };
-  const doctors = [1, 2, 3, 4, 5];
 
   return (
     <SideDrawer>
@@ -71,7 +83,7 @@ export default function Reports() {
                   }}>
                   <Box
                     onClick={() => {
-                      pageEnable !== 0
+                      prevEnable !== 0
                         ? handlePrev(page)
                         : console.log("already on first page");
                     }}
@@ -84,7 +96,7 @@ export default function Reports() {
                       alignItems: "center",
                       transition: "0.3s",
                       ":hover": {
-                        boxShadow: pageEnable,
+                        boxShadow: prevEnable,
                       },
                     }}>
                     <Box sx={{ width: "auto" }}>
@@ -98,14 +110,16 @@ export default function Reports() {
                           fill-rule="evenodd"
                           clip-rule="evenodd"
                           d="M8.40436 1.54604C8.732 1.2031 9.27963 1.2031 9.60727 1.54604C9.91443 1.86755 9.91443 2.37377 9.60727 2.69528L5.44384 7.05313L9.60727 11.411C9.91443 11.7325 9.91443 12.2387 9.60727 12.5602C9.27963 12.9032 8.732 12.9032 8.40436 12.5602L3.14297 7.05313L8.40436 1.54604Z"
-                          fill={pageEnable === 0 ? "#AFAFAF" : "black"}
+                          fill={prevEnable === 0 ? "#AFAFAF" : "black"}
                         />
                       </svg>
                     </Box>
                   </Box>
                   <Box
                     onClick={() => {
-                      handleNext(page);
+                      nextEnable !== 0
+                        ? handleNext(page)
+                        : console.log("already on last page");
                     }}
                     sx={{
                       borderRadius: 5,
@@ -116,7 +130,7 @@ export default function Reports() {
                       alignItems: "center",
                       transition: "0.3s",
                       ":hover": {
-                        boxShadow: 2,
+                        boxShadow: nextEnable,
                       },
                     }}>
                     <Box sx={{ width: "auto" }}>
@@ -130,7 +144,7 @@ export default function Reports() {
                           fill-rule="evenodd"
                           clip-rule="evenodd"
                           d="M5.23431 1.54604C4.90667 1.2031 4.35905 1.2031 4.03141 1.54604C3.72424 1.86755 3.72424 2.37377 4.03141 2.69528L8.19483 7.05313L4.03141 11.411C3.72424 11.7325 3.72424 12.2387 4.03141 12.5602C4.35905 12.9032 4.90667 12.9032 5.23431 12.5602L10.4957 7.05313L5.23431 1.54604Z"
-                          fill="black"
+                          fill={nextEnable === 0 ? "#AFAFAF" : "black"}
                         />
                       </svg>
                     </Box>
@@ -138,7 +152,7 @@ export default function Reports() {
                 </Box>
               </Box>
               <Grid container spacing={2} wrap="nowrap" direction={"row"}>
-                {doctors?.map((dc) => (
+                {doctors?.slice(page - 1, page + 4).map((dc) => (
                   <Grid item key={dc} xs={3}>
                     <Box>
                       <Stack
