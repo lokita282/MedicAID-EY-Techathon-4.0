@@ -2,7 +2,7 @@ import React from "react";
 import SideDrawer from "../../components/sidebar/Sidebar";
 import { useState, useEffect } from "react";
 
-import Drawer from "../../components/drawer/Drawer";
+import SwipeableEdgeDrawer from "../../components/drawer/Drawer";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -37,7 +37,7 @@ export default function Reports() {
         sx={{ fontWeight: "bold", color: "#005739", fontFamily: "Poppins" }}>
         Hi, Patient Name
       </Typography>
-      <Drawer />
+      <SwipeableEdgeDrawer />
       <Box
         sx={{
           height: "auto",

@@ -1,0 +1,11 @@
+.chat-app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.react-chatbot-kit-chat-bot-avatar-container {
+  max-width: 50px;
+  max-height: 50px;
+}
