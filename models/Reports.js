@@ -5,10 +5,9 @@ const reportsSchema = mongoose.Schema({
     type: Object,
     ref: 'Appointments',
   },
-   reports: {
-      data: Buffer,
-      contentType: String
-    }
+    reports: {
+        type: String
+      }
 })
 
 export default mongoose.model('Reports', reportsSchema)
