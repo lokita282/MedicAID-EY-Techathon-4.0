@@ -6,7 +6,8 @@ const reportsSchema = mongoose.Schema({
     ref: 'Appointments',
   },
    reports: {
-      type: Buffer,
+      data: Buffer,
+      contentType: String
     }
 })
 

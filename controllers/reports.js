@@ -23,8 +23,11 @@ const addReport = async (req, res) => {
       })
     } else {
       const report = new Reports({
-        reports: req.file.filename,
-        appointment: req.body.appointment
+        reports: {
+          data: req.file.filename,
+          contentType: 'image/png'
+        },
+        appointment: req.body.appointment,
       })
       report.save().then(() =>
         res.json({
