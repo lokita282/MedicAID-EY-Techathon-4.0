@@ -46,10 +46,6 @@ const appointmentsSchema = mongoose.Schema(
     prescription: {
       type: String,
     },
-    reports: {
-      data: Buffer,
-      contentType: String
-    }
   },
   { timestamps: true }
 )

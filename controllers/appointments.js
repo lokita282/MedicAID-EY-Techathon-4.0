@@ -4,16 +4,17 @@ import mongodb from 'mongodb'
 import moment from 'moment'
 import multer from 'multer'
 
-//Add image of the artwork
-const storage = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: function(req, file, cb) {
-    cb(null, file.fieldname +'-'+ Date.now() + path.extname(file.originalname))
-  }
-})
+// //Add image of the artwork
+// const storage = multer.diskStorage({
+//   destination: './public/uploads/',
+//   filename: function(req, file, cb) {
+//     cb(null, file.fieldname +'-'+ Date.now() + path.extname(file.originalname))
+//   }
+// })
 
-const upload = multer({
-}).single('reports')
+// const upload = multer({
+//   storage
+// }).single('reports')
 
 const addReport = (req, res) => {
   
@@ -130,7 +131,7 @@ const createNewAppointment = async (req, res) => {
       //   })
       // } else {
 
-      
+
         // appointment.reports = {
         //   data: req.file.filename,
         //   contentType: 'image/png',

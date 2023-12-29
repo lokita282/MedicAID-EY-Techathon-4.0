@@ -8,6 +8,7 @@ import db from './config/db.js'
 import morgan from 'morgan'
 import userRouter from './routes/user.js'
 import appointmentsRouter from './routes/appointments.js'
+import reportsRouter from './routes/reports.js'
 
 import cors from 'cors'
 // const cron = require('node-cron')
@@ -28,6 +29,7 @@ app.use(express.json())
 
 app.use('/api/user', userRouter)
 app.use('/api/appointments', appointmentsRouter)
+app.use('/api/reports', reportsRouter)
 
 //for cron job
 app.get('/api', (req, res, next) => {
