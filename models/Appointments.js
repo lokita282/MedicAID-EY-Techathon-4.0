@@ -43,6 +43,9 @@ const appointmentsSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
+    meetingId: {
+      type: String,
+    },
     prescription: {
       type: String,
     },
