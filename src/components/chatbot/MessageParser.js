@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { postChatbotMessage } from "../../services/patientService";
 
 const MessageParser = ({ children, actions }) => {
+  const [loading, setLoading] = useState(false);
+
   const parse = (message) => {
-    if (message.includes("hello")) {
-      actions.handleHello();
-    } else {
-      actions.HandleBot(message);
-    }
+    setLoading(true);
+    var data = JSON.stringify({
+      text: message,
+    });
+    const func = async () => {
+      await postChatbotMessage(data).then(async (res) => {
+        console.log(res.data.response);
+        actions.handleBot(res.data.response);
+      });
+      setLoading(false);
+    };
+    func();
   };
 
   return (

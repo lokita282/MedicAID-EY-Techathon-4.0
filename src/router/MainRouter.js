@@ -19,6 +19,7 @@ import MerchantList from '../pages/MerchantList'
 import TransactionPage from '../pages/TransactionPage'
 import AppointmentDetailsPage from '../pages/Doctor/AppointmentDetailsPage'
 import PatientDetailsPage from '../pages/Doctor/PatientDetailsPage'
+import MRIViewer from "../pages/Doctor/MRIViewer"
 
 export default function MainRouter() {
   const { user, setUser, setOpen } = useContext(eycontext)
@@ -70,6 +71,10 @@ export default function MainRouter() {
 
         <Route path="/:id" element={<PrivateRouter />}>
           <Route exact path="/:id" element={<MeetPage />} />
+        </Route>
+
+        <Route path="/mri" element={<PrivateRouter />}>
+          <Route exact path="/mri" element={<MRIViewer />} />
         </Route>
 
         {/* Patients */}

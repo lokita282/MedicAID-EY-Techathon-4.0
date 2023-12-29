@@ -1,5 +1,4 @@
-import { createChatBotMessage, createCustomMessage } from "react-chatbot-kit";
-import BotReply from "./BotReply";
+import { createChatBotMessage } from "react-chatbot-kit";
 const botName = "MedicAID Bot";
 
 const config = {
@@ -13,13 +12,7 @@ const config = {
       }
     ),
   ],
-  widgets: [
-    {
-      widgetName: "botReply",
-      widgetFunc: (props) => <BotReply {...props} />,
-      mapStateToProps: ["query"],
-    },
-  ],
+  widgets: [],
   botName: botName,
   // customStyles: {
   //   botMessageBox: {
