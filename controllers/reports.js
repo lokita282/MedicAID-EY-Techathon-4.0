@@ -3,7 +3,7 @@ import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
 
-//Add image of the artwork
+//Add image of the report
 const storage = multer.diskStorage({
   destination: './public/uploads/',
   filename: function(req, file, cb) {

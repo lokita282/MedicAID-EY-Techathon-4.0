@@ -3,6 +3,22 @@ import User from '../models/User.js'
 import mongodb from 'mongodb'
 import moment from 'moment'
 import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
+
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+    )
+  },
+})
+
+const uploadP = multer({
+  storage,
+}).single('prescription')
 
 // //Add image of the artwork
 // const storage = multer.diskStorage({
@@ -203,6 +219,7 @@ const getAppointmentsPatient = async (req, res) => {
     const appointments = await Appointments.find({
       doctorId: req.user._id,
       patientId: new mongodb.ObjectId(req.params.id),
+      status: 'visited'
     })
     res.status(200).json({
       message: 'View patient history!',
@@ -235,31 +252,45 @@ const getSingleAppointment = async (req, res) => {
   }
 }
 
-// //get calendar appointments
-// const getCalendarDoctor = async (req, res) => {
-//   try {
-//     const appointments = await Appointments.find({
-//       doctorId: req.user._id,
-//     })
-//     for (let i = 0; i < appointments.length; i++) {
-//       appointments[i].patientId = await User.findOne({ _id: appointments[i].patientId })
-//     }
-//     await res.status(200).json({
-//       message: 'View all appointments!',
-//       appointments,
-//     })
-//   } catch (e) {
-//     res.status(400).json({
-//       success: false,
-//       message: e.message,
-//     })
-//   }
-// }
+// Update appointment with prescription and new status
+const updateAppointment = async (req, res) => {
+  try{
+     uploadP(req, res, (err) => {
+       if (err) {
+         res.json({
+           success: false,
+           error: err.message,
+         })
+       } else {
+         const imageFile = req.file.path
+         const base64 = fs.readFileSync(imageFile, { encoding: 'base64' })
+        //  console.log(base64)
+         const appointment = Appointments.findByIdAndUpdate(
+           { _id: req.params.id },
+           { status: 'visited', prescription: base64 },
+           { new: true }
+         ).then(
+           res.status(200).json({
+             success: true,
+            //  data: appointment,
+           })
+         )
+       }
+     })   
+  } catch(e) {
+    res.status(400).json({
+      success: false,
+      message: e.message
+    })
+  }
+}
+
 
 export {
   createNewAppointment,
   getAppointmentsDoctor,
   getAppointmentsPatient,
   getSingleAppointment,
+  updateAppointment,
   addReport,
 }

@@ -37,7 +37,7 @@ const appointmentsSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['consultation', 'followup'],
+      enum: ['consultation', 'followup', 'visited'],
     },
     symptoms: {
       type: Array,
