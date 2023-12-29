@@ -2,6 +2,22 @@ import Appointments from '../models/Appointments.js'
 import User from '../models/User.js'
 import mongodb from 'mongodb'
 import moment from 'moment'
+import multer from 'multer'
+
+//Add image of the artwork
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname +'-'+ Date.now() + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({
+}).single('reports')
+
+const addReport = (req, res) => {
+  
+}
 
 //create an appointment
 const createNewAppointment = async (req, res) => {
@@ -106,6 +122,27 @@ const createNewAppointment = async (req, res) => {
       }
     }
     if (appointment.start === null) throw 'The doctor is booked for these time slots please try again!'
+    // upload(req, res, (err) => {
+      // if (err) {
+      //   res.json({
+      //     success: false,
+      //     error: err.message,
+      //   })
+      // } else {
+
+      
+        // appointment.reports = {
+        //   data: req.file.filename,
+        //   contentType: 'image/png',
+        // }
+        // await appointment.save()
+
+
+      // }
+      // res.json({
+      //   success: true
+      // })
+    // })
     res.status(201).json({
       message: 'New appointment created!',
       appointment,
@@ -222,4 +259,5 @@ export {
   getAppointmentsDoctor,
   getAppointmentsPatient,
   getSingleAppointment,
+  addReport,
 }

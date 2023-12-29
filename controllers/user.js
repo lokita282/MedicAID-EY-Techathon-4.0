@@ -95,6 +95,20 @@ const getPatients = async (req, res) => {
   }
 }
 
+//Get all doctors (for patient)
+const getDoctors = async (req, res) => {
+  try {
+    const users = await User.find({role: 'doctor'})
+    res.json(users)
+  } catch (e) {
+    res.json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+
 
 
 //Get Personal Profile
@@ -181,6 +195,7 @@ export {
   logoutUser,
   getUsers,
   getPatients,
+  getDoctors,
   getProfile,
   updateUser,
   deleteUser,

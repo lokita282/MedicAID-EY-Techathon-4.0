@@ -5,12 +5,15 @@ import {
   getAppointmentsDoctor,
   getAppointmentsPatient,
   getSingleAppointment,
+  addReport,
 } from '../controllers/appointments.js'
 
 const router = new express.Router()
 
 //create new appointment
 router.post('/new',auth.verifyJWT, createNewAppointment)
+
+router.post('/report', auth.verifyJWT, addReport)
 
 //get all appointments 
 router.get('/get', auth.verifyJWT, getAppointmentsDoctor) 

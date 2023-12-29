@@ -6,6 +6,7 @@ import {
   logoutUser,
   getUsers,
   getPatients,
+  getDoctors,
   getProfile,
   updateUser,
   deleteUser,
@@ -24,6 +25,9 @@ router.post('/logout', auth.verifyJWT, logoutUser)
 
 //get patients of a particular doctor
 router.get('/allpatients', auth.verifyJWT, getPatients)
+
+//get all doctors (for patients)
+router.get('/alldoctors', auth.verifyJWT, getDoctors)
 
 // //Get Personal Profile
 // router.get('/me', auth, getProfile)
