@@ -16,7 +16,7 @@ function randomID(len) {
 }
 
 export default function Meet() {
-  const roomId = window.location.href.split('=')[1]
+  const roomId = window.location.href.split('/')[3]
 
   let myMeeting = async (element) => {
     // generate Kit Token
@@ -41,8 +41,7 @@ export default function Meet() {
           name: 'Personal link',
           url:
            window.location.protocol + '//' +
-           window.location.host + window.location.pathname +
-            '?roomID=' +
+           window.location.host+ "/"+
             roomId,
         },
       ],
@@ -62,7 +61,7 @@ export default function Meet() {
           '?roomID=' +
           roomId
       )}
-      <div ref={myMeeting} style={{ width: '80vw', height: '80vh' }} />
+      <div ref={myMeeting} style={{ width: '90vw', height: '90vh' }} />
     </SideDrawer>
   )
 }

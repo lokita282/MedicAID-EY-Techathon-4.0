@@ -36,4 +36,13 @@ export const getAllAppointments = () => {
   export const getDifferentialDiagnoses = (data) => {
     return httpcommonml.post(`/diagnosis`, data)
   }
+
+  export const getReports = () => {
+    return httpcommon.get(`/reports/getall`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
+  
   
