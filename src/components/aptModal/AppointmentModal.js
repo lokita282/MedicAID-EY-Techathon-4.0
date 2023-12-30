@@ -8,25 +8,24 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
 
-import { format, formatDistance, formatRelative, subDays } from "date-fns";
-import de from "date-fns/locale/de";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import DatePick from "../../components/datepick/DatePick";
 
 import TextField from "@mui/material/TextField";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 
 import { getAllDoctors, postAppointment } from "../../services/patientService";
-import { set } from "date-fns";
-import { DatePicker } from "@material-ui/pickers";
 
-const AppointmentModal = ({ open, handleClose, style }) => {
+const AppointmentModal = ({
+  open,
+  handleClose,
+  style,
+  setStartTime,
+  setEndTime,
+  setMeetingLink,
+}) => {
   const [start1, setStart1] = useState();
   const [start2, setStart2] = useState();
   const [start3, setStart3] = useState();
@@ -45,12 +44,6 @@ const AppointmentModal = ({ open, handleClose, style }) => {
 
   const [symptoms, setSymptoms] = useState("");
   const [symptomChip, setSymptomChip] = useState([]);
-
-  const handleDelete = (chipToDelete) => () => {
-    setSymptomChip((chips) =>
-      chips.filter((chip) => chip.key !== chipToDelete.key)
-    );
-  };
 
   const [loading, setLoading] = useState(false);
   const [docList, setDocList] = useState([]);
@@ -86,91 +79,54 @@ const AppointmentModal = ({ open, handleClose, style }) => {
   const handlePost = () => {
     console.log("sending post request");
     setLoading(true);
-
+    let roomId = Math.floor(Math.random() * (999 - 100 + 1) + 100);
     let data = JSON.stringify({
       doctorId: docid,
-      startArr: [start1, start2, start3],
-      endArr: [end1, end2, end3],
+      startArr: [fstart1, fstart2, fstart3],
+      endArr: [fend1, fend2, fend3],
       title: myname,
       status: "followup",
       symptoms: symptomChip.map((symptom) => symptom.label),
+      meetingLink: `http://localhost:3000?roomID=${roomId}`,
     });
+    console.log("Data:", data);
     const func = async () => {
       await postAppointment(data).then(async (res) => {
         console.log(res.data);
+        setStartTime(res.data.appointment.start);
+        setEndTime(res.data.appointment.end);
+        setMeetingLink(`http://localhost:3000?roomID=${roomId}`);
       });
       setLoading(false);
     };
     func();
+    handleClose();
+  };
+
+  const handleDelete = (chipToDelete) => () => {
+    setSymptomChip((chips) =>
+      chips.filter((chip) => chip.key !== chipToDelete.key)
+    );
   };
 
   const ListItem = styled("li")(({ theme }) => ({
     margin: theme.spacing(0.5),
   }));
 
-  const AddMore = () => {
-    return (
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}>
-        <Button variant="contained" sx={{ width: "auto", marginTop: 2 }}>
-          Add more
-        </Button>
-      </Box>
-    );
-  };
-
-  const DatePick = ({ start, end, setEnd, setStart, fsetStart, fsetEnd }) => {
-    return (
-      <>
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
-          <DemoContainer
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              marginTop: -1,
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-            }}
-            components={["DateTimePicker", "DateTimePicker"]}>
-            <DateTimePicker
-              sx={{ width: "48%" }}
-              label="Start time"
-              value={start}
-              onChange={(newValue) => {
-                setStart(newValue);
-                // const formattedDate =
-                //   dayjs(newValue).format("YYYY/MM/DD/ HH:mm");
-                // setStart(newValue.toString());
-                const result = format(newValue, "yyyy/MM/dd HH:mm");
-                // setStart(result.toString());
-                console.log(result.toString());
-                fsetStart(result.toString());
-              }}
-            />
-            <DateTimePicker
-              sx={{ width: "48%" }}
-              label="End time"
-              value={end}
-              onChange={(newValue) => {
-                setEnd(newValue);
-                // const formattedDate =
-                //   dayjs(newValue).format("YYYY/MM/DD/ HH:mm");
-                const result = format(newValue, "yyyy/MM/dd HH:mm");
-                // setEnd(result.toString());
-                console.log(result.toString());
-                fsetEnd(result.toString());
-              }}
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-      </>
-    );
-  };
+  // const AddMore = () => {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         width: "100%",
+  //         display: "flex",
+  //         justifyContent: "center",
+  //       }}>
+  //       <Button variant="contained" sx={{ width: "auto", marginTop: 2 }}>
+  //         Add more
+  //       </Button>
+  //     </Box>
+  //   );
+  // };
 
   return (
     <Modal
