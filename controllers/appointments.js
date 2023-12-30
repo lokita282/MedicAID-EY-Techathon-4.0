@@ -285,6 +285,23 @@ const updateAppointment = async (req, res) => {
   }
 }
 
+//Get patients's upcoming appointments
+const getPatientUpcomingAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointments.find({patientId: req.user._id, status: 'followup'||"consultation"})
+    res.status(200).json({
+      message: 'View upcoming appointments for patient!',
+      appointments,
+    })
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+
 
 export {
   createNewAppointment,
@@ -293,4 +310,5 @@ export {
   getSingleAppointment,
   updateAppointment,
   addReport,
+  getPatientUpcomingAppointments,
 }

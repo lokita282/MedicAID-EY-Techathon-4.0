@@ -7,6 +7,7 @@ import {
   getSingleAppointment,
   addReport,
   updateAppointment,
+  getPatientUpcomingAppointments,
 } from '../controllers/appointments.js'
 
 const router = new express.Router()
@@ -27,5 +28,8 @@ router.get('/get_appointment/:id', auth.verifyJWT, getSingleAppointment)
 
 //Update appointment
 router.patch('/update/:id', auth.verifyJWT, updateAppointment)
+
+//get upcoming appointments for patient
+router.get('/get_upcoming', auth.verifyJWT, getPatientUpcomingAppointments) 
 
 export default router
