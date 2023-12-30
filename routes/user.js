@@ -31,9 +31,10 @@ router.get('/allpatients', auth.verifyJWT, getPatients)
 router.get('/alldoctors', auth.verifyJWT, getDoctors)
 
 //Get Personal Profile
-router.get('/docs_interacted_with', auth.verifyJWT, getDoctorsInteractedWith)
+router.get('/me', auth.verifyJWT, getProfile)
 
 //Get doctors a patient interacted with
+router.get('/docs_interacted_with', auth.verifyJWT, getDoctorsInteractedWith)
 
 // //update Profile
 // router.put('/update', auth, updateUser)
