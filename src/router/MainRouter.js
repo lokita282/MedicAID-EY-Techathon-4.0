@@ -20,6 +20,7 @@ import TransactionPage from '../pages/TransactionPage'
 import AppointmentDetailsPage from '../pages/Doctor/AppointmentDetailsPage'
 import PatientDetailsPage from '../pages/Doctor/PatientDetailsPage'
 import MRIViewer from "../pages/Doctor/MRIViewer"
+import Test from "../pages/AWS/test"
 
 export default function MainRouter() {
   const { user, setUser, setOpen } = useContext(eycontext)
@@ -77,6 +78,10 @@ export default function MainRouter() {
           <Route exact path="/mri" element={<MRIViewer />} />
         </Route>
 
+
+        <Route path="/test" element={<PrivateRouter />}>
+          <Route exact path="/test" element={<Test />} />
+        </Route>
         {/* Patients */}
         <Route path="/reports" element={<PrivateRouter />}>
           <Route exact path="/reports" element={<ReportsPage />} />
