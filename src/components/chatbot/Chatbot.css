@@ -9,3 +9,97 @@
   max-width: 50px;
   max-height: 50px;
 }
+
+.react-chatbot-kit-user-avatar-container {
+  max-width: 45px;
+  max-height: 45px;
+}
+
+.react-chatbot-kit-user-avatar-icon {
+  color: blueviolet;
+}
+
+.react-chatbot-kit-chat-header {
+  font-size: 18px;
+  font-weight: 600;
+}
+.react-chatbot-kit-chat-bot-avatar-letter {
+  color: white;
+}
+
+.react-chatbot-kit-chat-bot-message {
+  background-color: #f6f6f6 !important;
+  margin-top: 1rem !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+  border-bottom-left-radius: 1rem !important;
+  overflow-x: hidden !important;
+  text-align: left !important;
+  width: 90% !important;
+}
+
+.react-chatbot-kit-user-chat-message {
+  background-color: #005739;
+  text-decoration-color: white;
+  color: #fff;
+  width: 80% !important;
+  text-align: left !important;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-top-left-radius: 1rem !important;
+  border-bottom-right-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+  overflow-x: hidden !important;
+  margin-top: 1rem !important;
+}
+.react-chatbot-kit-user-chat-message-container {
+  display: flex;
+  justify-content: flex-start;
+}
+.react-chatbot-kit-chat-input-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.react-chatbot-kit-chat-btn-send {
+  /* background-color: #005739; */
+  /* color: #fff; */
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  width: 8%;
+  outline: none;
+  cursor: pointer;
+}
+.react-chatbot-kit-chat-btn-send:hover {
+  path {
+    fill: white;
+  }
+  transition: ease-in-out 0.3s;
+  background-color: #005739;
+}
+
+.react-chatbot-kit-chat-btn-send-icon {
+  path {
+    fill: #005739;
+  }
+}
+
+.react-chatbot-kit-chat-input {
+  border-radius: 0.5rem !important;
+  border: 1px solid #ccc !important;
+  padding: 0.5rem !important;
+  width: 90% !important;
+  outline: none !important;
+  text-align: left !important;
+}
+
+.react-chatbot-kit-chat-bot-message-container {
+  display: flex;
+  justify-content: flex-end;
+}
