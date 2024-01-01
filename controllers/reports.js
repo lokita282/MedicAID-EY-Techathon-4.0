@@ -59,5 +59,22 @@ const getReports = async (req, res) => {
   }
 }
 
+//Get appointmentwise reports
+const getAppointmentwiseReport = async (req, res) => {
+  try {
+    const reports = await Reports.find({patientId: req.params.id})
+    res.status(200).json({
+      message: 'View reports of this appointment!',
+      reports,
+    })
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
 
-export { addReport, getReports }
+
+
+export { addReport, getReports, getAppointmentwiseReport }
