@@ -4,21 +4,22 @@ import shutil
 import numpy as np
 from PIL import Image
 import tensorflow as tf
-from fastapi import FastAPI, Request, Body, UploadFile, File, APIRouter
+from PIL import ImageDraw
+from PIL import ImageFont
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from fastapi.middleware.cors import CORSMiddleware
 from tensorflow.keras.applications.densenet import preprocess_input
+from fastapi import FastAPI, Request, Body, UploadFile, File, APIRouter
 from tensorflow.keras.applications.vgg16 import preprocess_input as preprocess_input_mri
-from tensorflow.keras.models import load_model
-
-# deployment imports
-from fastapi_utilities import repeat_at, repeat_every
 
 ## function and data type imports from other modules
+from utils.general_chat import *
 from utils.data_model import *
 from utils.chatbot import *
 from models.ddig import *
-# from models.ct_scan import *
+from utils.gpt import *
+from utils.prescription import *
 
 app = FastAPI()
 router = APIRouter()
@@ -45,25 +46,16 @@ ctmodel = load_model(ctmodel_path)
 mrimodel_path ='models/assets/MRI/VGG16-Brain-Tumor-MRI-3.h5'
 mrimodel = load_model(mrimodel_path)
 
-# pneumonia_path = 'models/assets/PNEUMONIA/pneumonia_model.h5'
-# pneumonia_model = load_model(pneumonia_path)
-
-# cancerModel = load_model("models/assets/LUNG-CANCER/lung cancer_final_99.h5")
-# cancerModel.compile(optimizer='rmsprop',
-#                     loss=tf.keras.losses.SparseCategoricalCrossentropy(
-#                         from_logits=True),
-#                     metrics=['accuracy'])
-
 @app.get("/")
 async def home():
-    return {"message": "headless api base url, visit /docs for swagger documentation."}
+    return {"message": "headless api base url, visit/docs for swagger documentation."}
 
 
-@app.post("/chatbot")
-async def chatbot(request: NeurocognitionRequest):
-    query = request.text
-    result = await chat(query)
-    return NeuroResponse(response=result)
+@app.post("/chat-bot")
+async def notgpt(request: ChatbotRequest):
+    prompt = request.prompt
+    result = querybot(prompt)
+    return ChatbotResponse(response=result)
 
 
 @app.post("/diagnosis")
@@ -128,3 +120,51 @@ async def predict_mri(img: UploadFile = File(...)):
     os.remove(img_path)
 
     return response
+
+@app.post("/diff-diagnosis")
+async def gemi(request:DifferentialDiagnosisRequest):
+    demographics = request.demographics
+    symptoms = request.symptoms
+    chatbot_response = chatbot(demographics, symptoms)
+    return chatbot_response 
+
+@app.post("/prescription")
+async def prescription(request:PrescriptionRequest):
+    demographics = request.demographics
+    disease = request.disease
+    chatbot_response = prescription_data(demographics, disease)
+    if chatbot_response["diet_plan"] == "None":
+        diet_plan = "No diet plan required"
+    else:
+        diet_plan = chatbot_response["diet_plan"]
+
+    if chatbot_response["exercise_plan"] == "None":
+        exercise_plan = "No exercise plan required"
+    else:
+        exercise_plan = chatbot_response["exercise_plan"]
+    
+    if chatbot_response["precautions"] == "None":
+        precautions = "No precautions required"
+    else:
+        precautions = chatbot_response["precautions"]
+    
+    img = Image.open('assets/template.png')
+    I1 = ImageDraw.Draw(img)
+    details_font = ImageFont.truetype("arial.ttf", 65)
+
+    # patient details
+    I1.text((656, 695), name, font=details_font, fill=(255, 0, 0))
+    I1.text((1763, 695), date, font=details_font, fill=(255, 0, 0))
+    I1.text((367, 830), age, font=details_font, fill=(255, 0, 0))
+    I1.text((1067, 830), gender, font=details_font, fill=(255, 0, 0))
+    I1.text((1772, 830), weight, font=details_font, fill=(255, 0, 0))
+    I1.text((552, 989), diagonsis, font=details_font, fill=(255, 0, 0))
+
+    # diet plan
+    _font = ImageFont.truetype("arial.ttf", 50)
+    I1.text((200, 989), "Diet Plan", font=details_font, fill=(255, 0, 0))
+    for i in range(len(diet_plan["food_to_eat"])):
+        I1.text((200, 1300 + i*150), diet_plan["food_to_eat"][i], font=_font, fill=(255, 0, 0))
+
+    img.save('template.png')
+    # return chatbot_response 
