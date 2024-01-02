@@ -49,14 +49,14 @@ const createNewAppointment = async (req, res) => {
     })
 
     // console.log('here')
-    // appointment.save()
+    // await appointment.save()
     // res.status(201).json({
     //         message: 'New appointment created!',
     //         appointment,
     //       })
 
         
-
+//--------------------auto schedule------------------------
     //checking doctor's schedule
     var calendarEvents = []
     const appointments = await Appointments.find({
@@ -67,7 +67,7 @@ const createNewAppointment = async (req, res) => {
       calendarEvents.push({
         id: appointments[i]._id,
         title: appointments[i].title,
-        start: new Date(appointments[i].start), 
+        start: new Date(appointments[i].start),
         end: new Date(appointments[i].end),
       })
     }
@@ -165,6 +165,7 @@ const createNewAppointment = async (req, res) => {
       message: 'New appointment created!',
       appointment,
     })
+// ------------------- auto schedule --------------------------------
     
   } catch (e) {
     console.log(e)
@@ -175,12 +176,53 @@ const createNewAppointment = async (req, res) => {
   }
 }
 
-//Get all appointments of a doctor
+//Get all calendar appointments of a doctor
 const getAppointmentsDoctor = async (req, res) => {
   try {
     const calendarEvents = []
     const appointments = await Appointments.find({
       doctorId: req.user._id,
+    })
+    for (let i = 0; i < appointments.length; i++) {
+      appointments[i].patientId = await User.findOne({
+        _id: appointments[i].patientId,
+      })
+      calendarEvents.push({
+        event_id: appointments[i]._id,
+        title: appointments[i].title,
+        // start: new Date(appointments[i].start).toString(),
+        // end: new Date(appointments[i].end).toString(),
+        start: appointments[i].start,
+        end: appointments[i].end,
+        patient_name: appointments[i].patientId.name,
+        patient_age: appointments[i].patientId.patientDemographics.age,
+        patient_gender: appointments[i].patientId.patientDemographics.gender,
+        symptoms: appointments[i].symptoms,
+        meetingId: appointments[i].meetingId,
+        color: 'rgb(0,87,57)',
+      })
+      // console.log(new Date(appointments[i].start))
+    }
+    await res.status(200).json({
+      message: 'View all appointments!',
+      appointments,
+      calendarEvents,
+    })
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+//Get upcoming appointments of a doctor
+const getUpcomingAppointmentsDoctor = async (req, res) => {
+  try {
+    const calendarEvents = []
+    const appointments = await Appointments.find({
+      doctorId: req.user._id,
+      status: 'followup' || 'consultation',
     })
     for (let i = 0; i < appointments.length; i++) {
       appointments[i].patientId = await User.findOne({
@@ -245,6 +287,7 @@ const getSingleAppointment = async (req, res) => {
       appointment,
     })
   } catch (e) {
+    console.log(e)
     res.status(400).json({
       success: false,
       message: e.message,
@@ -301,6 +344,44 @@ const getPatientUpcomingAppointments = async (req, res) => {
   }
 }
 
+//Get patients's upcoming appointments for doctor
+const getPatientUpcomingAppointmentsForDoc = async (req, res) => {
+  try {
+    const appointments = await Appointments.find({
+      patientId: new mongodb.ObjectId(req.params.id),
+      status: 'followup' || 'consultation',
+      doctorId: req.user._id,
+    })
+    res.status(200).json({
+      message: 'View upcoming appointments for patient!',
+      appointments,
+    })
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
+//Get single patient
+const getSinglePatient = async (req, res) => {
+  try {
+    const patient = await User.findById(req.params.id)
+    res.status(200).json({
+      message: 'View patient!',
+      patient,
+    })
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
 
 
 export {
@@ -311,4 +392,7 @@ export {
   updateAppointment,
   addReport,
   getPatientUpcomingAppointments,
+  getUpcomingAppointmentsDoctor,
+  getPatientUpcomingAppointmentsForDoc,
+  getSinglePatient,
 }

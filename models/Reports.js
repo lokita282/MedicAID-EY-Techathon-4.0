@@ -7,6 +7,13 @@ const reportsSchema = mongoose.Schema({
   },
     reports: {
         type: String
+      },
+      generalReports: [
+        {type: String}
+      ],
+      patientId:{
+        type: Object,
+    ref: 'User',
       }
 })
 
