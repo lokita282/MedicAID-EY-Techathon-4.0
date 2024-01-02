@@ -15,11 +15,14 @@ import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Pagination from "@mui/material/Pagination";
 import Modal from "@mui/material/Modal";
+import calLogo from "../../images/calendar.png";
+import { parse } from "date-fns";
 import { df_jc_ac } from "../../theme/CssMy";
 
 import {
   getDoctorsInteractedWith,
   getPatientProfile,
+  getUpcomingAppointments,
 } from "../../services/patientService";
 import AppointmentModal from "../../components/aptModal/AppointmentModal";
 import Dropzone from "../../components/dropzone/Dropzone";
@@ -37,6 +40,7 @@ export default function Reports() {
   const [endTime, setEndTime] = useState();
   const [meetingLink, setMeetingLink] = useState("");
   const [patientDetails, setPatientDetails] = useState({});
+  const [appointments, setAppointments] = useState([]);
   const docs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
   const [open, setOpen] = useState(false);
@@ -75,8 +79,15 @@ export default function Reports() {
       });
       setPatLoading(false);
     };
+    const appointment = async () => {
+      await getUpcomingAppointments().then((res) => {
+        console.log(res.data);
+        setAppointments(res.data.appointments);
+      });
+    };
     func();
     profile();
+    appointment();
   }, []);
 
   var prevEnable = 0;
@@ -135,14 +146,14 @@ export default function Reports() {
     <SideDrawer>
       <SwipeableEdgeDrawer />
       <Grid container spacing={2} direction={"row"}>
-        <Grid item xs={7}>
+        <Grid item xs={12} md={7}>
           {/* <Box
             sx={{
               height: "auto",
               width: "50vw",
               marginTop: "2rem",
             }}> */}
-          <Grid container spacing={2} direction={"column"}>
+          <Grid container spacing={1} direction={"column"}>
             <Grid item xs={4}>
               <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
                 {docLoading ? (
@@ -156,7 +167,7 @@ export default function Reports() {
                       flexDirection: "row",
                       justifyContent: "space-between",
                       alignItems: "space-between",
-                      marginBottom: 2,
+                      // marginBottom: 2,
                     }}>
                     <Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
                       Doctors you interacted with
@@ -241,7 +252,7 @@ export default function Reports() {
                     </Box>
                   </Box>
                 )}
-                <Grid container spacing={2} wrap="nowrap" direction={"row"}>
+                <Grid container spacing={1} wrap="nowrap" direction={"row"}>
                   {intdoctors?.slice(page - 1, page + 4).map((dc) => (
                     <Grid item key={dc} xs={3}>
                       <Box>
@@ -251,8 +262,8 @@ export default function Reports() {
                           sx={{ alignItems: "center" }}>
                           <Avatar
                             sx={{
-                              width: 75,
-                              height: 75,
+                              width: 60,
+                              height: 60,
                               marginBottom: "1rem",
                             }}
                             alt={dc?.name}
@@ -308,9 +319,7 @@ export default function Reports() {
                               sx={{
                                 color: "#666",
                                 fontFamily: "Poppins",
-                                fontSize: 11.397,
-                                fontStyle: "normal",
-                                fontWeight: 500,
+                                fontSize: 8,
                                 lineHeight: "normal",
                               }}>
                               Prescription
@@ -330,7 +339,7 @@ export default function Reports() {
                   sx={{
                     fontVariantNumeric: "lining-nums tabular-nums",
                     fontFamily: "Poppins",
-                    fontSize: 19.287,
+                    fontSize: 18,
                     fontStyle: "normal",
                     fontWeight: 500,
                     lineHeight: "normal",
@@ -340,11 +349,11 @@ export default function Reports() {
                 <Box
                   sx={{
                     display: "flex",
-                    height: 100,
+                    height: "auto",
                     justifyContent: "space-between",
                     marignTop: 1,
                   }}>
-                  {startTime !== undefined ? (
+                  {appointments == null ? (
                     <Typography
                       sx={{
                         color: "#A7A7A7",
@@ -359,13 +368,77 @@ export default function Reports() {
                       to view it here
                     </Typography>
                   ) : (
-                    <Paper
-                      sx={{ borderRadius: 5, m: 1, display: "flex" }}
-                      onClick={console.log(meetingLink)}>
-                      <Typography>Appointment Card</Typography>
-                      <Typography>{startTime}</Typography>
-                      <Typography>{endTime}</Typography>
-                    </Paper>
+                    <Box sx={{ display: "flex", height: "auto" }}>
+                      {appointments.map((apt) => {
+                        let dateString = apt.start.slice(0, 10);
+                        console.log(dateString);
+                        const parsedDate = parse(
+                          dateString,
+                          "MM-dd",
+                          new Date()
+                        );
+                        // console.log("Parsed date", parsedDate);
+                        return (
+                          <Paper
+                            sx={{
+                              borderRadius: 2,
+                              m: 1,
+                              height: 120,
+                              width: 200,
+                              display: "flex",
+                              p: 1,
+                              flexDirection: "column",
+                              justifyContent: "space-around",
+                            }}
+                            onClick={(e) => {
+                              // e.preventDefault();
+                              // console.log(apt);
+                              // window.location.href = `${apt.meetingId}`;
+                            }}>
+                            <Typography
+                              sx={{
+                                p: 0.5,
+                                fontFamily: "Poppins",
+                                fontSize: 16,
+                                fontStyle: "semi-bold",
+                                fontWeight: 600,
+                                lineHeight: "normal",
+                              }}>
+                              {apt.title}
+                            </Typography>
+                            <Box sx={{ display: "flex", flexDirection: "row" }}>
+                              <img
+                                src={calLogo}
+                                alt="cal"
+                                style={{
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: 40,
+                                }}
+                              />
+                              <Box>
+                                <Typography
+                                  sx={{
+                                    p: 0.5,
+                                    color: "rgba(100, 100, 100, 0.8)",
+                                    fontFamily: "Poppins",
+                                    fontSize: 12,
+                                    fontStyle: "normal",
+                                    fontWeight: 600,
+                                    lineHeight: "normal",
+                                  }}>
+                                  Date: {apt.start.slice(5, 11)}
+                                </Typography>
+                                <Typography>
+                                  {apt.start.slice(11, 16)} -{" "}
+                                  {apt.end.slice(11, 16)}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Paper>
+                        );
+                      })}
+                    </Box>
                   )}
                   <AppointmentModal
                     open={open}
@@ -420,7 +493,7 @@ export default function Reports() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={5}>
           <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
             {/* <PatientProfile patientName={patientDetails} /> */}
             {patLoading ? (
