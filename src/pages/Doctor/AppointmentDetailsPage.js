@@ -24,9 +24,13 @@ import Modal from '@mui/material/Modal';
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from '@mui/lab/TimelineOppositeContent';
+import ViewReports from '../../components/aptDetailsDoc/ViewReports'
+import ViewDiagnoses from '../../components/aptDetailsDoc/ViewDiagnoses'
 //Integration imports
 import { getSingleAppointmentDetails, getAppointmentHistory, getDifferentialDiagnoses, getAppointmentReport } from '../../services/doctorService'
 import { Link } from "react-router-dom"
+
+
 
 
 
@@ -35,7 +39,7 @@ const SinglePatientPage = () => {
   const [appointment, setAppointment] = useState()
   const [appointmentHistory, setAppointmentHistory] = useState([])
   const [diagnoses, setDiagnoses] = useState([])
-  const [tabSwitch, setTabSwitch] = useState(false)
+  const [tabSwitch, setTabSwitch] = useState('diagnoses')
   const [reports, setReports] = useState()
 
   const id = window.location.href.split('/')[4]
@@ -59,38 +63,21 @@ const SinglePatientPage = () => {
   useEffect(() => {
     setLoading(true)
     const func = async () => {
-      await getSingleAppointmentDetails(id).then(async (res) => {
-        console.log(res.data.appointment.symptoms)
-        var x = {
-          "demographics": [
-            res.data.appointment.patientId.patientDemographics.age.toString(),
-            res.data.appointment.patientId.patientDemographics.gender,
-            res.data.appointment.patientId.patientDemographics.height,
-            res.data.appointment.patientId.patientDemographics.weight,
-          ],
-          "symptoms": res.data.appointment.symptoms
-        }
-        setAppointment(res.data.appointment)
-        getAppointmentHistory(res.data.appointment.patientId._id).then((res) => {
-          setAppointmentHistory(res.data.appointments)
-        })
-        getDifferentialDiagnoses(x).then((res) => {
-          console.log(res)
-          setDiagnoses(res.data)
-        })
-        getAppointmentReport(id).then((res) => {
-          console.log("rp", res);
-          setReports(res.data)
-        })
-      })
+     if (id) {
+       await getSingleAppointmentDetails(id).then(async (res) => {
+         console.log(res.data.appointment.symptoms)
+         setAppointment(res.data.appointment)
+         getAppointmentHistory(res.data.appointment.patientId._id).then(
+           (res) => {
+             setAppointmentHistory(res.data.appointments)
+           }
+         )
+       })
+     }
       setLoading(false)
     }
     func()
-  }, [])
-
-  // const diagnoses = [1, 2, 3, 4]
-
-
+  }, [id])
 
   return (
     <SideDrawer>
@@ -105,13 +92,11 @@ const SinglePatientPage = () => {
             }}
           >
             <Stack direction="row" spacing={6} sx={{ alignItems: 'center' }}>
-              <Avatar
-                sx={{ width: 60, height: 60, bgcolor: deepPurple[500] }}
-              >
-                P
+              <Avatar sx={{ width: 60, height: 60, bgcolor: deepPurple[500] }}>
+                {appointment.patientId.name[0].toUpperCase()}
               </Avatar>
               <Box sx={{ fontWeight: 'bold', fontSize: 22 }}>
-                {appointment.patientId.name}
+                {appointment.patientId.name[0].toUpperCase() + appointment.patientId.name.substring(1)}
               </Box>
             </Stack>
             <Box sx={{ color: '#989898', fontWeight: 600, fontSize: 17 }}>
@@ -128,72 +113,126 @@ const SinglePatientPage = () => {
                   px: 1,
                   py: 2,
                   backgroundColor: '#FAFAFA',
-                  height: "auto",
+                  height: 'auto',
                   borderRadius: 3,
                 }}
               >
-                <Box sx={{ textAlign: 'center', fontWeight: 550 }}>  Previous Appointments </Box>
-                <Box sx={{ mt: 2, display: "flex", }}>
+                <Box sx={{ textAlign: 'center', fontWeight: 550 }}>
+                  {' '}
+                  Previous Appointments{' '}
+                </Box>
+                <Box sx={{ mt: 2, display: 'flex' }}>
                   <Timeline
                     sx={{
                       [`& .${timelineOppositeContentClasses.root}`]: {
                         flex: 0.2,
-
                       },
                     }}
                   >
-                    {appointmentHistory ? (appointmentHistory.map((appointment) => (
-                      <TimelineItem key={appointment._id} >
-                        <TimelineOppositeContent
-                        >
-                          {appointment.start}  -  {appointment.end}
-                        </TimelineOppositeContent>
-                        <TimelineSeparator>
-                          {/* <TimelineConnector /> */}
-                          <TimelineDot />
-                          <TimelineConnector sx={{ height: 150 }} />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                          <Paper sx={{ p: 2, boxShadow: 1, borderRadius: 3, }}>
-                            <Stack direction="column" >
-                              <Box sx={{ fontWeight: 600 }}> {appointment.title} </Box>
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{ mt: 1, alignItems: 'center' }}
-                              >
-                                <Box sx={{ fontWeight: 600, }}>Symptoms:</Box>
-                                {appointment.symptoms.map((symptom) => {
-                                  return <Box sx={{ fontWeight: 500 }} key={symptom} > {symptom} </Box>
-                                })}
-                              </Stack>
-                            </Stack>
-                            <Stack spacing={3} direction="row" sx={{ justifyContent: 'space-between', mt: 1, pr: 1 }}>
-                              <Button onClick={handleOpen} variant="contained" color="error"> Pres. </Button>
-                              <Modal
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                              >
-                                <Box sx={style}>
-                                  <Box id="modal-modal-title" sx={{ fontSize: 20, fontWeight: 'bold', my: 1 }}>
-                                    Appointment Prescription
-                                  </Box>
-
-                                  <img src={`data:image/jpeg;base64,${appointment?.prescription}`} height="100%" width="100%" />
-
+                    {appointmentHistory ? (
+                      appointmentHistory.map((appointment) => (
+                        <TimelineItem key={appointment._id}>
+                          <TimelineOppositeContent>
+                            {
+                              new Date(appointment.start)
+                                .toString()
+                                .split(':00')[0]
+                            }
+                          </TimelineOppositeContent>
+                          <TimelineSeparator>
+                            {/* <TimelineConnector /> */}
+                            <TimelineDot />
+                            <TimelineConnector sx={{ height: 150 }} />
+                          </TimelineSeparator>
+                          <TimelineContent>
+                            <Paper
+                              sx={{
+                                p: 2,
+                                boxShadow: 1,
+                                borderRadius: 3,
+                                maxWidth: 250,
+                              }}
+                            >
+                              <Stack direction="column">
+                                <Box sx={{ fontWeight: 600 }}>
+                                  {' '}
+                                  {appointment.title[0].toUpperCase()+appointment.title.substring(1)}{' '}
                                 </Box>
-                              </Modal>
-                              <Link style={{ marginTop: "16px" }} >    Details {">"} </Link>
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{ mt: 1, alignItems: 'center' }}
+                                >
+                                  <Box sx={{ fontWeight: 600 }}>Symptoms:</Box>
+                                  {appointment.symptoms.map((symptom) => {
+                                    return (
+                                      <Box
+                                        sx={{ fontWeight: 500 }}
+                                        key={symptom}
+                                      >
+                                        {' '}
+                                        {symptom[0].toUpperCase()+symptom.substring(1)}{' '}
+                                      </Box>
+                                    )
+                                  })}
+                                </Stack>
+                              </Stack>
+                              <Stack
+                                spacing={3}
+                                direction="row"
+                                sx={{
+                                  justifyContent: 'space-between',
+                                  mt: 1,
+                                  pr: 1,
+                                }}
+                              >
+                                <Button
+                                  onClick={handleOpen}
+                                  variant="contained"
+                                  sx={{ backgroundColor: '#005739' }}
+                                >
+                                  {' '}
+                                  Pres.{' '}
+                                </Button>
+                                <Modal
+                                  open={open}
+                                  onClose={handleClose}
+                                  aria-labelledby="modal-modal-title"
+                                  aria-describedby="modal-modal-description"
+                                >
+                                  <Box sx={style}>
+                                    <Box
+                                      id="modal-modal-title"
+                                      sx={{
+                                        fontSize: 20,
+                                        fontWeight: 'bold',
+                                        my: 1,
+                                      }}
+                                    >
+                                      Appointment Prescription
+                                    </Box>
 
-                            </Stack>
-                          </Paper>
-                        </TimelineContent>
-                      </TimelineItem>
-                    ))) : (<Box sx={{ ...df_jc_ac, height: '80vh' }}>
-                      <Loading />
-                    </Box>)}
+                                    <img
+                                      src={`data:image/jpeg;base64,${appointment?.prescription}`}
+                                      height="100%"
+                                      width="100%"
+                                    />
+                                  </Box>
+                                </Modal>
+                                <Link style={{ marginTop: '16px', textDecoration: 'none', color: '#000000' }}>
+                                  {' '}
+                                  Details {'>'}{' '}
+                                </Link>
+                              </Stack>
+                            </Paper>
+                          </TimelineContent>
+                        </TimelineItem>
+                      ))
+                    ) : (
+                      <Box sx={{ ...df_jc_ac, height: '80vh' }}>
+                        <Loading />
+                      </Box>
+                    )}
                   </Timeline>
                 </Box>
               </Paper>
@@ -208,9 +247,9 @@ const SinglePatientPage = () => {
                   flexDirection: 'column',
                 }}
               >
-                <Box sx={{ fontSize: 20, fontWeight: 600 }}>
+                {/* <Box sx={{ fontSize: 20, fontWeight: 600 }}>
                   Patient Demographics:
-                </Box>
+                </Box> */}
                 <Box
                   sx={{
                     display: 'flex',
@@ -218,33 +257,77 @@ const SinglePatientPage = () => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Stack direction="column" spacing={1}>
-                    <Box>
-                      Age: {appointment.patientId.patientDemographics.age}
-                    </Box>
-                    <Box>
-                      Gender:
-                      {appointment.patientId.patientDemographics.gender}
-                    </Box>
-                  </Stack>
-                  <Stack direction="column" spacing={1}>
-                    <Box>
-                      Height:
-                      {appointment.patientId.patientDemographics.height}
-                    </Box>
-                    <Box>
-                      Weight:
-                      {appointment.patientId.patientDemographics.weight}
-                    </Box>
-                  </Stack>
-                  <Stack direction="column" spacing={1}>
-                    <Box>
-                      Address:
-                      {appointment.patientId.patientDemographics.address}
-                    </Box>
-                    <Box> Contact: {appointment.patientId.contact}</Box>
-                  </Stack>
                 </Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={4}>
+                    <Stack direction="column" spacing={0}>
+                      <Typography variant="body1" color="#aeaeae">
+                        <b>Age</b>
+                      </Typography>
+                      <Typography variant="h6" color="initial">
+                        <b>{appointment.patientId.patientDemographics.age}</b>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Stack direction="column" spacing={0}>
+                      <Typography variant="body1" color="#aeaeae">
+                        <b>Height</b>
+                      </Typography>
+                      <Typography variant="h6" color="initial">
+                        <b>
+                          {appointment.patientId.patientDemographics.height}
+                        </b>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Stack direction="column" spacing={0}>
+                      <Typography variant="body1" color="#aeaeae">
+                        <b>Address</b>
+                      </Typography>
+                      <Typography variant="h6" color="initial">
+                        <b>
+                          {appointment.patientId.patientDemographics.address[0].toUpperCase() +
+                            appointment.patientId.patientDemographics.address.substring(1)}
+                        </b>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} sx={{ paddingTop: '1.5em' }}>
+                  <Grid item xs={4}>
+                    <Stack direction="column" spacing={0}>
+                      <Typography variant="body1" color="#aeaeae">
+                        <b>Gender</b>
+                      </Typography>
+                      <Typography variant="h6" color="initial">
+                        <b>{appointment.patientId.patientDemographics.gender[0].toUpperCase() +
+                            appointment.patientId.patientDemographics.gender.substring(1)}</b>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Stack direction="column" spacing={0}>
+                      <Typography variant="body1" color="#aeaeae">
+                        <b>Weight</b>
+                      </Typography>
+                      <Typography variant="h6" color="initial">
+                        <b>{appointment.patientId.patientDemographics.weight}</b>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Stack direction="column" spacing={0}>
+                      <Typography variant="body1" color="#aeaeae">
+                        <b>Contact</b>
+                      </Typography>
+                      <Typography variant="h6" color="initial">
+                        <b>{appointment.patientId.contact}</b>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                </Grid>
                 <Stack
                   direction="row"
                   spacing={3}
@@ -252,12 +335,17 @@ const SinglePatientPage = () => {
                 >
                   <Box sx={{ fontSize: 20, fontWeight: 600 }}>Symptoms:</Box>
                   {appointment.symptoms.map((symptom) => {
-                    return <Chip key={symptom} label={symptom} sx={{ fontSize: 16 }}></Chip>
+                    return (
+                      <Chip
+                        key={symptom}
+                        label={symptom[0].toUpperCase()+symptom.substring(1)}
+                        sx={{ fontSize: 16 }}
+                      ></Chip>
+                    )
                   })}
                 </Stack>
-
-                {tabSwitch ?
-                  (<>
+                {tabSwitch === 'files' ? (
+                  <>
                     <Box
                       sx={{
                         display: 'flex',
@@ -275,21 +363,15 @@ const SinglePatientPage = () => {
                           color: 'rgb(0,87,57)',
                           boxShadow: 'none',
                         }}
-                        onClick={(e) => setTabSwitch(false)
-
-                        }
+                        onClick={(e) => setTabSwitch('diagnoses')}
                       >
                         <Box sx={{ fontWeight: 20 }}> View Diagnoses </Box>
                       </Button>
                     </Box>
-                    <Box sx={{ mt: 2 }}>
-                      {reports?.map((image) => (
-                        <img src={`data:image/jpeg;base64,${image.reports}`} height="50%" width="50%" />
-                      ))}
-                    </Box>
-                  </>)
-                  :
-                  (<>
+                    <ViewReports />
+                  </>
+                ) : (
+                  <>
                     <Box
                       sx={{
                         display: 'flex',
@@ -307,59 +389,14 @@ const SinglePatientPage = () => {
                           color: 'rgb(0,87,57)',
                           boxShadow: 'none',
                         }}
-                        onClick={(e) => setTabSwitch(true)}
+                        onClick={(e) => setTabSwitch('files')}
                       >
                         <Box sx={{ fontWeight: 20 }}> View Files </Box>
                       </Button>
                     </Box>
-                    <Box sx={{ mt: 1 }}>
-                      {/* {diagnoses ? diagnoses : "no"} */}
-                      {diagnoses?.map((disease) => (
-                        <Box
-                          key={disease}
-                          direction="column"
-                          sx={{ boxShadow: 1, borderRadius: 4, mt: 2 }}
-                        >
-                          <Box
-                            sx={{
-                              backgroundColor: '#EAEAEA',
-                              px: 2,
-                              py: 1,
-                              borderTopLeftRadius: 14,
-                              borderTopRightRadius: 14,
-                              fontWeight: 'bold',
-                            }}
-                          >
-                            {disease.name}
-                          </Box>
-                          <Box
-                            sx={{
-                              px: 2,
-                              py: 1,
-                              borderBottomLeftRadius: 14,
-                              borderBottomRightRadius: 14,
-                            }}
-                          >
-                            {disease.description}
-                          </Box>
-                          <Stack
-                            direction="row"
-                            spacing={2}
-                            sx={{ px: 1, py: 1 }}
-                          >
-                            <Chip label={`${disease.probability}`} />
-                            <Chip
-                              label="Most Probable"
-                              sx={{
-                                color: 'rgb(74,177,102)',
-                                backgroundColor: 'rgba(74,177,102,0.2)',
-                              }}
-                            />
-                          </Stack>
-                        </Box>
-                      ))}
-                    </Box>
-                  </>)}
+                    <ViewDiagnoses />
+                  </>
+                )}
               </Paper>
             </Grid>
           </Grid>
