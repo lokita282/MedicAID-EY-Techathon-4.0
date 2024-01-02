@@ -25,6 +25,14 @@ export const getPatientProfile = () => {
   });
 };
 
+export const getUpcomingAppointments = () => {
+  return httpcommon.get(`/appointments/get_upcoming`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("eyToken")}`,
+    },
+  });
+};
+
 export const postAppointment = (data) => {
   return httpcommon.post(`appointments/new`, data, {
     headers: {
