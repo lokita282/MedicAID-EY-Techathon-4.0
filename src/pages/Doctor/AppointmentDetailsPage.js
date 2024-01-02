@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
+import Typography from "@mui/material/Typography"
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
@@ -19,22 +20,41 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
+import Modal from '@mui/material/Modal';
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from '@mui/lab/TimelineOppositeContent';
-
 //Integration imports
-import { getSingleAppointmentDetails, getAppointmentHistory, getDifferentialDiagnoses } from '../../services/doctorService'
+import { getSingleAppointmentDetails, getAppointmentHistory, getDifferentialDiagnoses, getAppointmentReport } from '../../services/doctorService'
 import { Link } from "react-router-dom"
+
+
 
 const SinglePatientPage = () => {
   const [loading, setLoading] = useState(false)
   const [appointment, setAppointment] = useState()
   const [appointmentHistory, setAppointmentHistory] = useState([])
-  const [diagnoses, setDiagnoses] = useState()
+  const [diagnoses, setDiagnoses] = useState([])
   const [tabSwitch, setTabSwitch] = useState(false)
+  const [reports, setReports] = useState()
 
   const id = window.location.href.split('/')[4]
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: '#FAFAFA',
+    borderRadius: 3,
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     setLoading(true)
@@ -42,7 +62,13 @@ const SinglePatientPage = () => {
       await getSingleAppointmentDetails(id).then(async (res) => {
         console.log(res.data.appointment.symptoms)
         var x = {
-          "symptoms": [res.data.appointment.symptoms[0]]
+          "demographics": [
+            res.data.appointment.patientId.patientDemographics.age.toString(),
+            res.data.appointment.patientId.patientDemographics.gender,
+            res.data.appointment.patientId.patientDemographics.height,
+            res.data.appointment.patientId.patientDemographics.weight,
+          ],
+          "symptoms": res.data.appointment.symptoms
         }
         setAppointment(res.data.appointment)
         getAppointmentHistory(res.data.appointment.patientId._id).then((res) => {
@@ -50,7 +76,11 @@ const SinglePatientPage = () => {
         })
         getDifferentialDiagnoses(x).then((res) => {
           console.log(res)
-          setDiagnoses(res.data.response)
+          setDiagnoses(res.data)
+        })
+        getAppointmentReport(id).then((res) => {
+          console.log("rp", res);
+          setReports(res.data)
         })
       })
       setLoading(false)
@@ -139,7 +169,22 @@ const SinglePatientPage = () => {
                               </Stack>
                             </Stack>
                             <Stack spacing={3} direction="row" sx={{ justifyContent: 'space-between', mt: 1, pr: 1 }}>
-                              <Button variant="contained" color="error"> PDF </Button>
+                              <Button onClick={handleOpen} variant="contained" color="error"> Pres. </Button>
+                              <Modal
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                              >
+                                <Box sx={style}>
+                                  <Box id="modal-modal-title" sx={{ fontSize: 20, fontWeight: 'bold', my: 1 }}>
+                                    Appointment Prescription
+                                  </Box>
+
+                                  <img src={`data:image/jpeg;base64,${appointment?.prescription}`} height="100%" width="100%" />
+
+                                </Box>
+                              </Modal>
                               <Link style={{ marginTop: "16px" }} >    Details {">"} </Link>
 
                             </Stack>
@@ -207,7 +252,7 @@ const SinglePatientPage = () => {
                 >
                   <Box sx={{ fontSize: 20, fontWeight: 600 }}>Symptoms:</Box>
                   {appointment.symptoms.map((symptom) => {
-                    return <Box key={symptom} > {symptom} </Box>
+                    return <Chip key={symptom} label={symptom} sx={{ fontSize: 16 }}></Chip>
                   })}
                 </Stack>
 
@@ -230,10 +275,17 @@ const SinglePatientPage = () => {
                           color: 'rgb(0,87,57)',
                           boxShadow: 'none',
                         }}
-                        onClick={(e) => setTabSwitch(false)}
+                        onClick={(e) => setTabSwitch(false)
+
+                        }
                       >
                         <Box sx={{ fontWeight: 20 }}> View Diagnoses </Box>
                       </Button>
+                    </Box>
+                    <Box sx={{ mt: 2 }}>
+                      {reports?.map((image) => (
+                        <img src={`data:image/jpeg;base64,${image.reports}`} height="50%" width="50%" />
+                      ))}
                     </Box>
                   </>)
                   :
@@ -261,9 +313,10 @@ const SinglePatientPage = () => {
                       </Button>
                     </Box>
                     <Box sx={{ mt: 1 }}>
-                      {diagnoses?.Disease.map((d) => (
+                      {/* {diagnoses ? diagnoses : "no"} */}
+                      {diagnoses?.map((disease) => (
                         <Box
-                          key={d}
+                          key={disease}
                           direction="column"
                           sx={{ boxShadow: 1, borderRadius: 4, mt: 2 }}
                         >
@@ -277,7 +330,7 @@ const SinglePatientPage = () => {
                               fontWeight: 'bold',
                             }}
                           >
-                            {d}
+                            {disease.name}
                           </Box>
                           <Box
                             sx={{
@@ -287,14 +340,14 @@ const SinglePatientPage = () => {
                               borderBottomRightRadius: 14,
                             }}
                           >
-                            Description
+                            {disease.description}
                           </Box>
                           <Stack
                             direction="row"
                             spacing={2}
                             sx={{ px: 1, py: 1 }}
                           >
-                            <Chip label="${}" />
+                            <Chip label={`${disease.probability}`} />
                             <Chip
                               label="Most Probable"
                               sx={{

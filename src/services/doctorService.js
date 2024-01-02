@@ -34,7 +34,7 @@ export const getAllAppointments = () => {
   }
 
   export const getDifferentialDiagnoses = (data) => {
-    return httpcommonml.post(`/diagnosis`, data)
+    return httpcommonml.post(`/diff-diagnosis`, data)
   }
 
   export const getReports = () => {
@@ -45,4 +45,11 @@ export const getAllAppointments = () => {
     })
   }
   
+  export const getAppointmentReport = (id) => {
+    return httpcommon.get(`/reports/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
   
