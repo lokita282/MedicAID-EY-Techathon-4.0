@@ -52,4 +52,8 @@ export const getAllAppointments = () => {
       },
     })
   }
+
+  export const getReportDetection = (data) => {
+    return httpcommonml.post(`/ct-scan`, data)
+  }
   
