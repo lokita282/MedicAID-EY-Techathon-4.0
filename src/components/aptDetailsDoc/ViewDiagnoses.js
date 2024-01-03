@@ -8,7 +8,7 @@ import { df_jc_ac } from '../../theme/CssMy'
 import { Box, Stack , Chip} from '@mui/material'
 
 
-const id = window.location.href.split('/')[4]
+
 
 const ViewDiagnoses = () => {
   const [diagnoses, setDiagnoses] = useState([])
@@ -17,7 +17,9 @@ const ViewDiagnoses = () => {
 
   useEffect(() => {
     setLoading(true)
+    const id = window.location.href.split('/')[4]
     const func = async () => {
+      console.log('here')
       await getSingleAppointmentDetails(id).then((res) => {
         var x = {
           demographics: [

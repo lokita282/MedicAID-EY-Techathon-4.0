@@ -27,7 +27,7 @@ import TimelineOppositeContent, {
 import ViewReports from '../../components/aptDetailsDoc/ViewReports'
 import ViewDiagnoses from '../../components/aptDetailsDoc/ViewDiagnoses'
 //Integration imports
-import { getSingleAppointmentDetails, getAppointmentHistory, getDifferentialDiagnoses, getAppointmentReport } from '../../services/doctorService'
+import { getSingleAppointmentDetails, getAppointmentHistory,  } from '../../services/doctorService'
 import { Link } from "react-router-dom"
 
 
@@ -41,8 +41,6 @@ const SinglePatientPage = () => {
   const [diagnoses, setDiagnoses] = useState([])
   const [tabSwitch, setTabSwitch] = useState('diagnoses')
   const [reports, setReports] = useState()
-
-  const id = window.location.href.split('/')[4]
 
   const style = {
     position: 'absolute',
@@ -62,8 +60,9 @@ const SinglePatientPage = () => {
 
   useEffect(() => {
     setLoading(true)
+    const id = window.location.href.split('/')[4]
     const func = async () => {
-     if (id) {
+     if (id!==undefined) {
        await getSingleAppointmentDetails(id).then(async (res) => {
          console.log(res.data.appointment.symptoms)
          setAppointment(res.data.appointment)
@@ -77,7 +76,7 @@ const SinglePatientPage = () => {
       setLoading(false)
     }
     func()
-  }, [id])
+  }, [])
 
   return (
     <SideDrawer>
