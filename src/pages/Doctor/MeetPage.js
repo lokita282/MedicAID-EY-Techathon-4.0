@@ -34,7 +34,7 @@ export default function Meet() {
 
   function onLeave() {
    
-    recorderControls.stopRecording()
+    // recorderControls.stopRecording()
     // addAudioElement()
     navigate('/prescription')
   }
@@ -43,8 +43,9 @@ export default function Meet() {
     recorderControls.startRecording()    
   }
 
-  // const roomId = window.location.href.split('=')[1]
-  const roomId = '12345'
+  const roomId = window.location.href.split('/')[3]
+  console.log(roomId)
+  // const roomId = '12345'
 
   let myMeeting = async (element) => {
     // generate Kit Token
@@ -71,9 +72,7 @@ export default function Meet() {
             window.location.protocol +
             '//' +
             window.location.host +
-            window.location.pathname +
-            '?roomID=' +
-            roomId,
+            window.location.pathname 
         },
       ],
       scenario: {

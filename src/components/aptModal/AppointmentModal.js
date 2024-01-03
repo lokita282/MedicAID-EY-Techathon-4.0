@@ -87,12 +87,12 @@ const AppointmentModal = ({
       title: myname,
       status: "followup",
       symptoms: symptomChip.map((symptom) => symptom.label),
-      meetingLink: `http://localhost:3000?roomID=${roomId}`,
+      meetingId: `http://localhost:3000?roomID=${roomId}`,
     });
-    console.log("Data:", data);
+    // console.log("Data:", data);
     const func = async () => {
       await postAppointment(data).then(async (res) => {
-        console.log(res.data);
+        console.log("Respone:", res.data);
         setStartTime(res.data.appointment.start);
         setEndTime(res.data.appointment.end);
         setMeetingLink(`http://localhost:3000?roomID=${roomId}`);

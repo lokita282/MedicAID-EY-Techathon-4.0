@@ -115,9 +115,9 @@ export default function Appointments() {
           viewerExtraComponent={(fields, event) => {
             return (
               <Box sx={{ p: 1 }}>
-                <Box sx={{ fontWeight: 600, fontSize: 22 }}>
+                {/* <Box sx={{ fontWeight: 600, fontSize: 22 }}>
                   {event.patient_name}
-                </Box>
+                </Box> */}
                 <Box sx={{ color: '#AEAEAE' }}>
                   {event.patient_age}, {event.patient_gender}
                 </Box>
@@ -143,9 +143,10 @@ export default function Appointments() {
                     textAlign: 'center',
                   }}
                 >
-                  <Link to="#" style={{ marginTop: '8px' }}>
+                  {/* <Link to={`${event?.meetingId}`} style={{ marginTop: '8px' }}>
                     Open Video Meet
-                  </Link>
+                  </Link> */}
+                  <a href={`${event?.meetingId}`}>Open video meet</a>
 
                   <Link
                     to={`/appointment_details/${event?.event_id}`}

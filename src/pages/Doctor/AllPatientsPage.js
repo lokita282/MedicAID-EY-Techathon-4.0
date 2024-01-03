@@ -17,7 +17,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 
 // INTEGRATION IMPORTS
-import { getAllAppointments, getAllPatients } from '../../services/doctorService';
+import { getUpcomingAppointments, getAllPatients } from '../../services/doctorService';
 import { eycontext } from '../../context/MainContext'
 
 
@@ -48,7 +48,7 @@ export default function AllPatients() {
   useEffect(() => {
     setLoading(true)
     const func = async () => {
-      await getAllAppointments().then((res) => {
+      await getUpcomingAppointments().then((res) => {
         // console.log(res.data.appointments)
         setAppointments(res.data.appointments)
       })
@@ -68,7 +68,14 @@ export default function AllPatients() {
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
                   <Grid container>
                     <Grid item xs={9}>
-                      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontWeight: 'bold',
+                          paddingTop: '0.2em',
+                          paddingLeft: '0.2em',
+                        }}
+                      >
                         View all patient details
                         <br />
                         below
@@ -115,16 +122,20 @@ export default function AllPatients() {
                                     bgcolor: deepPurple[500],
                                   }}
                                 >
-                                  P
+                                  {patient?.name[0].toUpperCase()}
                                 </Avatar>
                                 <Typography sx={{ fontWeight: 'bold' }}>
-                                  {patient?.name}{' '}
+                                  {patient?.name[0].toUpperCase() +
+                                    patient?.name.substring(1)}
                                 </Typography>
                               </Stack>
                             </Box>
                             <Typography>
                               {patient.patientDemographics?.age},{' '}
-                              {patient.patientDemographics?.gender}
+                              {patient.patientDemographics?.gender[0].toUpperCase() +
+                                patient.patientDemographics?.gender.substring(
+                                  1
+                                )}
                             </Typography>
                             <Box
                               sx={{
@@ -143,7 +154,10 @@ export default function AllPatients() {
                                 CONSULTATION
                               </Button>
                               <Link
-                                style={{ textDecoration: 'none' }}
+                                style={{
+                                  textDecoration: 'none',
+                                  color: '#000000',
+                                }}
                                 to={`/patient_details/${patient?._id}`}
                               >
                                 <Typography> Details {'>'}</Typography>
@@ -170,7 +184,7 @@ export default function AllPatients() {
               }}
             >
               <Typography variant="h5" fontWeight="bold">
-                Appointment Requests
+                Upcoming Appointments
               </Typography>
               <Divider sx={{ mt: 3 }} />
 
@@ -193,7 +207,8 @@ export default function AllPatients() {
                                   bgcolor: deepOrange[500],
                                 }}
                               >
-                                PR
+                                {patient?.patientId.name[0].toUpperCase() +
+                                  patient?.patientId.name[1].toUpperCase()}
                               </Avatar>
                             </Stack>
                           </Grid>
@@ -207,15 +222,23 @@ export default function AllPatients() {
                               }}
                             >
                               <Typography sx={{ fontWeight: 'bold' }}>
-                                {patient?.patientId.name}
+                                {patient?.patientId.name[0].toUpperCase() +
+                                  patient?.patientId.name.substring(1)}
                               </Typography>
                               <Typography>{patient?.start}</Typography>
                             </Box>
                             <Typography>
-                              {patient.patientId.patientDemographics?.gender},{' '}
-                              {patient.patientId.patientDemographics?.age}
+                              {patient.patientId.patientDemographics?.gender[0].toUpperCase() +
+                                patient.patientId.patientDemographics?.gender.substring(
+                                  1
+                                )}
+                              , {patient.patientId.patientDemographics?.age}
                             </Typography>
-                            <Typography> {patient?.status} </Typography>
+                            <Typography>
+                              {' '}
+                              {patient?.status[0].toUpperCase() +
+                                patient?.status.substring(1)}{' '}
+                            </Typography>
                             <Box
                               sx={{
                                 display: 'flex',
@@ -226,14 +249,21 @@ export default function AllPatients() {
                             >
                               {/* <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
                             <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button> */}
-                              <Link
-                                style={{ textDecoration: 'none' }}
-                                to={`/appointment_details/${patient?._id}`}
-                              >
-                                <Typography variant="body1" color="initial">
-                                  Details {'>'}
-                                </Typography>
-                              </Link>
+                              {patient._id ? (
+                                <Link
+                                  style={{
+                                    textDecoration: 'none',
+                                    color: '#000000',
+                                  }}
+                                  to={`/appointment_details/${patient?._id}`}
+                                >
+                                  <Typography variant="body1" color="initial">
+                                    Details {'>'}
+                                  </Typography>
+                                </Link>
+                              ) : (
+                                ''
+                              )}
                             </Box>
                           </Grid>
                         </Grid>

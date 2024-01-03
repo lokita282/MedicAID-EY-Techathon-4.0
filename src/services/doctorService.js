@@ -9,6 +9,14 @@ export const getAllAppointments = () => {
     })
   }
 
+export const getUpcomingAppointments = () => {
+    return httpcommon.get(`/appointments/upcoming`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
+
   export const getAllPatients = () => {
     return httpcommon.get(`/user/allpatients`, {
       headers: {
@@ -55,5 +63,20 @@ export const getAllAppointments = () => {
 
   export const getReportDetection = (data) => {
     return httpcommonml.post(`/ct-scan`, data)
+  }
+  export const getPatientUpcomingAppointmentsForDoc = (id) => {
+    return httpcommon.get(`/appointments/get_upcoming_for_doc/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
+  
+  export const getSinglePatient = (id) => {
+    return httpcommon.get(`/appointments/get_patient/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
   }
   
