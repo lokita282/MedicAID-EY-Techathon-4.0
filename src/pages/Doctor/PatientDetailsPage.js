@@ -50,7 +50,7 @@ function CustomTabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography sx={{fontFamily: "Poppins"}}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -420,40 +420,56 @@ const SinglePatientPage = () => {
                   }}
                 ></Box>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}> 
-                   <Stack direction="column" spacing={0}>
+                  <Grid item xs={1}>
                     <Icon
                       color="#005739"
                       icon="game-icons:ages"
-                      width="30"
-                      height="30"
-                    />
-                    </Stack>
+                      width="40"
+                      height="40"
+                    />{' '}
+                  </Grid>
+                  <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography variant="body1" color="#aeaeae">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
                         <b>Age</b>
                       </Typography>
-                      <Typography variant="h6" color="initial">
+                      <Typography  sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
                         <b>{patient.patientDemographics.age}</b>
                       </Typography>
                     </Stack>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={1}>
+                    <Icon
+                      color="#005739"
+                      icon="game-icons:body-height"
+                      width="40"
+                      height="40"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography variant="body1" color="#aeaeae">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
                         <b>Height</b>
                       </Typography>
-                      <Typography variant="h6" color="initial">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
                         <b>{patient.patientDemographics.height}</b>
                       </Typography>
                     </Stack>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={1}>
+                    <Icon
+                      color="#005739"
+                      icon="mdi:address-marker"
+                      width="40"
+                      height="40"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography variant="body1" color="#aeaeae">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
                         <b>Address</b>
                       </Typography>
-                      <Typography variant="h6" color="initial">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
                         <b>
                           {patient.patientDemographics.address[0].toUpperCase() +
                             patient.patientDemographics.address.substring(1)}
@@ -463,12 +479,20 @@ const SinglePatientPage = () => {
                   </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ paddingTop: '1.5em' }}>
-                  <Grid item xs={4}>
+                  <Grid item xs={1}>
+                    <Icon
+                      color="#005739"
+                      icon="ph:gender-intersex-fill"
+                      width="40"
+                      height="40"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography variant="body1" color="#aeaeae">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
                         <b>Gender</b>
                       </Typography>
-                      <Typography variant="h6" color="initial">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
                         <b>
                           {patient.patientDemographics.gender[0].toUpperCase() +
                             patient.patientDemographics.gender.substring(1)}
@@ -476,22 +500,38 @@ const SinglePatientPage = () => {
                       </Typography>
                     </Stack>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={1}>
+                    <Icon
+                      color="#005739"
+                      icon="game-icons:weight"
+                      width="40"
+                      height="40"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography variant="body1" color="#aeaeae">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
                         <b>Weight</b>
                       </Typography>
-                      <Typography variant="h6" color="initial">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
                         <b>{patient.patientDemographics.weight}</b>
                       </Typography>
                     </Stack>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={1}>
+                    <Icon
+                      color="#005739"
+                      icon="mingcute:phone-fill"
+                      width="40"
+                      height="40"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography variant="body1" color="#aeaeae">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
                         <b>Contact</b>
                       </Typography>
-                      <Typography variant="h6" color="initial">
+                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
                         <b>{patient.contact}</b>
                       </Typography>
                     </Stack>
