@@ -17,7 +17,7 @@ router.post('/upload', auth.verifyJWT, addReport)
 router.get('/getall', auth.verifyJWT, getReports)
 
 //Get appointment wise reports
-router.get('/:id', auth.verifyJWT, getReports)
+router.get('/:id', auth.verifyJWT, getAppointmentwiseReport)
 
 //upload multiple general reports
 router.post('/upload_general_reports', auth.verifyJWT, addGeneralReports)

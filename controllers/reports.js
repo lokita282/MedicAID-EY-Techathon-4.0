@@ -99,10 +99,11 @@ const getReports = async (req, res) => {
 //Get appointmentwise reports
 const getAppointmentwiseReport = async (req, res) => {
   try {
-    const reports = await Reports.find({patientId: req.params.id})
+    console.log(req.params.id)
+    const report = await Reports.findOne({appointment: req.params.id})
     res.status(200).json({
-      message: 'View reports of this appointment!',
-      reports,
+      message: 'View report of this appointment!',
+      report,
     })
   } catch (e) {
     res.status(400).json({
