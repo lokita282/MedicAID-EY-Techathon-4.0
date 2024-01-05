@@ -144,7 +144,7 @@ export default function Reports() {
 
   return (
     <>
-     {/* <SideDrawer> */}
+      {/* <SideDrawer> */}
       <SwipeableEdgeDrawer />
       <Grid container spacing={2} direction={"row"}>
         <Grid item xs={12} md={7}>
@@ -489,7 +489,7 @@ export default function Reports() {
                   }}>
                   Upload Documents
                 </Typography> */}
-                <Dropzone />
+                <Dropzone text="Upload your documents" />
               </Paper>
             </Grid>
           </Grid>
@@ -554,7 +554,7 @@ export default function Reports() {
           </Paper>
         </Grid>
       </Grid>
-     {/* </SideDrawer> */}
+      {/* </SideDrawer> */}
     </>
   );
 }

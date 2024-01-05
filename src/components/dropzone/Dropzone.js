@@ -4,9 +4,9 @@ import Button from "@mui/material/Button";
 import { DropzoneArea, DropzoneAreaBase } from "material-ui-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "./dropzone.css";
-import attach from "../../images/AttachFile.png";
+import { SvgIcon } from "@mui/material";
 
-const Dropzone = () => {
+const Dropzone = ({ text, onButtonClick, page }) => {
   const [fileObjects, setFileObjects] = useState([]);
 
   const handleClose = () => {
@@ -18,13 +18,13 @@ const Dropzone = () => {
       sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
       <DropzoneAreaBase
         fileObjects={fileObjects}
-        dropzoneText="Upload your documents"
+        dropzoneText={text}
         dropzoneParagraphClass="dropzoneParagraph"
         cancelButtonText={"cancel"}
         submitButtonText={"submit"}
         filesLimit={1}
         acceptedFiles={["image/*"]}
-        // Icon={attach}
+        // Icon={require("./AttachFile.png")}
         dropzoneClass="drop-zone-area"
         disableRejectionFeedback={true}
         showPreviews={false}
@@ -49,13 +49,24 @@ const Dropzone = () => {
       />
       {fileObjects?.length != 0 ? (
         <Button
-          variant="outlined"
+          variant="contained"
           endIcon={<CloudUploadIcon />}
           color="success"
           onClick={() => {
+            if (page == 2) {
+              onButtonClick("pagethree");
+            } else if (page == 3) {
+              onButtonClick("pagefour");
+            }
             console.log("Post general file");
           }}
-          sx={{ marginTop: 2, display: "flex", color: "#005739" }}>
+          sx={{
+            display: "flex",
+            marginTop: "1rem",
+            borderRadius: 2,
+            background: "var(--Activ, #005739)",
+            boxShadow: "0px 2px 5px 2px rgba(2, 92, 92, 0.15)",
+          }}>
           Upload
         </Button>
       ) : (
