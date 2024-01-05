@@ -42,6 +42,7 @@ class PrescriptionReportRequest(BaseModel):
     age: int
     gender: str
     weight: str
+    doctor_name: str
     diet_plan: dict
     exercise_plan: List[str]
     precautions: List[str]
