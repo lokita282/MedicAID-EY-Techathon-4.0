@@ -34,7 +34,7 @@ const ViewReports = () => {
         </Box>
       ) : (
         <Box sx={{ mt: 2 }}>
-          {reports?.map((image) => (
+          {/* {reports?.map((image) => (
             image.reports ? ( <img
               src={`data:image/jpeg;base64,${image.reports}`}
               height="50%"
@@ -43,7 +43,7 @@ const ViewReports = () => {
               borderRadius="10px"
             />): ('')
            
-          ))}
+          ))} */}
         </Box>
       )}
     </>

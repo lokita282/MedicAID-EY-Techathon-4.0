@@ -79,4 +79,14 @@ export const getUpcomingAppointments = () => {
       },
     })
   }
+
+  export const getReportsOfPatient = (id) => {
+    return httpcommon.get(`/reports/patient/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
+
+   
   

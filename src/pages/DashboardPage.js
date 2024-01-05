@@ -6,6 +6,7 @@ import OrgDashboard from '../components/dashboard/OrgDashboard'
 import DoctorDashboardPage from './DoctorDashboardPage'
 import Button from '@mui/material/Button'
 import { useNavigate } from 'react-router'
+import ReportsPage from './Patient/ReportsPage'
 // import MyComponent from '../services/encryptdecrypt'
 
 export default function DashboardPage() {
@@ -13,17 +14,21 @@ export default function DashboardPage() {
 
   const { user } = useContext(eycontext)
   const [value, setValue] = useState()
-  const handleJoinRoom = () => {
-    navigate(`/${value}`)
-  }
+  // const handleJoinRoom = () => { 
+  //   navigate(`/${value}`)
+  // }
 
   return (
     <SideDrawer>
-      <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
-      <Button variant="text" color="primary" onClick={handleJoinRoom}>
+      {/* <input
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      /> */}
+      {/* <Button variant="text" color="primary" onClick={handleJoinRoom}>
         join
-      </Button>
-      { user?.role === "doctor" ? <DoctorDashboardPage />: <PatientDashboardPage /> }
+      </Button> */}
+      {user?.role === 'doctor' ? <DoctorDashboardPage /> : <ReportsPage />}
       {/* <MyComponent /> */}
     </SideDrawer>
   )

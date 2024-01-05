@@ -27,13 +27,14 @@ import Tab from '@mui/material/Tab'
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from '@mui/lab/TimelineOppositeContent'
-import ViewReportsGeneral from '../../components/aptDetailsDoc/ViewReports'
+import ViewReportsGeneral from '../../components/patientDetailsDoc/ViewReportsGeneral'
 //Integration imports
 import {
   getAppointmentHistory,
   getPatientUpcomingAppointmentsForDoc,
   getSinglePatient,
 } from '../../services/doctorService'
+import { Icon } from '@iconify/react'
 import { Link } from 'react-router-dom'
 
 function CustomTabPanel(props) {
@@ -139,11 +140,9 @@ const SinglePatientPage = () => {
                 {patient.name[0].toUpperCase()}
               </Avatar>
               <Box sx={{ fontWeight: 'bold', fontSize: 22 }}>
-                {patient.name[0].toUpperCase() +
-                  patient.name.substring(1)}
+                {patient.name[0].toUpperCase() + patient.name.substring(1)}
               </Box>
             </Stack>
-           
           </Box>
 
           <Divider sx={{ my: 2 }}> </Divider>
@@ -159,7 +158,6 @@ const SinglePatientPage = () => {
                   borderRadius: 3,
                 }}
               >
-
                 <Box sx={{ width: '100%', justifyContent: 'center' }}>
                   <Box
                     sx={{
@@ -375,7 +373,6 @@ const SinglePatientPage = () => {
                                       pr: 1,
                                     }}
                                   >
-                                    
                                     <Link
                                       style={{
                                         marginTop: '16px',
@@ -423,7 +420,15 @@ const SinglePatientPage = () => {
                   }}
                 ></Box>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
+                  <Grid item xs={4}> 
+                   <Stack direction="column" spacing={0}>
+                    <Icon
+                      color="#005739"
+                      icon="game-icons:ages"
+                      width="30"
+                      height="30"
+                    />
+                    </Stack>
                     <Stack direction="column" spacing={0}>
                       <Typography variant="body1" color="#aeaeae">
                         <b>Age</b>
@@ -439,9 +444,7 @@ const SinglePatientPage = () => {
                         <b>Height</b>
                       </Typography>
                       <Typography variant="h6" color="initial">
-                        <b>
-                          {patient.patientDemographics.height}
-                        </b>
+                        <b>{patient.patientDemographics.height}</b>
                       </Typography>
                     </Stack>
                   </Grid>
@@ -453,9 +456,7 @@ const SinglePatientPage = () => {
                       <Typography variant="h6" color="initial">
                         <b>
                           {patient.patientDemographics.address[0].toUpperCase() +
-                            patient.patientDemographics.address.substring(
-                              1
-                            )}
+                            patient.patientDemographics.address.substring(1)}
                         </b>
                       </Typography>
                     </Stack>
@@ -470,9 +471,7 @@ const SinglePatientPage = () => {
                       <Typography variant="h6" color="initial">
                         <b>
                           {patient.patientDemographics.gender[0].toUpperCase() +
-                            patient.patientDemographics.gender.substring(
-                              1
-                            )}
+                            patient.patientDemographics.gender.substring(1)}
                         </b>
                       </Typography>
                     </Stack>
@@ -483,9 +482,7 @@ const SinglePatientPage = () => {
                         <b>Weight</b>
                       </Typography>
                       <Typography variant="h6" color="initial">
-                        <b>
-                          {patient.patientDemographics.weight}
-                        </b>
+                        <b>{patient.patientDemographics.weight}</b>
                       </Typography>
                     </Stack>
                   </Grid>
@@ -500,18 +497,18 @@ const SinglePatientPage = () => {
                     </Stack>
                   </Grid>
                 </Grid>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        mt: 3,
-                      }}
-                    >
-                      <Box sx={{ fontSize: 20, fontWeight: 600 }}>
-                        Uploaded Files:
-                      </Box>
-                    </Box>
-                    <ViewReportsGeneral />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    mt: 3,
+                  }}
+                >
+                  <Box sx={{ fontSize: 20, fontWeight: 600 }}>
+                    Uploaded Files:
+                  </Box>
+                </Box>
+                <ViewReportsGeneral />
               </Paper>
             </Grid>
           </Grid>

@@ -13,7 +13,7 @@ import { Box, Stack , Chip} from '@mui/material'
 const ViewDiagnoses = () => {
   const [diagnoses, setDiagnoses] = useState([])
   const [loading, setLoading] = useState(false)
-
+  const [flag, setFlag] = useState(false)
 
   useEffect(() => {
     setLoading(true)
