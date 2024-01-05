@@ -47,31 +47,33 @@ const Dropzone = ({ text, onButtonClick, page }) => {
         }}
         onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
       />
-      {fileObjects?.length != 0 ? (
-        <Button
-          variant="contained"
-          endIcon={<CloudUploadIcon />}
-          color="success"
-          onClick={() => {
-            if (page == 2) {
-              onButtonClick("pagethree");
-            } else if (page == 3) {
-              onButtonClick("pagefour");
-            }
-            console.log("Post general file");
-          }}
-          sx={{
-            display: "flex",
-            marginTop: "1rem",
-            borderRadius: 2,
-            background: "var(--Activ, #005739)",
-            boxShadow: "0px 2px 5px 2px rgba(2, 92, 92, 0.15)",
-          }}>
-          Upload
-        </Button>
+      {/* {fileObjects?.length != 0 ? (
+        
       ) : (
         <></>
-      )}
+      )} */}
+      <Button
+        variant="contained"
+        endIcon={<CloudUploadIcon />}
+        color="success"
+        onClick={() => {
+          if (page == 2) {
+            onButtonClick("pagethree");
+          } else if (page == 3) {
+            onButtonClick("pagefour");
+          }
+          console.log("Post general file");
+        }}
+        sx={{
+          // display: "flex",
+          marginTop: "1rem",
+          borderRadius: 2,
+          background: "var(--Activ, #005739)",
+          boxShadow: "0px 2px 5px 2px rgba(2, 92, 92, 0.15)",
+          display: fileObjects.length === 0 ? "none" : null,
+        }}>
+        Upload
+      </Button>
     </Box>
   );
 };
