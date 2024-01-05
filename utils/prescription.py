@@ -28,12 +28,12 @@ def prescription_data(demographics, disease):
     3. Precations to be taken (if required else write "None")
 
     % OUTPUT FORMAT
-    Always respond ONLY in JSON format without new line characters and it should contain diet_plan mentioning what 5 food_to_eat and 5 food_to_avoid, 5 excercise_plan mentioning what excersies can be done at home and 5 precations that needs to be taken.
+    Always respond ONLY in JSON format without new line characters and it should contain diet_plan mentioning what 5 food_to_eat and 5 food_to_avoid, 5 excercise_plan mentioning what excersies can be done at home and 5 precations that needs to be taken. each of these should be not more than 5 words.
     ##
     Strictly, the response should not contain anything else than the JSON object. It should not contain quotes or declaration of the json.
 
     % OUTPUT EXAMPLE
-    diet_plan: food_to_eat: [],food_to_avoi: [], exercise_plan: ,precautions: []
+    diet_plan is a json containing 3 keys: diet plan, exercise plan and precautions. deit plan will be a json containing 2 keys: food_to_eat and food_to_avoid. exercise plan will be a list of exercises. precautions will be a list of precautions.
 """
     messages = system_prompt.format(demographics, disease)
     chat = model.start_chat(history=[])
