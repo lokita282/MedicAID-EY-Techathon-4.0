@@ -37,7 +37,7 @@ const StatCards = () => {
                 align="center"
                 sx={{
                   ...bold_name,
-                  paddingTop: 2,
+                  // paddingTop: 2,
                   margin: 'auto',
                 }}
               >
@@ -65,7 +65,7 @@ const StatCards = () => {
                 // sx={bold_name}
                 sx={{
                   ...bold_name,
-                  paddingTop: 2,
+                  // paddingTop: 2,
                   margin: 'auto',
                 }}
               >
@@ -93,7 +93,7 @@ const StatCards = () => {
                 // sx={bold_name}
                 sx={{
                   ...bold_name,
-                  paddingTop: 2,
+                  // paddingTop: 2,
                   margin: 'auto',
                 }}
               >
