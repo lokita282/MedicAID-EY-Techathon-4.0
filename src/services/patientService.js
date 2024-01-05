@@ -1,8 +1,17 @@
 import httpcommon from "../httpcommon";
 import httpcommonml from "../httpcommon-ml";
+import httpcommonfile from "../httpcommonfile";
 
 export const postChatbotMessage = (data) => {
   return httpcommonml.post(`/chatbot`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("eyToken")}`,
+    },
+  });
+};
+
+export const uploadReport = (data) => {
+  return httpcommonfile.post(`/reports/upload`, data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("eyToken")}`,
     },
