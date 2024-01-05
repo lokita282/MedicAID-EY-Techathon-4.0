@@ -1,25 +1,27 @@
 import os
 import json
 import shutil
+import datetime
+import textwrap
 import numpy as np
-from PIL import Image
 import tensorflow as tf
-from PIL import ImageDraw
-from PIL import ImageFont
+from PIL import Image, ImageDraw, ImageFont
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from fastapi.middleware.cors import CORSMiddleware
 from tensorflow.keras.applications.densenet import preprocess_input
 from fastapi import FastAPI, Request, Body, UploadFile, File, APIRouter
+from fastapi.responses import FileResponse
 from tensorflow.keras.applications.vgg16 import preprocess_input as preprocess_input_mri
 
 ## function and data type imports from other modules
+from utils.prescription import *
 from utils.general_chat import *
 from utils.data_model import *
 from utils.chatbot import *
+from utils.helper import *
 from models.ddig import *
 from utils.gpt import *
-from utils.prescription import *
 
 app = FastAPI()
 router = APIRouter()
@@ -33,12 +35,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class NumpyInt64Encoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.int64):
-            return int(obj)
-        return super().default(obj)
-
 # Load the model
 ctmodel_path = 'models/assets/ct-scan/chest_CT_SCAN-DenseNet201.hdf5'
 ctmodel = load_model(ctmodel_path)
@@ -51,9 +47,9 @@ async def home():
     return {"message": "headless api base url, visit/docs for swagger documentation."}
 
 
-@app.post("/chat-bot")
+@app.post("/chatbot")
 async def notgpt(request: ChatbotRequest):
-    prompt = request.prompt
+    prompt = request.text
     result = querybot(prompt)
     return ChatbotResponse(response=result)
 
@@ -69,13 +65,10 @@ async def diagnosis(request: DiagnosisRequest):
 
 
 @app.post("/ct-scan")
-async def predict_ct(img: UploadFile = File(...)):
-    # Load and preprocess the image
-    img_path = f"{img.filename}"  # Save the file temporarily
-    with open(img.filename, "wb") as buffer:
-        shutil.copyfileobj(img.file, buffer)
+async def predict_ct(request: ScanRequest):
+    save_image(request.image)
 
-    img = image.load_img(img.filename, target_size=(460, 460))
+    img = image.load_img("image.png", target_size=(460, 460))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = preprocess_input(img)
@@ -91,18 +84,15 @@ async def predict_ct(img: UploadFile = File(...)):
         'predicted_class': predicted_class_label,
         'probability': float(predictions[0][predicted_class_index[0]]) * 100
     }
-    os.remove(img_path)
+    os.remove('image.png')
 
     return response
 
 @app.post("/predict-mri")
-async def predict_mri(img: UploadFile = File(...)):
-    # Load and preprocess the image
-    img_path = f"{img.filename}"  # Save the file temporarily
-    with open(img.filename, "wb") as buffer:
-        shutil.copyfileobj(img.file, buffer)
+async def predict_mri(request: ScanRequest):
+    save_image(request.image)
 
-    img = image.load_img(img.filename, target_size=(460, 460))
+    img = image.load_img("image.png", target_size=(460, 460))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = preprocess_input_mri(img)
@@ -117,7 +107,7 @@ async def predict_mri(img: UploadFile = File(...)):
         'predicted_class': predicted_class_label,
         'probability': float(predictions[0][predicted_class_index[0]]) * 100
     }
-    os.remove(img_path)
+    os.remove('image.png')
 
     return response
 
@@ -128,29 +118,45 @@ async def gemi(request:DifferentialDiagnosisRequest):
     chatbot_response = chatbot(demographics, symptoms)
     return chatbot_response 
 
-@app.post("/prescription")
-async def prescription(request:PrescriptionRequest):
+@app.post("/generate-prescription-data")
+async def generate_prescription_data(request:PrescriptionRequest):
     demographics = request.demographics
     disease = request.disease
     chatbot_response = prescription_data(demographics, disease)
-    if chatbot_response["diet_plan"] == "None":
-        diet_plan = "No diet plan required"
-    else:
-        diet_plan = chatbot_response["diet_plan"]
+    # return PrescriptionResponse(response=chatbot_response)
+    return chatbot_response
 
-    if chatbot_response["exercise_plan"] == "None":
-        exercise_plan = "No exercise plan required"
-    else:
-        exercise_plan = chatbot_response["exercise_plan"]
+
+@app.post("/generate-prescription")
+async def generate_prescription(request:PrescriptionReportRequest):
     
-    if chatbot_response["precautions"] == "None":
-        precautions = "No precautions required"
-    else:
-        precautions = chatbot_response["precautions"]
-    
-    img = Image.open('assets/template.png')
+    img = Image.open('models/assets/template.png')
     I1 = ImageDraw.Draw(img)
     details_font = ImageFont.truetype("arial.ttf", 65)
+
+    name = request.name
+    date = datetime.datetime.now().strftime("%d/%m/%Y")
+    age = str(request.age)
+    gender = request.gender
+    weight = request.weight
+    medicine = request.medicine
+    diet_plan = request.diet_plan
+    exercise_plan = request.exercise_plan
+    precautions = request.precautions
+    medicine = request.medicine
+
+    food_to_eat = diet_plan['food_to_eat']
+    food_to_avoid = diet_plan['food_to_avoid']
+    # exercise_plan = exercise_plan['exercise_plan']
+    # precautions = precautions['precautions']
+
+    def draw_text(text, position, font, color=(255, 255, 255), max_width=100):
+        lines = textwrap.wrap(text, width=max_width)
+        y_text = position[1]
+        for line in lines:
+            width, height = font.getsize(line)
+            I1.text((position[0], y_text), line, font=font, fill=color)
+            y_text += height
 
     # patient details
     I1.text((656, 695), name, font=details_font, fill=(255, 0, 0))
@@ -158,13 +164,43 @@ async def prescription(request:PrescriptionRequest):
     I1.text((367, 830), age, font=details_font, fill=(255, 0, 0))
     I1.text((1067, 830), gender, font=details_font, fill=(255, 0, 0))
     I1.text((1772, 830), weight, font=details_font, fill=(255, 0, 0))
-    I1.text((552, 989), diagonsis, font=details_font, fill=(255, 0, 0))
 
-    # diet plan
-    _font = ImageFont.truetype("arial.ttf", 50)
-    I1.text((200, 989), "Diet Plan", font=details_font, fill=(255, 0, 0))
-    for i in range(len(diet_plan["food_to_eat"])):
-        I1.text((200, 1300 + i*150), diet_plan["food_to_eat"][i], font=_font, fill=(255, 0, 0))
+    title_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 80)
+    text_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 48)
+    
+    #medicine
+    I1.text((200 ,1000 ), "Medicine:", (48,80,107), font=title_font)
+    draw_text(medicine, (200 ,1140 ), text_font, color=(48,80,107), max_width=90)
+
+    #food_to_eat
+    diet_plan_list = food_to_eat
+    I1.text((200 ,1500 ), "Food to eat:", (48,80,107), font=title_font)
+    for i in range(len(diet_plan_list)):
+        draw_text(diet_plan_list[i], (200 ,1640 + 60*i), text_font, color=(48,80,107), max_width=40)
+
+    #food_to_avoid
+    diet_plan_list = food_to_avoid
+    I1.text((1300 ,1500 ), "Food to avoid:", (48,80,107), font=title_font)
+    for i in range(len(diet_plan_list)):
+        draw_text(diet_plan_list[i], (1300 ,1640 + 60*i), text_font, color=(48,80,107), max_width=40)
+
+    #exercise_plan
+    I1.text((200 ,2100 ), "Exercise plan:", (48,80,107), font=title_font)
+    diet_plan_list = exercise_plan
+    if diet_plan_list == "No exercise plan required":
+        I1.text((200 ,1500 ), "No exercise plan required", (48,80,107), font=text_font)
+    else:
+        for i in range(len(diet_plan_list)):
+            draw_text(diet_plan_list[i], (200 ,2240 + 60*i), text_font, color=(48,80,107), max_width=40)
+
+    #precautions
+    I1.text((1300 ,2100 ), "Precautions:", (48,80,107), font=title_font)
+    diet_plan_list = precautions
+    if diet_plan_list == "No exercise plan required":
+        I1.text((200 ,1500 ), "No exercise plan required", (48,80,107), font=text_font)
+    else:
+        for i in range(len(diet_plan_list)):
+            draw_text(diet_plan_list[i], (1300 ,2240 + 60*i), text_font, color=(48,80,107), max_width=40)
 
     img.save('template.png')
-    # return chatbot_response 
+    return FileResponse('template.png')
