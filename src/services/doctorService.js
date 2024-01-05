@@ -88,3 +88,14 @@ export const getUpcomingAppointments = () => {
   export const getPrescriptionData = (data) => {
     return httpcommonml.post(`/`, data)
   }
+
+  export const getReportsOfPatient = (id) => {
+    return httpcommon.get(`/reports/patient/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+      },
+    })
+  }
+
+   
+  

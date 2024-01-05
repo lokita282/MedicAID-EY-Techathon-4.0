@@ -1,7 +1,8 @@
-import React from 'react'
+import {React, useContext, useState} from 'react'
+import { eycontext } from '../context/MainContext'
 import SideDrawer from '../components/sidebar/Sidebar'
 import { Link } from 'react-router-dom'
-import Grid from '@mui/material/Grid'
+import {Grid, Stack} from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -15,7 +16,12 @@ import CategoryPie from '../components/userTransactionOverview/CategoryPie'
 import { CardMedia } from '@mui/material'
 import gipphy from '../images/dangerGif.svg'
 import giphy from '../images/giphy.gif'
-import { df_jfs_ac_fdc } from '../theme/CssMy'
+import { df_jfs_ac_fdc, bold_name, ptag } from '../theme/CssMy'
+import StatCards from '../components/docDash/StatCards'
+import LineChart from '../components/docDash/LineChart'
+import RadialChart from '../components/docDash/RadialChart'
+import Timeline from '../components/docDash/Timeline'
+import AllVisitsCard from '../components/docDash/AllVisitsCard'
 // import { Augnito, AugnitoConfig, AugnitoAPIServer } from 'augnitosdk'
 
 // const augnitoConfig = {
@@ -58,6 +64,7 @@ const styles = {
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     fontFamily: 'Poppins',
+    paddingTop: '0.2em',
   },
   gradientTextH2: {
     background: 'radial-gradient( #069B67, #005739)',
@@ -92,6 +99,9 @@ const styles = {
 }
 
 const UserDashboardPage = () => {
+
+    const { user } = useContext(eycontext)
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -104,102 +114,57 @@ const UserDashboardPage = () => {
     <Grid
       container
       spacing={2}
-      sx={{ height: '80vh', padding: '0', margin: '0' }}
+      // sx={{ height: '80vh', padding: '0', margin: '0' }}
     >
-      {/* <Grid item={12}> {augnito.toggleListening()} </Grid> */}
-      <Grid item xs={12} md={5} sx={df_jfs_ac_fdc}>
-        <Paper style={styles.paperContainer} elevation={0}>
-          <Typography variant="h2" style={styles.gradientText}>
-            <b>Scan. Verify. Redeem.</b>
-          </Typography>
-          <Typography
-            variant="h6"
-            color="#909090"
-            sx={{ paddingTop: 2, fontFamily: 'Poppins' }}
-          >
-            Empowering Seamless Transactions, the eZ-RUPI Way!
-          </Typography>
-          <Link
-            style={{ ...styles.payBtn, width: 'auto' }}
-            to="/user/getstarted"
-          >
-            <Button
-              sx={{ color: '#fff', fontFamily: 'Poppins', width: 'auto' }}
-            >
-              <b>Get Started ➤</b>
-            </Button>
-          </Link>
-        </Paper>
+      <Grid item xs={12}>
+        <Typography variant="h3" style={styles.gradientText}>
+          <b>Hello Dr. {user.name}</b>
+        </Typography>
       </Grid>
       <Grid
-        item
-        xs={0}
-        md={7}
-        sx={{
-          padding: '0',
-          position: 'relative',
-          margin: '0',
-          display: 'flex',
-          justifyContent: 'flex-end',
-        }}
+        container
+        spacing={2}
+        sx={{ paddingLeft: '1em', paddingTop: '2em' }}
       >
-        {/* <Lottie
-          options={defaultOptions}
-          height={500}
-          width={600}
-          speed={0.25}
-        /> */}
-        <img style={{ marginTop: '-35px', height: '89vh' }} src={gipphy} />
-        <img
-          src={giphy}
-          style={{ position: 'absolute', top: '165px', left: '150px' }}
-        />
+        <Grid item xs={7}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <StatCards />
+            </Grid>
+            <Grid item xs={6}>
+              <Stack sx={{ marginBottom: 2 }}>
+                <Paper
+                  sx={{ borderRadius: '10px', minHeight: '120px' }}
+                  elevation={3}
+                >
+                  <AllVisitsCard />
+                </Paper>
+              </Stack>
+              <Stack>
+                <Grid item xs={12}>
+                  <Paper sx={{ borderRadius: '10px' }} elevation={3}>
+                    <Timeline />
+                  </Paper>
+                </Grid>
+              </Stack>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper sx={{ borderRadius: '10px' }} elevation={3}>
+                <RadialChart />{' '}
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={5}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Paper sx={{ borderRadius: '10px' }} elevation={3}>
+                <LineChart />
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      {/* <Grid item xs={12}>
-        <Typography variant="h5" style={{ ...styles.gradientTextH2, marginTop: '10%' }}>
-          <b>Transaction Overview </b>
-        </Typography>
-      </Grid> */}
-      {/* <Grid item xs={9}>
-        <Paper style={styles.paperContainerAnalysis}>
-          <Typography
-            variant="h6"
-            color="initial"
-            sx={{ fontFamily: 'Poppins' }}
-          >
-            <b>Weekly Activity</b>
-          </Typography>
-          <WeeklyActivity />
-        </Paper>
-      </Grid> */}
-      {/* <Grid item xs={3}>
-        <WeeklySpend />
-        <MonthlySpend />
-      </Grid> */}
-      {/* <Grid item xs={9}>
-        <Paper style={styles.paperContainerAnalysis}>
-          <Typography
-            variant="h6"
-            color="initial"
-            sx={{ fontFamily: 'Poppins' }}
-          >
-            <b>Category vs Time Analysis</b>
-          </Typography>
-          <CategoryVsTime />
-        </Paper>
-      </Grid> */}
-      {/* <Grid item xs={3} sx={{ marginBottom: '10%' }}>
-        <Paper style={styles.paperContainerCharts}>
-          <Typography
-            variant="h6"
-            color="initial"
-            sx={{ padding: 5, paddingBottom: 2, fontFamily: 'Poppins' }}
-          >
-            <b>Comparing Expenditure</b>
-          </Typography>
-          <CategoryPie />
-        </Paper>
-      </Grid> */}
     </Grid>
   )
 }

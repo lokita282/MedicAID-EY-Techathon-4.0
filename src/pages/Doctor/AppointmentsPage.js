@@ -12,7 +12,7 @@ import { df_jc_ac } from '../../theme/CssMy'
 
 import { Scheduler } from '@aldabil/react-scheduler'
 
-import { getAllAppointments } from '../../services/doctorService'
+import { getAllAppointments, getSingleAppointmentDetails } from '../../services/doctorService'
 
 export default function Appointments() {
   const [loading, setLoading] = useState(false)
@@ -56,6 +56,28 @@ export default function Appointments() {
     func()
   }, [])
 
+  const funcSetPatient = async (id) => {
+    // console.log(e.event_id)
+    await getSingleAppointmentDetails(id).then((res) => {
+      // console.log('first') 
+      // console.log('res', res.data.appointment.patientId)
+      localStorage.setItem('eyPatient', JSON.stringify( res.data.appointment.patientId))
+    })
+    // await getAllAppointments().then((res) => {
+    //   console.log(res)
+
+    //   setAppointments(res.data.appointments)
+    //   res.data.calendarEvents.map((event) => {
+    //     event.start = new Date(event.start)
+    //     event.end = new Date(event.end)
+    //     console.log(event)
+    //     ev.push(event)
+    //   })
+    //   setCalEvents(ev)
+    // })
+    // setLoading(false)
+  }
+
   return (
     <SideDrawer>
       {calEvents ? (
@@ -63,6 +85,9 @@ export default function Appointments() {
           view="week"
           draggable={false}
           events={calEvents}
+          onEventClick={async (e)=> {
+            funcSetPatient(e.event_id)
+          }}
           fields={[
             // {
             //   name: "user_id",
