@@ -133,7 +133,7 @@ async def generate_prescription(request:PrescriptionReportRequest):
     img = Image.open('models/assets/template.png')
     I1 = ImageDraw.Draw(img)
     details_font = ImageFont.truetype("arial.ttf", 65)
-    doctor_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 100)
+    doctor_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 130)
 
     name = request.name
     date = datetime.datetime.now().strftime("%d/%m/%Y")
