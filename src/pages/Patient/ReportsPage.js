@@ -476,7 +476,7 @@ export default function Reports() {
             </Grid>
             <Grid item xs={4}>
               <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
-                <Typography
+                {/* <Typography
                   sx={{
                     color: "#000",
                     fontVariantNumeric: "lining-nums tabular-nums",
@@ -487,7 +487,7 @@ export default function Reports() {
                     lineHeight: "normal",
                   }}>
                   Upload Documents
-                </Typography>
+                </Typography> */}
                 <Dropzone />
               </Paper>
             </Grid>

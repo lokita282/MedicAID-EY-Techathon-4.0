@@ -27,6 +27,17 @@
 .react-chatbot-kit-chat-bot-avatar-letter {
   color: white;
 }
+.chat-app {
+  max-height: 92vh !important;
+  min-height: 92vh !important;
+}
+.react-chatbot-kit-chat-input-container {
+  position: fixed;
+  width: 32%;
+  bottom: 0;
+  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+}
 
 .react-chatbot-kit-chat-bot-message {
   background-color: #f6f6f6 !important;
