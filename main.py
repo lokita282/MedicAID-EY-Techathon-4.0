@@ -133,13 +133,17 @@ async def generate_prescription(request:PrescriptionReportRequest):
     img = Image.open('models/assets/template.png')
     I1 = ImageDraw.Draw(img)
     details_font = ImageFont.truetype("arial.ttf", 65)
+    doctor_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 100)
 
     name = request.name
     date = datetime.datetime.now().strftime("%d/%m/%Y")
     age = str(request.age)
     gender = request.gender
     weight = request.weight
+
+    doctor_name = request.doctor_name
     medicine = request.medicine
+
     diet_plan = request.diet_plan
     exercise_plan = request.exercise_plan
     precautions = request.precautions
@@ -147,10 +151,8 @@ async def generate_prescription(request:PrescriptionReportRequest):
 
     food_to_eat = diet_plan['food_to_eat']
     food_to_avoid = diet_plan['food_to_avoid']
-    # exercise_plan = exercise_plan['exercise_plan']
-    # precautions = precautions['precautions']
 
-    def draw_text(text, position, font, color=(255, 255, 255), max_width=100):
+    def draw_text(text, position, font, color=(255, 255, 255), max_width=125):
         lines = textwrap.wrap(text, width=max_width)
         y_text = position[1]
         for line in lines:
@@ -158,12 +160,15 @@ async def generate_prescription(request:PrescriptionReportRequest):
             I1.text((position[0], y_text), line, font=font, fill=color)
             y_text += height
 
+    # doctor details
+    I1.text((161, 340), doctor_name, font=doctor_font, fill=(48,80,107))
+
     # patient details
-    I1.text((656, 695), name, font=details_font, fill=(255, 0, 0))
-    I1.text((1763, 695), date, font=details_font, fill=(255, 0, 0))
-    I1.text((367, 830), age, font=details_font, fill=(255, 0, 0))
-    I1.text((1067, 830), gender, font=details_font, fill=(255, 0, 0))
-    I1.text((1772, 830), weight, font=details_font, fill=(255, 0, 0))
+    I1.text((656, 695), name, font=details_font, fill=(48,80,107))
+    I1.text((1763, 695), date, font=details_font, fill=(48,80,107))
+    I1.text((380, 830), age, font=details_font, fill=(48,80,107))
+    I1.text((1067, 830), gender, font=details_font, fill=(48,80,107))
+    I1.text((1772, 830), weight, font=details_font, fill=(48,80,107))
 
     title_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 80)
     text_font = ImageFont.truetype("fonts/PlayfairDisplay-Black.ttf", 48)
