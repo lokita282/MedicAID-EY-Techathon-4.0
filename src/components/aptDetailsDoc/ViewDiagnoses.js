@@ -40,6 +40,8 @@ const ViewDiagnoses = () => {
     func()
   }, [])
 
+  
+
   return (
     <>
       {loading ? (

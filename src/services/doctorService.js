@@ -64,6 +64,11 @@ export const getUpcomingAppointments = () => {
   export const getReportDetection = (data) => {
     return httpcommonml.post(`/ct-scan`, data)
   }
+
+  export const getMRIDetection = (data) => {
+    return httpcommonml.post(`/predict-mri`, data)
+  }
+
   export const getPatientUpcomingAppointmentsForDoc = (id) => {
     return httpcommon.get(`/appointments/get_upcoming_for_doc/${id}`, {
       headers: {
@@ -80,3 +85,6 @@ export const getUpcomingAppointments = () => {
     })
   }
   
+  export const getPrescriptionData = (data) => {
+    return httpcommonml.post(`/`, data)
+  }
