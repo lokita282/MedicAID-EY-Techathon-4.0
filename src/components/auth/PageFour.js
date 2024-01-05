@@ -1,5 +1,4 @@
 import React from "react";
-import Successgif from "../../images/Success.gif";
 import { Box } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Button } from "@mui/material";
