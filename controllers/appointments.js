@@ -344,6 +344,22 @@ const getPatientUpcomingAppointments = async (req, res) => {
   }
 }
 
+//Get patients's visited appointments
+const getPatientPastAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointments.find({patientId: req.user._id, status: 'visited'})
+    res.status(200).json({
+      message: 'View past appointments for patient!',
+      appointments,
+    })
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    })
+  }
+}
+
 //Get patients's upcoming appointments for doctor
 const getPatientUpcomingAppointmentsForDoc = async (req, res) => {
   try {
@@ -395,4 +411,5 @@ export {
   getUpcomingAppointmentsDoctor,
   getPatientUpcomingAppointmentsForDoc,
   getSinglePatient,
+  getPatientPastAppointments,
 }

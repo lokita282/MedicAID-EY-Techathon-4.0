@@ -11,6 +11,7 @@ import {
   getUpcomingAppointmentsDoctor,
   getPatientUpcomingAppointmentsForDoc,
   getSinglePatient,
+  getPatientPastAppointments,
 } from '../controllers/appointments.js'
 
 const router = new express.Router()
@@ -37,6 +38,9 @@ router.patch('/update/:id', auth.verifyJWT, updateAppointment)
 
 //get upcoming appointments for patient
 router.get('/get_upcoming', auth.verifyJWT, getPatientUpcomingAppointments) 
+
+//get past appointments for patient
+router.get('/get_past', auth.verifyJWT, getPatientPastAppointments) 
 
 //get upcoming appointments for patient
 router.get('/get_upcoming_for_doc/:id', auth.verifyJWT, getPatientUpcomingAppointmentsForDoc) 
