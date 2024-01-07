@@ -456,7 +456,9 @@ export default function Reports() {
                                     lineHeight: "normal",
                                   }}>
                                   {" "}
-                                  {apt?.symptoms}
+                                  {apt?.symptoms.map((symptom, idx) => {
+                                    return symptom + " ";
+                                  })}
                                 </Typography>
                               </Box>
                               {/* <Typography>
