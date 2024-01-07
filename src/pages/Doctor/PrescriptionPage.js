@@ -215,7 +215,7 @@ Food to Avoid : ${prescriptionData?.diet_plan.food_to_avoid.map(
                             diet_plan: prescriptionData.diet_plan,
                             exercise_plan: prescriptionData.exercise_plan,
                             precautions: prescriptionData.precautions,
-                            medicine: json.medicine,
+                            medicine: prescriptionData.medicine,
                           }).then((res) => {
                             console.log(res)
                             let base64ImageString = Buffer.from(
