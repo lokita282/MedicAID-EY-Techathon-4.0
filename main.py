@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import shutil
 import datetime
@@ -10,7 +11,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from fastapi.middleware.cors import CORSMiddleware
 from tensorflow.keras.applications.densenet import preprocess_input
-from fastapi import FastAPI, Request, Body, UploadFile, File, APIRouter
+from fastapi import FastAPI, Request, Body, UploadFile, File, APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from tensorflow.keras.applications.vgg16 import preprocess_input as preprocess_input_mri
 
@@ -23,6 +24,10 @@ from utils.helper import *
 from models.ddig import *
 from utils.gpt import *
 
+#Rate Limit
+from starlette.requests import Request as reqq
+from starlette.status import HTTP_429_TOO_MANY_REQUESTS
+
 app = FastAPI()
 router = APIRouter()
 origins = ["*"]
@@ -34,6 +39,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Store the last request time for each client
+last_request_time = {}
 
 # Load the model
 ctmodel_path = 'models/assets/ct-scan/chest_CT_SCAN-DenseNet201.hdf5'
@@ -112,9 +120,22 @@ async def predict_mri(request: ScanRequest):
     return response
 
 @app.post("/diff-diagnosis")
-async def gemi(request:DifferentialDiagnosisRequest):
-    demographics = request.demographics
-    symptoms = request.symptoms
+async def gemi(diagnosis_request: DifferentialDiagnosisRequest):
+# async def gemi(request: reqq, diagnosis_request: DifferentialDiagnosisRequest):
+    # client = request.client.host
+    # print(client)
+    # current_time = time.time()
+
+    # if client in last_request_time:
+    #     if current_time - last_request_time[client] < 60:
+    #         raise HTTPException(
+    #             status_code=HTTP_429_TOO_MANY_REQUESTS,
+    #             detail="Too Many Requests",
+    #         )
+
+    # last_request_time[client] = current_time
+    demographics = diagnosis_request.demographics
+    symptoms = diagnosis_request.symptoms
     chatbot_response = chatbot(demographics, symptoms)
     return chatbot_response 
 
@@ -123,13 +144,15 @@ async def generate_prescription_data(request:PrescriptionRequest):
     demographics = request.demographics
     disease = request.disease
     chatbot_response = prescription_data(demographics, disease)
+    type(chatbot_response)
+    chatbot_response['medicine'] = "For cold, take Sumo Cold 2 times in a day. One after breakfast and one before sleeping. If you feel extreme headache, you can take Saridon 500mg but dont get habbitual to it."
     # return PrescriptionResponse(response=chatbot_response)
     return chatbot_response
 
 
 @app.post("/generate-prescription")
 async def generate_prescription(request:PrescriptionReportRequest):
-    
+    print(request)
     img = Image.open('models/assets/template.png')
     I1 = ImageDraw.Draw(img)
     details_font = ImageFont.truetype("arial.ttf", 65)
@@ -142,7 +165,6 @@ async def generate_prescription(request:PrescriptionReportRequest):
     weight = request.weight
 
     doctor_name = request.doctor_name
-    medicine = request.medicine
 
     diet_plan = request.diet_plan
     exercise_plan = request.exercise_plan

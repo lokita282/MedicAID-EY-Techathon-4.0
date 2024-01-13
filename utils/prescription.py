@@ -33,7 +33,7 @@ def prescription_data(demographics, disease):
     Strictly, the response should not contain anything else than the JSON object. It should not contain quotes or declaration of the json.
 
     % OUTPUT EXAMPLE
-    diet_plan is a json containing 3 keys: diet plan, exercise plan and precautions. deit plan will be a json containing 2 keys: food_to_eat and food_to_avoid. exercise plan will be a list of exercises. precautions will be a list of precautions.
+    json containing 3 keys: diet plan, exercise plan and precautions. deit plan will be a json containing 2 keys: food_to_eat and food_to_avoid. exercise plan will be a list of exercises. precautions will be a list of precautions.
 """
     messages = system_prompt.format(demographics, disease)
     chat = model.start_chat(history=[])
