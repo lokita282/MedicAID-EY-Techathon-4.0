@@ -332,6 +332,11 @@ const updateAppointment = async (req, res) => {
 const getPatientUpcomingAppointments = async (req, res) => {
   try {
     const appointments = await Appointments.find({patientId: req.user._id, status: 'followup'||"consultation"})
+    for (let i = 0; i < appointments.length; i++) {
+      appointments[i].doctorId = await User.findOne({
+        _id: appointments[i].doctorId,
+      })
+    }
     res.status(200).json({
       message: 'View upcoming appointments for patient!',
       appointments,
@@ -348,6 +353,11 @@ const getPatientUpcomingAppointments = async (req, res) => {
 const getPatientPastAppointments = async (req, res) => {
   try {
     const appointments = await Appointments.find({patientId: req.user._id, status: 'visited'})
+    for (let i = 0; i < appointments.length; i++) {
+      appointments[i].doctorId = await User.findOne({
+        _id: appointments[i].doctorId,
+      })
+    }
     res.status(200).json({
       message: 'View past appointments for patient!',
       appointments,
