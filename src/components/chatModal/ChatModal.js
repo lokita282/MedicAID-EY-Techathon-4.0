@@ -10,11 +10,11 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "28%",
   left: "100%",
-  transform: "translate(-30vw, -25vh)",
+  transform: "translate(-30vw, -20vh)",
   width: "30vw",
-  height: "72vh",
+  height: "90vh",
   marginLeft: -2,
   // height: "75vh",
   bgcolor: "background.paper",

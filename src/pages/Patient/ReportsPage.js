@@ -724,7 +724,7 @@ export default function Reports() {
                                 lineHeight: "normal",
                                 marginLeft: 0.5,
                               }}>
-                              {apt?.title}
+                              {apt?.doctorId?.name}
                             </Typography>
                             <Box
                               sx={{
@@ -938,22 +938,29 @@ export default function Reports() {
         <div
           className="chatbot"
           style={{
-            width: "60px",
-            height: "60px",
-            borderRadius: "50px",
+            width: "50px",
+            height: "50px",
+            borderRadius: "100px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            overflow: "hidden",
+            border: "5px solid #005937",
           }}>
           <img
             alt="chatbot"
-            src={require("../../images/chatbot.png")}
-            style={{ color: "#fff", height: "38px", width: "38px" }}
+            src={require("../../images/chat-animated.gif")}
+            style={{
+              color: "#fff",
+              height: "100px",
+              width: "100px",
+              borderRadius: "50px",
+            }}
           />
         </div>
       </Fab>
       <Steps
-        enabled={stepsEnabled}
+        enabled={false}
         tooltipPosition="bottom"
         steps={steps}
         initialStep={0}
