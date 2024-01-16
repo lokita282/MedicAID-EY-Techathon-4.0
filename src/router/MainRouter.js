@@ -21,6 +21,7 @@ import AppointmentDetailsPage from '../pages/Doctor/AppointmentDetailsPage'
 import PatientDetailsPage from '../pages/Doctor/PatientDetailsPage'
 import MRIViewer from "../pages/Doctor/MRIViewer"
 import PrescriptionPage from "../pages/Doctor/PrescriptionPage"
+import ViewPrescriptionPage from "../pages/Patient/ViewPrescriptionPage"
 import Test from "../pages/AWS/test"
 
 export default function MainRouter() {
@@ -84,7 +85,11 @@ export default function MainRouter() {
         </Route>
 
         <Route path="/appointment_details/:id/mri" element={<PrivateRouter />}>
-          <Route exact path="/appointment_details/:id/mri" element={<MRIViewer />} />
+          <Route
+            exact
+            path="/appointment_details/:id/mri"
+            element={<MRIViewer />}
+          />
         </Route>
 
         <Route path="/prescription" element={<PrivateRouter />}>
@@ -97,6 +102,10 @@ export default function MainRouter() {
         {/* Patients */}
         <Route path="/reports" element={<PrivateRouter />}>
           <Route exact path="/reports" element={<ReportsPage />} />
+        </Route>
+
+        <Route path="/view-prescription" element={<PrivateRouter />}>
+          <Route exact path="/view-prescription" element={<ViewPrescriptionPage />} />
         </Route>
 
         <Route path="/scheme" element={<PrivateRouter />}>

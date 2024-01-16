@@ -48,6 +48,7 @@
     "fuzzy-search": "^3.2.1",
     "generate-avatar": "^1.4.10",
     "install": "^0.13.0",
+    "intro.js-react": "^1.0.0",
     "jsencrypt": "^3.3.2",
     "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.4",

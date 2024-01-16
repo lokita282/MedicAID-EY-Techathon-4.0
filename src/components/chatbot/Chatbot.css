@@ -1,8 +1,13 @@
 .chat-app {
-  min-height: 100vh;
+  min-height: 50vh !important;
+  max-height: 50vh !important;
   display: flex;
   justify-content: center;
   padding: 1rem;
+}
+
+.react-chatbot-kit-chat-header {
+  font-size: 0 !important;
 }
 
 .react-chatbot-kit-chat-bot-avatar-container {
@@ -27,13 +32,11 @@
 .react-chatbot-kit-chat-bot-avatar-letter {
   color: white;
 }
-.chat-app {
-  max-height: 92vh !important;
-  min-height: 92vh !important;
-}
+
 .react-chatbot-kit-chat-input-container {
   position: fixed;
-  width: 32%;
+  width: 28vw !important;
+  /* margin-left: -12px !important; */
   bottom: 0;
   padding-bottom: 1rem;
   padding-top: 0.5rem;
@@ -75,8 +78,10 @@
 }
 .react-chatbot-kit-chat-input-form {
   display: flex;
+  width: auto;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: -50px;
 }
 .react-chatbot-kit-chat-btn-send {
   /* background-color: #005739; */
@@ -106,7 +111,7 @@
   border-radius: 0.5rem !important;
   border: 1px solid #ccc !important;
   padding: 0.5rem !important;
-  width: 90% !important;
+  width: 85% !important;
   outline: none !important;
   text-align: left !important;
 }

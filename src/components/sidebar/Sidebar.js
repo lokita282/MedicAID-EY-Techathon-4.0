@@ -14,7 +14,7 @@ import {
   Toolbar,
   Tooltip,
 } from "@mui/material";
-import { ButtonBase } from "@mui/material";
+import { ButtonBase, Typography } from "@mui/material";
 
 import { Icon } from "@iconify/react";
 import { useState } from "react";
@@ -26,6 +26,16 @@ import { generateFromString } from "generate-avatar";
 import slogo from "../../images/logo-alt.png";
 
 const drawerWidth = 240;
+
+const styles = {
+  gradientText: {
+    background: 'radial-gradient( #069B67, #005739)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    fontFamily: 'Poppins',
+    paddingTop: '0.2em',
+  },
+}
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -112,21 +122,24 @@ export default function SideDrawer(props) {
           color: "#005739",
           boxShadow: "0px 1px 26px rgba(94, 99, 116, 0.05)",
         }}>
-        <Toolbar sx={df_jfe_ac}>
+        <Toolbar >
           {/* <Avatar
             sx={{ marginRight: '2%' }}
             alt={user?.contact}
             src={`data:image/svg+xml;utf8,${generateFromString(user?.contact)}`}
           /> */}
           {isDoc ? (
-            <></>
+            <>          <Typography variant="h4" color="initial" sx={{margin: 'auto', }} style={styles.gradientText}><b>MedicAID</b></Typography></>
           ) : (
+            <>
+             <Typography variant="h4" color="initial" sx={{marginLeft: 'auto' }} style={styles.gradientText}><b>MedicAID</b></Typography>
             <ButtonBase
               sx={{
                 display: "flex",
                 padding: 1,
                 borderRadius: 50,
                 marginRight: "1rem",
+                marginLeft: 'auto',
                 "&:hover": {
                   boxShadow: "1",
                   transition: "0.3s",
@@ -146,6 +159,7 @@ export default function SideDrawer(props) {
                 />
               )}
             </ButtonBase>
+            </>
           )}
           <Button
             sx={btn}
@@ -179,7 +193,7 @@ export default function SideDrawer(props) {
                       <ListItemIcon sx={listItemIco}>
                         <Icon
                           icon="material-symbols:home-rounded"
-                          color={url === "" ? "#fff" : "#6A707F"}
+                          color={url === "" ? "#fff" : "#a2a2a2"}
                           width="26"
                           height="26"
                         />
@@ -196,7 +210,7 @@ export default function SideDrawer(props) {
                       <ListItemIcon sx={listItemIco}>
                         <Icon
                           color={
-                            url.includes("allpatients") ? "#fff" : "#6A707F"
+                            url.includes("allpatients") ? "#fff" : "#a2a2a2"
                           }
                           icon="material-symbols:patient-list"
                           width="30"
@@ -215,7 +229,7 @@ export default function SideDrawer(props) {
                       <ListItemIcon sx={listItemIco}>
                         <Icon
                           color={
-                            url.includes("appointments") ? "#fff" : "#6A707F"
+                            url.includes("appointments") ? "#fff" : "#a2a2a2"
                           }
                           icon="teenyicons:appointments-solid"
                           width="24"
@@ -238,7 +252,7 @@ export default function SideDrawer(props) {
                         <ListItemIcon sx={listItemIco}>
                           <Icon
                             icon="material-symbols:home-rounded"
-                            color={url === "" ? "#fff" : "#6A707F"}
+                            color={url === "" ? "#fff" : "#a2a2a2"}
                             width="26"
                             height="26"
                           />
