@@ -83,8 +83,8 @@ export default function MainRouter() {
           <Route exact path="/:id" element={<MeetPage />} />
         </Route>
 
-        <Route path="/mri" element={<PrivateRouter />}>
-          <Route exact path="/mri" element={<MRIViewer />} />
+        <Route path="/appointment_details/:id/mri" element={<PrivateRouter />}>
+          <Route exact path="/appointment_details/:id/mri" element={<MRIViewer />} />
         </Route>
 
         <Route path="/prescription" element={<PrivateRouter />}>

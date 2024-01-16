@@ -18,6 +18,22 @@ export const uploadReport = (data) => {
   });
 };
 
+export const getPastAppointments = () => {
+  return httpcommon.get(`/appointments/get_past`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("eyToken")}`,
+    },
+  });
+};
+
+export const uploadGeneralReport = (data) => {
+  return httpcommonfile.post(`/reports/upload_general`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("eyToken")}`,
+    },
+  });
+};
+
 export const getAllDoctors = () => {
   return httpcommon.get(`/user/alldoctors`, {
     headers: {

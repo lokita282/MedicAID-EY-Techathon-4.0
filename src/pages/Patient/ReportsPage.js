@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 
 import SwipeableEdgeDrawer from "../../components/drawer/Drawer";
 
+import { ButtonBase } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
@@ -17,12 +19,16 @@ import Pagination from "@mui/material/Pagination";
 import Modal from "@mui/material/Modal";
 import calLogo from "../../images/calendar.png";
 import { parse } from "date-fns";
-import { df_jc_ac } from "../../theme/CssMy";
+import { df_jc_ac, textField } from "../../theme/CssMy";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import { Icon } from "@iconify/react";
 
 import {
   getDoctorsInteractedWith,
+  getPastAppointments,
   getPatientProfile,
   getUpcomingAppointments,
+  uploadGeneralReport,
 } from "../../services/patientService";
 import AppointmentModal from "../../components/aptModal/AppointmentModal";
 import Dropzone from "../../components/dropzone/Dropzone";
@@ -31,7 +37,7 @@ import Loading from "../../components/loader/Loading";
 
 export default function Reports() {
   let subtitle;
-  const [docLoading, setDocLoading] = useState(false);
+  const [aptLoading, setAptLoading] = useState(false);
   const [patLoading, setPatLoading] = useState(false);
 
   const [page, setPage] = useState(1);
@@ -41,11 +47,17 @@ export default function Reports() {
   const [meetingLink, setMeetingLink] = useState("");
   const [patientDetails, setPatientDetails] = useState({});
   const [appointments, setAppointments] = useState([]);
+  const [pastAppointments, setPastAppointments] = useState([]);
   const docs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+  const [presOpen, setPresOpen] = useState(false);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handlePresOpen = () => setPresOpen(true);
+  const handlePresClose = () => setPresOpen(false);
 
   const style = {
     position: "absolute",
@@ -61,14 +73,42 @@ export default function Reports() {
     p: 4,
   };
 
+  const presStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "#FAFAFA",
+    borderRadius: 3,
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const handleFileUpload = (fileObj) => {
+    console.log("Upload");
+    console.log(fileObj);
+    let formdata = new FormData();
+    for (let i = 0; i < fileObj.length; i++) {
+      formdata.append("generalReports", fileObj[i], fileObj[i].name);
+    }
+    console.log("Data:", formdata);
+    const func = async () => {
+      await uploadGeneralReport(formdata).then((res) => {
+        console.log(res);
+      });
+    };
+    func();
+  };
+
   useEffect(() => {
-    setDocLoading(true);
+    setAptLoading(true);
     setPatLoading(true);
     const func = async () => {
       await getDoctorsInteractedWith().then((res) => {
         setIntdoctors(res.data.doctors);
       });
-      setDocLoading(false);
+      setAptLoading(false);
     };
     const profile = async () => {
       await getPatientProfile().then((res) => {
@@ -85,9 +125,16 @@ export default function Reports() {
         setAppointments(res.data.appointments);
       });
     };
+    const pastAppointment = async () => {
+      await getPastAppointments().then((res) => {
+        console.log(res.data);
+        setPastAppointments(res.data.appointments);
+      });
+    };
     func();
     profile();
     appointment();
+    pastAppointment();
   }, []);
 
   var prevEnable = 0;
@@ -115,29 +162,65 @@ export default function Reports() {
     }
   };
 
-  const TypoDetails = ({ item, value }) => {
+  const TypoDetails = ({ icon, item, value }) => {
     return (
-      <Box sx={{ my: 0.5 }}>
-        <Typography
+      <Box
+        sx={{
+          my: 0.5,
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          paddingLeft: 1,
+        }}>
+        <Icon
+          icon={icon}
+          // icon="material-symbols:home-rounded"
+          color="#005739"
+          width="40"
+          height="40"
+          sx={{ marginRight: 30, paddingTop: 1 }}
+        />
+        {/* {console.log(value[0])} */}
+        <TextField
+          size="small"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+          label={item}
+          sx={{ ...textField, marginLeft: 2 }}
+          // defaultValue={value ? value[0]?.toUpperCase() + value?.substring(1): ''}
+          defaultValue={value}
+          fullWidth
+          name="medicine"
+          // onChange={handleChange}
+          placeholder=""
+          multiline
+          maxRows={3}
+        />
+        {/* <Typography
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            textAlign: "center",
-            fontFamily: "Poppins",
+            display: 'flex',
+            flexDirection: 'row',
+            textAlign: 'center',
+            fontFamily: 'Poppins',
             fontWeight: 600,
-          }}>
-          {item}:
+            paddingRight: 1
+          }}
+        >
+         <b> {item}: </b>
           <Typography
             sx={{
               // fontWeight: "bold",
               fontWeight: 400,
-              color: "#005739",
-              fontFamily: "Poppins",
+              color: '#005739',
+              fontFamily: 'Poppins',
               marginLeft: 1,
-            }}>
+            }}
+          >
             {value}
           </Typography>
-        </Typography>
+        </Typography> */}
       </Box>
     );
   };
@@ -146,6 +229,7 @@ export default function Reports() {
     <>
       {/* <SideDrawer> */}
       <SwipeableEdgeDrawer />
+
       <Grid container spacing={2} direction={"row"}>
         <Grid item xs={12} md={7}>
           {/* <Box
@@ -157,7 +241,7 @@ export default function Reports() {
           <Grid container spacing={1} direction={"column"}>
             <Grid item xs={4}>
               <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
-                {docLoading ? (
+                {aptLoading ? (
                   <Box sx={{ ...df_jc_ac, height: "80vh" }}>
                     <Loading />
                   </Box>
@@ -170,8 +254,17 @@ export default function Reports() {
                       alignItems: "space-between",
                       // marginBottom: 2,
                     }}>
-                    <Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
-                      Doctors you interacted with
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontVariantNumeric: "lining-nums tabular-nums",
+                        fontFamily: "Poppins",
+                        fontSize: 18,
+                        fontStyle: "normal",
+                        fontWeight: 500,
+                        lineHeight: "normal",
+                      }}>
+                      Past Appointments
                     </Typography>
                     <Box
                       sx={{
@@ -254,104 +347,267 @@ export default function Reports() {
                   </Box>
                 )}
                 <Grid container spacing={1} wrap="nowrap" direction={"row"}>
-                  {intdoctors?.slice(page - 1, page + 4).map((dc) => (
-                    <Grid item key={dc} xs={3}>
-                      <Box>
-                        <Stack
-                          direction="column"
-                          // spacing={1}
-                          sx={{ alignItems: "center" }}>
-                          <Avatar
-                            sx={{
-                              width: 60,
-                              height: 60,
-                              marginBottom: "1rem",
-                            }}
-                            alt={dc?.name}
-                            src="../../images/Avatar.png"
-                          />
-                          <Typography
-                            sx={{
-                              color: "#000",
-                              fontFamily: "Poppins",
-                              fontSize: 15.78,
-                              fontStyle: "normal",
-                              fontWeight: 500,
-                              lineHeight: "normal",
-                            }}>
-                            {dc?.name}
-                          </Typography>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}>
+                  {pastAppointments?.slice(page - 1, page + 4).map((apt) => {
+                    let dateString = apt?.start.slice(0, 10);
+                    console.log(dateString);
+                    return (
+                      <>
+                        <Modal
+                          open={presOpen}
+                          onClose={handlePresClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description">
+                          <Box sx={presStyle}>
                             <Box
+                              id="modal-modal-title"
                               sx={{
-                                px: "2px",
-                                height: "100%",
-                                width: "100%",
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                my: 1,
                               }}>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="17"
-                                viewBox="0 0 16 17"
-                                fill="none">
-                                <path
-                                  d="M10.6053 8.72413C10.6053 10.0208 9.61176 11.0686 8.38224 11.0686C7.15273 11.0686 6.15918 10.0208 6.15918 8.72413C6.15918 7.42746 7.15273 6.37964 8.38224 6.37964C9.61176 6.37964 10.6053 7.42746 10.6053 8.72413Z"
-                                  stroke="#666666"
-                                  stroke-width="1.31499"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M8.38281 14.1401C10.5748 14.1401 12.6178 12.778 14.0398 10.4204C14.5987 9.49698 14.5987 7.9449 14.0398 7.02151C12.6178 4.66392 10.5748 3.30176 8.38281 3.30176C6.19079 3.30176 4.14781 4.66392 2.72579 7.02151C2.16692 7.9449 2.16692 9.49698 2.72579 10.4204C4.14781 12.778 6.19079 14.1401 8.38281 14.1401Z"
-                                  stroke="#666666"
-                                  stroke-width="1.31499"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
+                              Appointment Prescription
                             </Box>
+
+                            <img
+                              src={`data:image/jpeg;base64,${apt?.prescription}`}
+                              height="100%"
+                              width="100%"
+                              alt="prescription"
+                            />
+                          </Box>
+                        </Modal>
+                        <Grid item key={apt} xs={3}>
+                          <Paper
+                            sx={{
+                              borderRadius: 2,
+                              m: 1,
+                              height: 120,
+                              width: 200,
+                              display: "flex",
+                              p: 1,
+                              flexDirection: "column",
+                              // justifyContent: "space-around",
+                            }}>
                             <Typography
                               sx={{
-                                color: "#666",
+                                p: 0.5,
                                 fontFamily: "Poppins",
-                                fontSize: 8,
+                                fontSize: 16,
+                                fontStyle: "semi-bold",
+                                fontWeight: 600,
                                 lineHeight: "normal",
+                                textAlign: "left",
                               }}>
-                              Prescription
+                              {apt?.title}
                             </Typography>
-                          </Box>
-                        </Stack>
-                      </Box>
-                    </Grid>
-                  ))}
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "flex-end",
+                              }}>
+                              {/* <img
+                                  src={calLogo}
+                                  alt="cal"
+                                  style={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 40,
+                                  }}
+                                /> */}
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "space-around",
+                                  alignItems: "flex-start",
+                                  marginLeft: 1,
+                                  marginTop: 0.5,
+                                }}>
+                                <Typography
+                                  sx={{
+                                    color: "rgba(100, 100, 100, 0.8)",
+                                    fontFamily: "Poppins",
+                                    fontSize: 14,
+                                    fontStyle: "normal",
+                                    fontWeight: 600,
+                                    lineHeight: "normal",
+                                    textAlign: "left",
+                                  }}>
+                                  Date: {apt?.start.slice(5, 11)}
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    fontFamily: "Poppins",
+                                    fontSize: 12,
+                                    fontStyle: "light",
+                                    fontWeight: 500,
+                                    lineHeight: "normal",
+                                  }}>
+                                  Symptoms:
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    fontFamily: "Poppins",
+                                    fontSize: 12,
+                                    fontStyle: "light",
+                                    fontWeight: 500,
+                                    lineHeight: "normal",
+                                  }}>
+                                  {" "}
+                                  {apt?.symptoms.map((symptom, idx) => {
+                                    return symptom + " ";
+                                  })}
+                                </Typography>
+                              </Box>
+                              {/* <Typography>
+                                    {apt?.start.slice(11, 16)} -{" "}
+                                    {apt?.end.slice(11, 16)}
+                                  </Typography> */}
+                              <Box
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  // console.log(apt);
+                                  handlePresOpen();
+                                }}
+                                sx={{
+                                  borderRadius: 40,
+                                  bgcolor: "#D0E0D9",
+                                  width: 40,
+                                  height: 40,
+                                  marginRight: 1,
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  display: "flex",
+                                  ":hover": {
+                                    boxShadow: 2,
+                                  },
+                                }}>
+                                <InsertDriveFileIcon
+                                  style={{
+                                    width: 25,
+                                    height: 25,
+                                    color: "#005739",
+                                  }}
+                                />
+                              </Box>
+                            </Box>
+                          </Paper>
+                        </Grid>
+                      </>
+                    );
+                  })}
                 </Grid>
               </Paper>
             </Grid>
             <Grid item xs={4}>
               <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
-                <Typography
-                  variant="h6"
+                <Box
                   sx={{
-                    fontVariantNumeric: "lining-nums tabular-nums",
-                    fontFamily: "Poppins",
-                    fontSize: 18,
-                    fontStyle: "normal",
-                    fontWeight: 500,
-                    lineHeight: "normal",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "space-between",
+                    // marginBottom: 2,
                   }}>
-                  Upcoming Appointments
-                </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontVariantNumeric: "lining-nums tabular-nums",
+                      fontFamily: "Poppins",
+                      fontSize: 18,
+                      fontStyle: "normal",
+                      fontWeight: 500,
+                      lineHeight: "normal",
+                    }}>
+                    Upcoming Appointments
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "65px",
+                      height: "40px",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}>
+                    <Box
+                      onClick={() => {
+                        prevEnable !== 0
+                          ? handlePrev(page)
+                          : console.log("already on first page");
+                      }}
+                      sx={{
+                        borderRadius: 5,
+                        width: 30,
+                        height: 30,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        transition: "0.3s",
+                        ":hover": {
+                          boxShadow: prevEnable,
+                        },
+                      }}>
+                      <Box sx={{ width: "auto" }}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="16"
+                          viewBox="2 -2 13 14"
+                          fill="none">
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M8.40436 1.54604C8.732 1.2031 9.27963 1.2031 9.60727 1.54604C9.91443 1.86755 9.91443 2.37377 9.60727 2.69528L5.44384 7.05313L9.60727 11.411C9.91443 11.7325 9.91443 12.2387 9.60727 12.5602C9.27963 12.9032 8.732 12.9032 8.40436 12.5602L3.14297 7.05313L8.40436 1.54604Z"
+                            fill={prevEnable === 0 ? "#AFAFAF" : "black"}
+                          />
+                        </svg>
+                      </Box>
+                    </Box>
+                    <Box
+                      onClick={() => {
+                        nextEnable !== 0
+                          ? handleNext(page)
+                          : console.log("already on last page");
+                      }}
+                      sx={{
+                        borderRadius: 5,
+                        width: 30,
+                        height: 30,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        transition: "0.3s",
+                        ":hover": {
+                          boxShadow: nextEnable,
+                        },
+                      }}>
+                      <Box sx={{ width: "auto" }}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="16"
+                          viewBox="2 -2 13 14"
+                          fill="none">
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M5.23431 1.54604C4.90667 1.2031 4.35905 1.2031 4.03141 1.54604C3.72424 1.86755 3.72424 2.37377 4.03141 2.69528L8.19483 7.05313L4.03141 11.411C3.72424 11.7325 3.72424 12.2387 4.03141 12.5602C4.35905 12.9032 4.90667 12.9032 5.23431 12.5602L10.4957 7.05313L5.23431 1.54604Z"
+                            fill={nextEnable === 0 ? "#AFAFAF" : "black"}
+                          />
+                        </svg>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
                 <Box
                   sx={{
                     display: "flex",
                     height: "auto",
                     justifyContent: "space-between",
+                    alignItems: "flex-end",
                     marignTop: 1,
                   }}>
                   {appointments == null ? (
@@ -371,13 +627,8 @@ export default function Reports() {
                   ) : (
                     <Box sx={{ display: "flex", height: "auto" }}>
                       {appointments.map((apt) => {
-                        let dateString = apt.start.slice(0, 10);
+                        let dateString = apt?.start.slice(0, 10);
                         console.log(dateString);
-                        const parsedDate = parse(
-                          dateString,
-                          "MM-dd",
-                          new Date()
-                        );
                         // console.log("Parsed date", parsedDate);
                         return (
                           <Paper
@@ -392,9 +643,9 @@ export default function Reports() {
                               justifyContent: "space-around",
                             }}
                             onClick={(e) => {
-                              // e.preventDefault();
+                              e.preventDefault();
                               // console.log(apt);
-                              // window.location.href = `${apt.meetingId}`;
+                              window.location.href = `${apt?.meetingId}`;
                             }}>
                             <Typography
                               sx={{
@@ -404,8 +655,9 @@ export default function Reports() {
                                 fontStyle: "semi-bold",
                                 fontWeight: 600,
                                 lineHeight: "normal",
+                                marginLeft: 0.5,
                               }}>
-                              {apt.title}
+                              {apt?.title}
                             </Typography>
                             <Box sx={{ display: "flex", flexDirection: "row" }}>
                               <img
@@ -428,11 +680,11 @@ export default function Reports() {
                                     fontWeight: 600,
                                     lineHeight: "normal",
                                   }}>
-                                  Date: {apt.start.slice(5, 11)}
+                                  Date: {apt?.start.slice(5, 11)}
                                 </Typography>
                                 <Typography>
-                                  {apt.start.slice(11, 16)} -{" "}
-                                  {apt.end.slice(11, 16)}
+                                  {apt?.start.slice(11, 16)} -{" "}
+                                  {apt?.end.slice(11, 16)}
                                 </Typography>
                               </Box>
                             </Box>
@@ -489,12 +741,16 @@ export default function Reports() {
                   }}>
                   Upload Documents
                 </Typography> */}
-                <Dropzone text="Upload your documents" />
+                <Dropzone
+                  text="Upload your documents"
+                  onButtonClick={handleFileUpload}
+                />
               </Paper>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={5}>
+          {/* <Box sx={{ ...df_jc_ac, height: '80vh' }}> */}
           <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
             {/* <PatientProfile patientName={patientDetails} /> */}
             {patLoading ? (
@@ -504,54 +760,82 @@ export default function Reports() {
             ) : (
               <Box
                 sx={{
-                  width: "100%",
+                  width: "100% !important",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  height: "80vh",
                 }}>
-                <Typography
+                <Box
                   sx={{
-                    color: "#005739",
-                    fontWeight: "bold",
-                    fontSize: 22,
-                    fontFamily: "Poppins",
-                    marginBottom: 1,
+                    width: "100% !important",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    // height: '80vh',
                   }}>
-                  Profile
-                </Typography>
+                  <Typography
+                    sx={{
+                      color: "#005739",
+                      fontWeight: "bold",
+                      fontSize: 22,
+                      fontFamily: "Poppins",
+                      marginBottom: 1,
+                    }}>
+                    Profile
+                  </Typography>
+                  <Box sx={{ paddingTop: 1, marginLeft: "auto" }}>
+                    <Icon
+                      icon="ri:edit-fill"
+                      color="#005739"
+                      width="35"
+                      height="35"
+                    />
+                  </Box>
+                </Box>
                 <Avatar
                   sx={{
-                    width: 75,
-                    height: 75,
-                    marginBottom: "1rem",
+                    width: 150,
+                    height: 150,
+                    marginBottom: 5,
                   }}
                   alt={patientDetails?.name}
                   src="../../images/Avatar.png"
                 />
-                <TypoDetails item="Name" value={patientDetails?.name} />
+                <TypoDetails
+                  item="Name"
+                  value={patientDetails?.name}
+                  icon="wpf:name"
+                />
                 <TypoDetails
                   item="Gender"
                   value={patientDetails?.patientDemographics?.gender}
+                  icon="ph:gender-intersex-fill"
                 />
                 <TypoDetails
                   item="Age"
                   value={patientDetails?.patientDemographics?.age}
+                  icon="game-icons:ages"
                 />
                 <TypoDetails
                   item="Height"
                   value={patientDetails?.patientDemographics?.height}
+                  icon="game-icons:body-height"
                 />
                 <TypoDetails
                   item="Weight"
                   value={patientDetails?.patientDemographics?.weight}
+                  icon="game-icons:weight"
                 />
                 <TypoDetails
                   item="Address"
                   value={patientDetails?.patientDemographics?.address}
+                  icon="mdi:address-marker"
                 />
               </Box>
             )}
           </Paper>
+          {/* </Box> */}
         </Grid>
       </Grid>
       {/* </SideDrawer> */}

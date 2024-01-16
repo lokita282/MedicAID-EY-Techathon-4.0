@@ -4,6 +4,7 @@ import { eycontext } from '../../context/MainContext'
 import SideDrawer from '../../components/sidebar/Sidebar'
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt'
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder'
+import Box from '@mui/material/Box'
 
 function randomID(len) {
   let result = ''
@@ -85,6 +86,7 @@ export default function Meet() {
   return (
     <SideDrawer>
       <div ref={myMeeting} style={{ width: '80vw', height: '80vh' }} />
+      <Box sx={{float: 'inline-end'}}>
       <AudioRecorder
         // onRecordingComplete={addAudioElement}
         // audioTrackConstraints={{
@@ -96,6 +98,7 @@ export default function Meet() {
         onRecordingComplete={(blob) => addAudioElement(blob)}
         recorderControls={recorderControls}
       />
+      </Box>
     </SideDrawer>
   )
 }
