@@ -31,9 +31,7 @@ import { getSingleAppointmentDetails, getAppointmentHistory, } from '../../servi
 import { Link } from "react-router-dom"
 import { Icon } from '@iconify/react'
 
-
-
-
+import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
 
 const SinglePatientPage = () => {
   const [loading, setLoading] = useState(false)
@@ -150,7 +148,7 @@ const SinglePatientPage = () => {
                                 p: 2,
                                 boxShadow: 1,
                                 borderRadius: 3,
-                                maxWidth: 250,
+                                // maxWidth: 250,
                               }}
                             >
                               <Stack direction="column">
@@ -177,12 +175,14 @@ const SinglePatientPage = () => {
                                   })}
                                 </Stack>
                               </Stack>
-                              <Stack
-                                spacing={3}
-                                direction="row"
+                              <Box
+                                // spacing={3}
+                                // direction="row"
                                 sx={{
+                                  display: "flex",
                                   justifyContent: 'space-between',
-                                  mt: 1,
+                                  alignItems : 'center',
+                                  mt: 2,
                                   pr: 1,
                                 }}
                               >
@@ -191,8 +191,7 @@ const SinglePatientPage = () => {
                                   variant="contained"
                                   sx={{ backgroundColor: '#005739' }}
                                 >
-                                  {' '}
-                                  Pres.{' '}
+                                  Pres.
                                 </Button>
                                 <Modal
                                   open={open}
@@ -222,11 +221,13 @@ const SinglePatientPage = () => {
                                 <Link
                                   reloadDocument
                                   to={`/appointment_details/${appointment?._id}`}
-                                  style={{ marginTop: '16px', textDecoration: 'none', color: '#000000' }}>
-                                  {' '}
-                                  Details {'>'}{' '}
+                                // style={{ marginTop: '16px', textDecoration: 'none', color: '#000000' }}
+                                >
+                                  <Button variant="outlined" sx={{ border: "none", borderRadius: 2, color: 'rgba(0,87,57,1)', "&:hover": { border: "none" }, backgroundColor: "rgba(0,87,57,0.1)", }} endIcon={<PlayCircleFilledSharpIcon />}>
+                                    Details
+                                  </Button>
                                 </Link>
-                              </Stack>
+                              </Box>
                             </Paper>
                           </TimelineContent>
                         </TimelineItem>
