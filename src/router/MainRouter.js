@@ -1,31 +1,32 @@
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import { useContext, useEffect } from 'react'
-import { eycontext } from '../context/MainContext'
-import LoginPage from '../pages/LoginPage'
-import SignupPage from '../pages/SignupPages'
-import DashboardPage from '../pages/DashboardPage'
-import AllPatientsPage from '../pages/Doctor/AllPatientsPage'
-import AppointmentsPage from '../pages/Doctor/AppointmentsPage'
-import MeetPage from '../pages/Doctor/MeetPage'
-import ReportsPage from '../pages/Patient/ReportsPage'
-import UserGetStartedPage from '../pages/UserGetStartedPage'
-import CreateErupi from '../pages/CreateErupi'
-import ViewVouchers from '../pages/ViewVouchers'
-import CategoryCoupons from '../pages/CategoryCoupons'
-import SchemesPage from '../pages/SchemesPage'
-import SchemeDetsPage from '../pages/SchemeDetsPage'
-import UtilityVoucherPage from '../pages/UtilityVoucherPage'
-import MerchantList from '../pages/MerchantList'
-import TransactionPage from '../pages/TransactionPage'
-import AppointmentDetailsPage from '../pages/Doctor/AppointmentDetailsPage'
-import PatientDetailsPage from '../pages/Doctor/PatientDetailsPage'
-import MRIViewer from "../pages/Doctor/MRIViewer"
-import PrescriptionPage from "../pages/Doctor/PrescriptionPage"
-import ViewPrescriptionPage from "../pages/Patient/ViewPrescriptionPage"
-import Test from "../pages/AWS/test"
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { eycontext } from "../context/MainContext";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPages";
+import DashboardPage from "../pages/DashboardPage";
+import AllPatientsPage from "../pages/Doctor/AllPatientsPage";
+import AppointmentsPage from "../pages/Doctor/AppointmentsPage";
+import MeetPage from "../pages/Doctor/MeetPage";
+import ReportsPage from "../pages/Patient/ReportsPage";
+import UserGetStartedPage from "../pages/UserGetStartedPage";
+import CreateErupi from "../pages/CreateErupi";
+import ViewVouchers from "../pages/ViewVouchers";
+import CategoryCoupons from "../pages/CategoryCoupons";
+import SchemesPage from "../pages/SchemesPage";
+import SchemeDetsPage from "../pages/SchemeDetsPage";
+import UtilityVoucherPage from "../pages/UtilityVoucherPage";
+import MerchantList from "../pages/MerchantList";
+import TransactionPage from "../pages/TransactionPage";
+import AppointmentDetailsPage from "../pages/Doctor/AppointmentDetailsPage";
+import PatientDetailsPage from "../pages/Doctor/PatientDetailsPage";
+import MRIViewer from "../pages/Doctor/MRIViewer";
+import PrescriptionPage from "../pages/Doctor/PrescriptionPage";
+import ViewPrescriptionPage from "../pages/Patient/ViewPrescriptionPage";
+import Test from "../pages/AWS/test";
+import ReportSummaryPage from "../pages/Patient/ReportSummaryPage.js";
 
 export default function MainRouter() {
-  const { user, setUser, setOpen } = useContext(eycontext)
+  const { user, setUser, setOpen } = useContext(eycontext);
   function PrivateRouter() {
     return user !== null ? (
       <>
@@ -33,16 +34,16 @@ export default function MainRouter() {
       </>
     ) : (
       <>
-        {JSON.parse(localStorage.getItem('eyUser')) === null && (
+        {JSON.parse(localStorage.getItem("eyUser")) === null && (
           <Navigate to="/login" />
         )}
       </>
-    )
+    );
   }
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('eyUser')))
-  }, [])
+    setUser(JSON.parse(localStorage.getItem("eyUser")));
+  }, []);
 
   return (
     <>
@@ -105,7 +106,19 @@ export default function MainRouter() {
         </Route>
 
         <Route path="/view-prescription" element={<PrivateRouter />}>
-          <Route exact path="/view-prescription" element={<ViewPrescriptionPage />} />
+          <Route
+            exact
+            path="/view-prescription"
+            element={<ViewPrescriptionPage />}
+          />
+        </Route>
+
+        <Route path="/reports-summary/" element={<PrivateRouter />}>
+          <Route
+            exact
+            path="/reports-summary/"
+            element={<ReportSummaryPage />}
+          />
         </Route>
 
         <Route path="/scheme" element={<PrivateRouter />}>
@@ -149,5 +162,5 @@ export default function MainRouter() {
         </Route>
       </Routes>
     </>
-  )
+  );
 }

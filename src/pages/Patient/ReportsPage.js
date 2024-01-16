@@ -1,7 +1,10 @@
 import React from "react";
 import SideDrawer from "../../components/sidebar/Sidebar";
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router";
+import { useTimeout } from "usehooks-ts";
+import "intro.js/introjs.css";
+import { Steps, Hints } from "intro.js-react";
 import SwipeableEdgeDrawer from "../../components/drawer/Drawer";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -33,14 +36,18 @@ import {
   getPastAppointments,
   getPatientProfile,
   getUpcomingAppointments,
+  reportSummary,
   uploadGeneralReport,
 } from "../../services/patientService";
 import AppointmentModal from "../../components/aptModal/AppointmentModal";
 import Dropzone from "../../components/dropzone/Dropzone";
 import PatientProfile from "../../components/patientProfile/PatientProfile";
 import Loading from "../../components/loader/Loading";
+import { element } from "prop-types";
 
 export default function Reports() {
+  const navigate = useNavigate();
+
   let subtitle;
   const [aptLoading, setAptLoading] = useState(false);
   const [patLoading, setPatLoading] = useState(false);
@@ -67,6 +74,36 @@ export default function Reports() {
   const handlePresOpen = () => setPresOpen(true);
   const handlePresClose = () => setPresOpen(false);
 
+  const [stepsEnabled, setstepsEnabled] = useState(false);
+  const handleExit = () => {
+    setstepsEnabled(false);
+  };
+  const showSteps = () => setstepsEnabled(true);
+
+  useTimeout(showSteps, 3000);
+  const steps = [
+    {
+      element: ".chatbot",
+      title: "MedicAID Chatbot",
+      intro: "Ask medical questions to our chatbot and get doubts resolved",
+    },
+    {
+      element: ".css-pxt1dv",
+      title: "View prescriptions",
+      intro: "View prescriptions from your past appointments",
+    },
+    {
+      element: ".cal-svg",
+      title: "Schedule Appointments",
+      intro: "View and create upcoming appointments",
+    },
+    {
+      element: ".drop-zone-area",
+      title: "Simplify Reports",
+      intro: "Upload medical reports and summarize",
+    },
+  ];
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -88,6 +125,8 @@ export default function Reports() {
     bottom: 20,
     left: "auto",
     position: "fixed",
+    width: "60px",
+    height: "60px",
     backgroundColor: "#005739",
   };
 
@@ -104,18 +143,24 @@ export default function Reports() {
   };
 
   const handleFileUpload = (fileObj) => {
-    console.log(fileObj);
-    let formdata = new FormData();
-    for (let i = 0; i < fileObj.length; i++) {
-      formdata.append("generalReports", fileObj[i], fileObj[i].name);
-    }
-    console.log("Data:", formdata);
+    let name = fileObj[0].data;
+    let base = name.split(",")[1];
+    console.log("Base64:", base);
+    navigate();
+    var data = JSON.stringify({
+      pres: base,
+    });
     const func = async () => {
-      await uploadGeneralReport(formdata).then((res) => {
-        console.log(res);
+      await reportSummary(data).then(async (res) => {
+        console.log(res.data);
+        var report = {};
+        report["base64"] = base;
+        report["summary"] = res.data;
+        localStorage.setItem("report", JSON.stringify(report));
       });
     };
     func();
+    navigate("/reports-summary");
   };
 
   useEffect(() => {
@@ -759,6 +804,7 @@ export default function Reports() {
                       }}
                       onClick={handleOpen}>
                       <svg
+                        className="cal-svg"
                         xmlns="http://www.w3.org/2000/svg"
                         width="30"
                         height="30"
@@ -887,13 +933,35 @@ export default function Reports() {
         </Grid>
       </Grid>
       {/* </SideDrawer> */}
-      <Tooltip title="Chat with MedicAID Bot" placement="top-start">
-        <Fab style={fabStyle} onClick={handleFabOpen}>
-          <QuestionMarkRoundedIcon sx={{ color: "#fff" }} />
-        </Fab>
-      </Tooltip>
+      {/* <Tooltip title="Chat with MedicAID Bot" placement="top-start"> */}
+      <Fab style={fabStyle} onClick={handleFabOpen}>
+        <div
+          className="chatbot"
+          style={{
+            width: "60px",
+            height: "60px",
+            borderRadius: "50px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <img
+            alt="chatbot"
+            src={require("../../images/chatbot.png")}
+            style={{ color: "#fff", height: "38px", width: "38px" }}
+          />
+        </div>
+      </Fab>
+      <Steps
+        enabled={stepsEnabled}
+        tooltipPosition="bottom"
+        steps={steps}
+        initialStep={0}
+        onExit={handleExit}
+        overlayOpacity={0.9}
+      />
+      {/* </Tooltip> */}
       <ChatModal open={fabOpen} handleClose={handleFabClose} />
-
     </>
   );
 }

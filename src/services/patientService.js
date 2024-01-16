@@ -3,11 +3,11 @@ import httpcommonml from "../httpcommon-ml";
 import httpcommonfile from "../httpcommonfile";
 
 export const postChatbotMessage = (data) => {
-  return httpcommonml.post(`/chatbot`, data, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("eyToken")}`,
-    },
-  });
+  return httpcommonml.post(`/chatbot`, data);
+};
+
+export const reportSummary = (data) => {
+  return httpcommonml.post(`/report-summary`, data);
 };
 
 export const uploadReport = (data) => {

@@ -6,7 +6,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "./dropzone.css";
 import { SvgIcon } from "@mui/material";
 
-const Dropzone = ({ text, onButtonClick, page }) => {
+const Dropzone = ({ text, onButtonClick, page, type }) => {
   const [fileObjects, setFileObjects] = useState([]);
 
   const handleClose = () => {
@@ -52,30 +52,33 @@ const Dropzone = ({ text, onButtonClick, page }) => {
       ) : (
         <></>
       )} */}
-      <Button
-        variant="contained"
-        endIcon={<CloudUploadIcon />}
-        color="success"
-        onClick={() => {
-          if (page == 2) {
-            onButtonClick("pagethree");
-          } else if (page == 3) {
-            onButtonClick("pagefour");
-          } else {
-            onButtonClick(fileObjects);
-            console.log("Post general file");
-          }
-        }}
-        sx={{
-          // display: "flex",
-          marginTop: "1rem",
-          borderRadius: 2,
-          background: "var(--Activ, #005739)",
-          boxShadow: "0px 2px 5px 2px rgba(2, 92, 92, 0.15)",
-          display: fileObjects.length === 0 ? "none" : null,
-        }}>
-        Upload
-      </Button>
+      {type === "signup" ? (
+        <></>
+      ) : (
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => {
+            if (page == 2) {
+              onButtonClick("pagethree");
+            } else if (page == 3) {
+              onButtonClick("pagefour");
+            } else {
+              onButtonClick(fileObjects);
+              console.log("Post general file");
+            }
+          }}
+          sx={{
+            // display: "flex",
+            marginTop: "1rem",
+            borderRadius: 2,
+            background: "var(--Activ, #005739)",
+            boxShadow: "0px 2px 5px 2px rgba(2, 92, 92, 0.15)",
+            display: fileObjects.length === 0 ? "none" : null,
+          }}>
+          Simplify
+        </Button>
+      )}
     </Box>
   );
 };
