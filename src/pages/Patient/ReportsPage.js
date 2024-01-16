@@ -3,13 +3,14 @@ import SideDrawer from "../../components/sidebar/Sidebar";
 import { useState, useEffect } from "react";
 
 import SwipeableEdgeDrawer from "../../components/drawer/Drawer";
-
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 import { ButtonBase } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
@@ -18,10 +19,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Pagination from "@mui/material/Pagination";
 import Modal from "@mui/material/Modal";
 import calLogo from "../../images/calendar.png";
+import Tooltip from "@mui/material/Tooltip";
+import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
 import { parse } from "date-fns";
 import { df_jc_ac, textField } from "../../theme/CssMy";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { Icon } from "@iconify/react";
+
+import ChatModal from "../../components/chatModal/ChatModal";
 
 import {
   getDoctorsInteractedWith,
@@ -52,9 +57,12 @@ export default function Reports() {
 
   const [presOpen, setPresOpen] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [aptOpen, setAptOpen] = useState(false);
+  const handleOpen = () => setAptOpen(true);
+  const handleClose = () => setAptOpen(false);
+  const [fabOpen, setFabOpen] = useState(false);
+  const handleFabOpen = () => setFabOpen(true);
+  const handleFabClose = () => setFabOpen(false);
 
   const handlePresOpen = () => setPresOpen(true);
   const handlePresClose = () => setPresOpen(false);
@@ -73,6 +81,16 @@ export default function Reports() {
     p: 4,
   };
 
+  const fabStyle = {
+    margin: 0,
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+    backgroundColor: "#005739",
+  };
+
   const presStyle = {
     position: "absolute",
     top: "50%",
@@ -86,7 +104,6 @@ export default function Reports() {
   };
 
   const handleFileUpload = (fileObj) => {
-    console.log("Upload");
     console.log(fileObj);
     let formdata = new FormData();
     for (let i = 0; i < fileObj.length; i++) {
@@ -228,8 +245,7 @@ export default function Reports() {
   return (
     <>
       {/* <SideDrawer> */}
-      <SwipeableEdgeDrawer />
-
+      {/* <SwipeableEdgeDrawer /> */}
       <Grid container spacing={2} direction={"row"}>
         <Grid item xs={12} md={7}>
           {/* <Box
@@ -349,7 +365,6 @@ export default function Reports() {
                 <Grid container spacing={1} wrap="nowrap" direction={"row"}>
                   {pastAppointments?.slice(page - 1, page + 4).map((apt) => {
                     let dateString = apt?.start.slice(0, 10);
-                    console.log(dateString);
                     return (
                       <>
                         <Modal
@@ -629,7 +644,6 @@ export default function Reports() {
                     <Box sx={{ display: "flex", height: "auto" }}>
                       {appointments.map((apt) => {
                         let dateString = apt?.start.slice(0, 10);
-                        console.log(dateString);
                         // console.log("Parsed date", parsedDate);
                         return (
                           <ButtonBase
@@ -713,7 +727,7 @@ export default function Reports() {
                     </Box>
                   )}
                   <AppointmentModal
-                    open={open}
+                    open={aptOpen}
                     handleClose={handleClose}
                     style={style}
                     setStartTime={setStartTime}
@@ -873,6 +887,12 @@ export default function Reports() {
         </Grid>
       </Grid>
       {/* </SideDrawer> */}
+      <Tooltip title="Chat with MedicAID Bot" placement="top-start">
+        <Fab style={fabStyle} onClick={handleFabOpen}>
+          <QuestionMarkRoundedIcon sx={{ color: "#fff" }} />
+        </Fab>
+      </Tooltip>
+      <ChatModal open={fabOpen} handleClose={handleFabClose} />
     </>
   );
 }

@@ -13,7 +13,7 @@ const config = {
     ),
   ],
   widgets: [],
-  botName: botName,
+  // botName: botName,
   // customStyles: {
   //   botMessageBox: {
   //     backgroundColor: "#376B7E",
