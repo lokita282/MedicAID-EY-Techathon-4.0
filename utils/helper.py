@@ -15,3 +15,9 @@ def save_image(imgstring):
     filename = 'image.png'
     with open(filename, 'wb') as f:
         f.write(imgdata)
+
+def pres_image(imgstring):
+    imgdata = base64.b64decode(imgstring)
+    filename = 'pres.png'
+    with open(filename, 'wb') as f:
+        f.write(imgdata)

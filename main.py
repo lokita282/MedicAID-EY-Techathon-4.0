@@ -16,6 +16,7 @@ from fastapi.responses import FileResponse
 from tensorflow.keras.applications.vgg16 import preprocess_input as preprocess_input_mri
 
 ## function and data type imports from other modules
+from utils.report_summarizer import *
 from utils.prescription import *
 from utils.general_chat import *
 from utils.data_model import *
@@ -231,3 +232,16 @@ async def generate_prescription(request:PrescriptionReportRequest):
 
     img.save('template.png')
     return FileResponse('template.png')
+
+@app.post("/report-summary")
+async def reportsummarizer(request: SummarizerRequest):
+    image = request.pres
+    response = report_summarizer(image)
+    print(response)
+    os.remove('pres.png')
+    # return SummarizerResponse(response=response)
+    print(type(response))
+    json_object = json.loads(response)
+    print(type(json_object))
+    print(json_object)
+    return json_object
