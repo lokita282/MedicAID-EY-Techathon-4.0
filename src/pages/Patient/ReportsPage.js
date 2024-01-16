@@ -443,7 +443,7 @@ export default function Reports() {
                             onClick={(e) => {
                               // e.preventDefault();
                               // console.log(apt);
-                              // window.location.href = `${apt.meetingId}`;
+                              window.location.href = `${apt.meetingId}`;
                             }}
                           >
                             <Typography

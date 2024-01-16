@@ -1,4 +1,4 @@
-import { React, useContext } from 'react'
+import { React, useContext, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { eycontext } from '../../context/MainContext'
 import SideDrawer from '../../components/sidebar/Sidebar'
@@ -31,12 +31,31 @@ export default function Meet() {
   const navigate = useNavigate()
   const { user } = useContext(eycontext)
   const recorderControls = useAudioRecorder()
+  const [flag, setFlag] = useState(false)
   console.log(recorderControls.isRecording)
 
   function onLeave() {
    
     // recorderControls.stopRecording()
+    // console.log(recorderControls.isRecording)
     // addAudioElement()
+    // setFlag(true)
+    // recorderControls.onRecordingComplete()
+    // var x = document.getElementById('recorderr')
+    var x = document.querySelector('[title="Discard Recording"]')
+    console.log('--------------------------------------------')
+    console.log(x)
+    x.click()
+    console.log(x.trigger('click'))
+    console.log('--------------------------------------------')
+    // $('#button1').click(function () {
+    //   $('#button2').click()
+    // })
+    // var att = x.createAttribute('onClick')
+    // att.value = () => {
+
+    // }
+
     navigate('/prescription')
   }
   function onJoin() {
@@ -86,19 +105,23 @@ export default function Meet() {
   return (
     <SideDrawer>
       <div ref={myMeeting} style={{ width: '80vw', height: '80vh' }} />
-      <Box sx={{float: 'inline-end'}}>
-      <AudioRecorder
-        // onRecordingComplete={addAudioElement}
-        // audioTrackConstraints={{
-        //   noiseSuppression: true,
-        //   echoCancellation: true,
-        // }}
-        downloadOnSavePress={true}
-        downloadFileExtension="mp3"
-        onRecordingComplete={(blob) => addAudioElement(blob)}
-        recorderControls={recorderControls}
-      />
-      </Box>
+      {user.role === 'doctor' ? (
+        <Box id="recorderr" sx={{ float: 'inline-end' }}>
+          <AudioRecorder
+            // onRecordingComplete={addAudioElement}
+            // audioTrackConstraints={{
+            //   noiseSuppression: true,
+            //   echoCancellation: true,
+            // }}
+            downloadOnSavePress={true}
+            downloadFileExtension="mp3"
+            onRecordingComplete={(blob) => addAudioElement(blob)}
+            recorderControls={recorderControls}
+          />
+        </Box>
+      ) : (
+        ''
+      )}
     </SideDrawer>
   )
 }

@@ -220,7 +220,7 @@ export default function SideDrawer(props) {
                       </ListItemButton>
                     </ListItem>
                   </Tooltip>
-                  <Tooltip title="Reports">
+                  {/* <Tooltip title="Reports">
                     <ListItem
                       disablePadding
                       onClick={() => navigate('/reports')}
@@ -237,7 +237,7 @@ export default function SideDrawer(props) {
                         </ListItemIcon>
                       </ListItemButton>
                     </ListItem>
-                  </Tooltip>
+                  </Tooltip> */}
                 </List>
               </>
             )}
