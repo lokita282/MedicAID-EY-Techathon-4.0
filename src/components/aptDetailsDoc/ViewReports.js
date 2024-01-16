@@ -23,12 +23,12 @@ const ViewReports = () => {
       getAppointmentReport(id).then((res) => {
         console.log('rp', res)
         setReports(res.data.report)
-        getReportDetection({ "image": res.data.report.reports }).then((res1) => {
+        getReportDetection({ "image": res.data?.report.reports }).then((res1) => {
 
           console.log(res1);
           setDetection1(res1.data)
         })
-        getMRIDetection({ "image": res.data.report.reports }).then((res2) => {
+        getMRIDetection({ "image": res.data?.report.reports }).then((res2) => {
           setDetection2(res2.data)
         })
       })
