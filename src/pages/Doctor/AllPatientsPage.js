@@ -17,13 +17,14 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import { deepOrange, deepPurple } from '@mui/material/colors';
+import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
 
 import FuzzySearch from 'fuzzy-search';
 
 // INTEGRATION IMPORTS
 import { getUpcomingAppointments, getAllPatients } from '../../services/doctorService';
 import { eycontext } from '../../context/MainContext'
-
+import moment from "moment/moment"
 
 // Images
 import image_1 from "../../images/medicAID/patient_details.png"
@@ -67,13 +68,13 @@ export default function AllPatients() {
     caseSensitive: false,
   });
 
-
+  var date = '';
   // console.log(result);
   return (
     <SideDrawer>
       <Box>
         <Grid container spacing={3}>
-          <Grid item xs={8}>
+          <Grid item xs={7}>
             <Grid container spacing={2} direction={'column'}>
               <Grid item xs={2}>
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
@@ -118,7 +119,7 @@ export default function AllPatients() {
                     fullWidth
                     variant='outlined'
                     label='Search'
-                    InputProps={{ sx: { borderRadius: 3 } }}
+                    InputProps={{ sx: { borderRadius: 3, "&:focused": { border: "1px solid rgba(0,87,57,1)" } } }}
                     onChange={(e) => {
                       if (e.target.value.length > 0)
                         setPatientList(searcher.search(e.target.value))
@@ -177,7 +178,7 @@ export default function AllPatients() {
                                 alignItems: 'center',
                               }}
                             >
-                              <Button
+                              {/* <Button
                                 sx={{
                                   backgroundColor: 'rgba(0, 87, 57, 0.1)',
                                   color: 'rgba(0,87,57,1)',
@@ -185,7 +186,7 @@ export default function AllPatients() {
                                 }}
                               >
                                 CONSULTATION
-                              </Button>
+                              </Button> */}
                               <Link
                                 style={{
                                   textDecoration: 'none',
@@ -193,7 +194,9 @@ export default function AllPatients() {
                                 }}
                                 to={`/patient_details/${patient?._id}`}
                               >
-                                <Typography> Details {'>'}</Typography>
+                                <Button variant="outlined" sx={{ border: "none", borderRadius: 2, color: 'rgba(0,87,57,1)', "&:hover": { border: "none" }, backgroundColor: "rgba(0,87,57,0.1)", }} endIcon={<PlayCircleFilledSharpIcon />}>
+                                  Details
+                                </Button>
                               </Link>
                             </Box>
                           </Box>
@@ -207,7 +210,7 @@ export default function AllPatients() {
             </Grid>
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <Paper
               sx={{
                 p: 3,
@@ -258,7 +261,8 @@ export default function AllPatients() {
                                 {patient?.patientId.name[0].toUpperCase() +
                                   patient?.patientId.name.substring(1)}
                               </Typography>
-                              <Typography>{patient?.start}</Typography>
+                              {/* {date !== "" ? new Date(patient?.start) : ""} */}
+                              <Typography>{moment(patient?.start).format('lll')}</Typography>
                             </Box>
                             <Typography>
                               {patient.patientId.patientDemographics?.gender[0].toUpperCase() +
@@ -290,9 +294,9 @@ export default function AllPatients() {
                                   }}
                                   to={`/appointment_details/${patient?._id}`}
                                 >
-                                  <Typography variant="body1" color="initial">
-                                    Details {'>'}
-                                  </Typography>
+                                  <Button variant="outlined" sx={{ border: "none", borderRadius: 2, color: 'rgba(0,87,57,1)', "&:hover": { border: "none" }, backgroundColor: "rgba(0,87,57,0.1)", }} endIcon={<PlayCircleFilledSharpIcon />}>
+                                    Details
+                                  </Button>
                                 </Link>
                               ) : (
                                 ''

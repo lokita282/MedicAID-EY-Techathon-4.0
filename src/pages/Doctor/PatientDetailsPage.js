@@ -36,6 +36,7 @@ import {
 } from '../../services/doctorService'
 import { Icon } from '@iconify/react'
 import { Link } from 'react-router-dom'
+import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,7 +51,7 @@ function CustomTabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography sx={{fontFamily: "Poppins"}}>{children}</Typography>
+          <Typography sx={{ fontFamily: "Poppins" }}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -69,7 +70,7 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-  
+
 
 const SinglePatientPage = () => {
   const [loading, setLoading] = useState(false)
@@ -107,8 +108,8 @@ const SinglePatientPage = () => {
   useEffect(() => {
     setLoading(true)
     const func = async () => {
-      if(id) {
-        await getAppointmentHistory(id).then((res) =>{
+      if (id) {
+        await getAppointmentHistory(id).then((res) => {
           setAppointmentHistory(res.data.appointments)
         })
         await getPatientUpcomingAppointmentsForDoc(id).then((res) => {
@@ -206,7 +207,7 @@ const SinglePatientPage = () => {
                                     p: 2,
                                     boxShadow: 1,
                                     borderRadius: 3,
-                                    maxWidth: 250,
+                                    // maxWidth: 250,
                                   }}
                                 >
                                   <Stack direction="column">
@@ -237,12 +238,14 @@ const SinglePatientPage = () => {
                                       })}
                                     </Stack>
                                   </Stack>
-                                  <Stack
-                                    spacing={3}
-                                    direction="row"
+                                  <Box
+                                    // spacing={3}
+                                    // direction="row"
                                     sx={{
+                                      display: "flex",
                                       justifyContent: 'space-between',
-                                      mt: 1,
+                                      alignItems: 'center',
+                                      mt: 2,
                                       pr: 1,
                                     }}
                                   >
@@ -251,8 +254,7 @@ const SinglePatientPage = () => {
                                       variant="contained"
                                       sx={{ backgroundColor: '#005739' }}
                                     >
-                                      {' '}
-                                      Pres.{' '}
+                                      Pres.
                                     </Button>
                                     <Modal
                                       open={open}
@@ -281,16 +283,18 @@ const SinglePatientPage = () => {
                                       </Box>
                                     </Modal>
                                     <Link
-                                      style={{
-                                        marginTop: '16px',
-                                        textDecoration: 'none',
-                                        color: '#000000',
-                                      }}
+                                    // style={{
+                                    //   marginTop: '16px',
+                                    //   textDecoration: 'none',
+                                    //   color: '#000000',
+                                    // }}
                                     >
-                                      {' '}
-                                      Details {'>'}{' '}
+          
+                                      <Button variant="outlined" sx={{ border: "none", borderRadius: 2, color: 'rgba(0,87,57,1)', "&:hover": { border: "none" }, backgroundColor: "rgba(0,87,57,0.1)", }} endIcon={<PlayCircleFilledSharpIcon />}>
+                                        Details
+                                      </Button>
                                     </Link>
-                                  </Stack>
+                                  </Box>
                                 </Paper>
                               </TimelineContent>
                             </TimelineItem>
@@ -333,7 +337,7 @@ const SinglePatientPage = () => {
                                     p: 2,
                                     boxShadow: 1,
                                     borderRadius: 3,
-                                    maxWidth: 250,
+                                    // maxWidth: 250,
                                   }}
                                 >
                                   <Stack direction="column">
@@ -380,8 +384,9 @@ const SinglePatientPage = () => {
                                         color: '#000000',
                                       }}
                                     >
-                                      {' '}
-                                      Details {'>'}{' '}
+                                      <Button variant="outlined" sx={{ border: "none", borderRadius: 2, color: 'rgba(0,87,57,1)', "&:hover": { border: "none" }, backgroundColor: "rgba(0,87,57,0.1)", }} endIcon={<PlayCircleFilledSharpIcon />}>
+                                        Details
+                                      </Button>
                                     </Link>
                                   </Stack>
                                 </Paper>
@@ -430,10 +435,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Age</b>
                       </Typography>
-                      <Typography  sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{patient.patientDemographics.age}</b>
                       </Typography>
                     </Stack>
@@ -448,10 +453,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Height</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{patient.patientDemographics.height}</b>
                       </Typography>
                     </Stack>
@@ -466,10 +471,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Address</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>
                           {patient.patientDemographics.address[0].toUpperCase() +
                             patient.patientDemographics.address.substring(1)}
@@ -489,10 +494,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Gender</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>
                           {patient.patientDemographics.gender[0].toUpperCase() +
                             patient.patientDemographics.gender.substring(1)}
@@ -510,10 +515,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Weight</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{patient.patientDemographics.weight}</b>
                       </Typography>
                     </Stack>
@@ -528,10 +533,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Contact</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{patient.contact}</b>
                       </Typography>
                     </Stack>
