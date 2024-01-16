@@ -47,3 +47,9 @@ class PrescriptionReportRequest(BaseModel):
     exercise_plan: List[str]
     precautions: List[str]
     medicine: str
+
+class SummarizerRequest(BaseModel):
+    pres: str
+
+class SummarizerResponse(BaseModel):
+    response: str
