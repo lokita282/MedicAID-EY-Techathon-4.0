@@ -27,7 +27,7 @@ import TimelineOppositeContent, {
 import ViewReports from '../../components/aptDetailsDoc/ViewReports'
 import ViewDiagnoses from '../../components/aptDetailsDoc/ViewDiagnoses'
 //Integration imports
-import { getSingleAppointmentDetails, getAppointmentHistory,  } from '../../services/doctorService'
+import { getSingleAppointmentDetails, getAppointmentHistory, } from '../../services/doctorService'
 import { Link } from "react-router-dom"
 import { Icon } from '@iconify/react'
 
@@ -63,17 +63,17 @@ const SinglePatientPage = () => {
     setLoading(true)
     const id = window.location.href.split('/')[4]
     const func = async () => {
-     if (id!==undefined) {
-       await getSingleAppointmentDetails(id).then(async (res) => {
-         console.log(res.data.appointment.symptoms)
-         setAppointment(res.data.appointment)
-         getAppointmentHistory(res.data.appointment.patientId._id).then(
-           (res) => {
-             setAppointmentHistory(res.data.appointments)
-           }
-         )
-       })
-     }
+      if (id !== undefined) {
+        await getSingleAppointmentDetails(id).then(async (res) => {
+          console.log(res.data.appointment.symptoms)
+          setAppointment(res.data.appointment)
+          getAppointmentHistory(res.data.appointment.patientId._id).then(
+            (res) => {
+              setAppointmentHistory(res.data.appointments)
+            }
+          )
+        })
+      }
       setLoading(false)
     }
     func()
@@ -156,7 +156,7 @@ const SinglePatientPage = () => {
                               <Stack direction="column">
                                 <Box sx={{ fontWeight: 600 }}>
                                   {' '}
-                                  {appointment.title[0].toUpperCase()+appointment.title.substring(1)}{' '}
+                                  {appointment.title[0].toUpperCase() + appointment.title.substring(1)}{' '}
                                 </Box>
                                 <Stack
                                   direction="row"
@@ -171,7 +171,7 @@ const SinglePatientPage = () => {
                                         key={symptom}
                                       >
                                         {' '}
-                                        {symptom[0].toUpperCase()+symptom.substring(1)}{' '}
+                                        {symptom[0].toUpperCase() + symptom.substring(1)}{' '}
                                       </Box>
                                     )
                                   })}
@@ -219,7 +219,10 @@ const SinglePatientPage = () => {
                                     />
                                   </Box>
                                 </Modal>
-                                <Link style={{ marginTop: '16px', textDecoration: 'none', color: '#000000' }}>
+                                <Link
+                                  reloadDocument
+                                  to={`/appointment_details/${appointment?._id}`}
+                                  style={{ marginTop: '16px', textDecoration: 'none', color: '#000000' }}>
                                   {' '}
                                   Details {'>'}{' '}
                                 </Link>
@@ -259,7 +262,7 @@ const SinglePatientPage = () => {
                 >
                 </Box>
                 <Grid container spacing={2}>
-<Grid item xs={1}>
+                  <Grid item xs={1}>
                     <Icon
                       color="#005739"
                       icon="game-icons:ages"
@@ -269,15 +272,15 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Age</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{appointment.patientId.patientDemographics.age}</b>
                       </Typography>
                     </Stack>
                   </Grid>
-                   <Grid item xs={1}>
+                  <Grid item xs={1}>
                     <Icon
                       color="#005739"
                       icon="game-icons:body-height"
@@ -287,10 +290,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Height</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>
                           {appointment.patientId.patientDemographics.height}
                         </b>
@@ -307,10 +310,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Address</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>
                           {appointment.patientId.patientDemographics.address[0].toUpperCase() +
                             appointment.patientId.patientDemographics.address.substring(1)}
@@ -330,12 +333,12 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Gender</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{appointment.patientId.patientDemographics.gender[0].toUpperCase() +
-                            appointment.patientId.patientDemographics.gender.substring(1)}</b>
+                          appointment.patientId.patientDemographics.gender.substring(1)}</b>
                       </Typography>
                     </Stack>
                   </Grid>
@@ -349,15 +352,15 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Weight</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{appointment.patientId.patientDemographics.weight}</b>
                       </Typography>
                     </Stack>
                   </Grid>
-                   <Grid item xs={1}>
+                  <Grid item xs={1}>
                     <Icon
                       color="#005739"
                       icon="mingcute:phone-fill"
@@ -367,10 +370,10 @@ const SinglePatientPage = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="body1" color="#aeaeae">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="body1" color="#aeaeae">
                         <b>Contact</b>
                       </Typography>
-                      <Typography sx={{fontFamily: "Poppins"}} variant="h6" color="initial">
+                      <Typography sx={{ fontFamily: "Poppins" }} variant="h6" color="initial">
                         <b>{appointment.patientId.contact}</b>
                       </Typography>
                     </Stack>
@@ -386,7 +389,7 @@ const SinglePatientPage = () => {
                     return (
                       <Chip
                         key={symptom}
-                        label={symptom[0].toUpperCase()+symptom.substring(1)}
+                        label={symptom[0].toUpperCase() + symptom.substring(1)}
                         sx={{ fontSize: 16 }}
                       ></Chip>
                     )

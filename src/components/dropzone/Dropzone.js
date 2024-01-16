@@ -61,8 +61,10 @@ const Dropzone = ({ text, onButtonClick, page }) => {
             onButtonClick("pagethree");
           } else if (page == 3) {
             onButtonClick("pagefour");
+          } else {
+            onButtonClick(fileObjects);
+            console.log("Post general file");
           }
-          console.log("Post general file");
         }}
         sx={{
           // display: "flex",

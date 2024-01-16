@@ -42,12 +42,18 @@ export default function Meet() {
     // setFlag(true)
     // recorderControls.onRecordingComplete()
     // var x = document.getElementById('recorderr')
-    var x = document.querySelector('[title="Discard Recording"]')
-    console.log('--------------------------------------------')
-    console.log(x)
-    x.click()
-    console.log(x.trigger('click'))
-    console.log('--------------------------------------------')
+    if(user.role==='doctor') {
+      var x = document.querySelector('[title="Discard Recording"]')
+      console.log('--------------------------------------------')
+      console.log(x)
+      x.click()
+      console.log(x.trigger('click'))
+      console.log('--------------------------------------------')
+      navigate('/prescription')
+    } else {
+      navigate('/view-prescription')
+    }
+    
     // $('#button1').click(function () {
     //   $('#button2').click()
     // })
@@ -56,7 +62,7 @@ export default function Meet() {
 
     // }
 
-    navigate('/prescription')
+    
   }
   function onJoin() {
     // navigate('/prescription')
@@ -104,7 +110,7 @@ export default function Meet() {
   }
   return (
     <SideDrawer>
-      <div ref={myMeeting} style={{ width: '80vw', height: '80vh' }} />
+      <div ref={myMeeting} style={{ width: '80vw', height: '80vh', margin: 'auto' }} />
       {user.role === 'doctor' ? (
         <Box id="recorderr" sx={{ float: 'inline-end' }}>
           <AudioRecorder
