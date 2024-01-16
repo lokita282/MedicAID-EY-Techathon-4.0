@@ -9,12 +9,16 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
+import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import { deepOrange, deepPurple } from '@mui/material/colors';
+
+import FuzzySearch from 'fuzzy-search';
 
 // INTEGRATION IMPORTS
 import { getUpcomingAppointments, getAllPatients } from '../../services/doctorService';
@@ -33,12 +37,14 @@ export default function AllPatients() {
   const [appointments, setAppointments] = useState([])
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(false)
+  const [patientList, setPatientList] = useState(patients)
 
   useEffect(() => {
     setLoading(true)
     const func = async () => {
       await getAllPatients().then((res) => {
         setPatients(res.data.patients)
+        setPatientList(res.data.patients)
       })
       setLoading(false)
     }
@@ -57,7 +63,12 @@ export default function AllPatients() {
     func()
   }, [])
 
+  const searcher = new FuzzySearch(patients, ['name'], {
+    caseSensitive: false,
+  });
 
+
+  // console.log(result);
   return (
     <SideDrawer>
       <Box>
@@ -94,13 +105,35 @@ export default function AllPatients() {
               </Grid>
               <Grid item xs={10}>
                 <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
+                  {/* <Autocomplete></Autocomplete>
+                  
+              */}
+                  {/* <Autocomplete
+                    id="free-solo-demo"
+                    freeSolo
+                    options={patients?.map((option) => option.name)}
+                    renderInput={(params) => <TextField {...params} label="Search" />}
+                  /> */}
+                  <TextField
+                    fullWidth
+                    variant='outlined'
+                    label='Search'
+                    InputProps={{ sx: { borderRadius: 3 } }}
+                    onChange={(e) => {
+                      if (e.target.value.length > 0)
+                        setPatientList(searcher.search(e.target.value))
+                      else
+                        setPatientList(patients)
+                    }}
+                  />
                   <Grid container direction="column">
                     {loading ? (
                       <Box sx={{ ...df_jc_ac }}>
                         <Loading />
                       </Box>
                     ) : (
-                      patients.map((patient) => (
+                      patientList.map((patient) => (
+
                         <Grid item key={patient?._id} sx={{ mt: 2 }}>
                           <Box
                             sx={{

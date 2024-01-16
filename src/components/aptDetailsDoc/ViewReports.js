@@ -25,26 +25,26 @@ const ViewReports = () => {
     const id = window.location.href.split('/')[4]
     setLoading(true)
     const func = async () => {
-       if (id) {
-         console.log('hereeeeee')
-         await getAppointmentReport(id).then((res) => {
-           console.log('rp', res)
-           setReports(res.data.report)
-           getReportDetection({ image: res.data.report.reports }).then(
-             (res1) => {
-               console.log(res1)
-               setDetection1(res1.data)
-             }
-           )
-           getMRIDetection({ image: res.data.report.reports }).then((res2) => {
-             setDetection2(res2.data)
-           })
-         })
+      if (id) {
+        console.log('hereeeeee')
+        await getAppointmentReport(id).then((res) => {
+          console.log('rp', res)
+          setReports(res.data.report)
+          getReportDetection({ image: res.data.report.reports }).then(
+            (res1) => {
+              console.log(res1)
+              setDetection1(res1.data)
+            }
+          )
+          getMRIDetection({ image: res.data.report.reports }).then((res2) => {
+            setDetection2(res2.data)
+          })
+        })
 
-         setLoading(false)
-       }
+        setLoading(false)
+      }
     }
-   func()
+    func()
 
   }, [])
 
@@ -75,10 +75,10 @@ const ViewReports = () => {
             // borderRadius="30px"
             style={{ 'border-radius': '15px' }}
           />
-          <Box sx={{ width: '100%', justifyContent: 'center' }}>
+          <Box sx={{ width: '100%', justifyContent: 'center', mt: 2 }}>
             <Paper
               sx={{
-                width: '100%',
+                width: '90%',
                 ml: 3,
                 backgroundColor: '#FAFAFA',
                 borderRadius: 3,
@@ -98,7 +98,7 @@ const ViewReports = () => {
             </Paper>
             <Paper
               sx={{
-                width: '100%',
+                width: '90%',
                 ml: 3,
                 backgroundColor: '#FAFAFA',
                 borderRadius: 3,
@@ -115,21 +115,23 @@ const ViewReports = () => {
                 </Box>
               </Stack>
             </Paper>
-            <Box
-              sx={{
-                width: '100%',
-                ml: 3,
-                borderRadius: 3,
-                p: 2,
-                height: '4em',
-                mt: 2,
-                justifyContent: 'center'
-              }}
-              justifyContent='center'
-              alignItems="center"
-            >
-              <Button variant="outlined" sx={{ color: '#005739' , marginLeft: '35%'}} onClick={()=> navigate('mri')}>
-                MRI Viewer
+            <Box sx={{ display: 'flex', flexDirection: "row", mt : 4 }} >
+
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'rgb(0,87,57)',
+                   backgroundColor: '#005739',
+                  color: 'white',
+                  boxShadow: 'none',
+                  width : "100%",
+                  borderRadius : 3,
+                  ml: 4,
+                  // px  : 4  
+                }}
+                onClick={() => navigate('mri')}
+              >
+                MRI VIEWER
               </Button>
             </Box>
           </Box>
