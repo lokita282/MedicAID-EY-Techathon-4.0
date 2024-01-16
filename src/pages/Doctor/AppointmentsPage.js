@@ -59,9 +59,10 @@ export default function Appointments() {
   const funcSetPatient = async (id) => {
     // console.log(e.event_id)
     await getSingleAppointmentDetails(id).then((res) => {
-      // console.log('first') 
-      // console.log('res', res.data.appointment.patientId)
+      console.log('first') 
+      console.log('res', res.data.appointment.patientId)
       localStorage.setItem('eyPatient', JSON.stringify( res.data.appointment.patientId))
+      localStorage.setItem('eyPres', JSON.stringify( res.data.appointment._id))
     })
     // await getAllAppointments().then((res) => {
     //   console.log(res)

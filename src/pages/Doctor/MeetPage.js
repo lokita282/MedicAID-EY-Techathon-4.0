@@ -43,11 +43,18 @@ export default function Meet() {
     // recorderControls.onRecordingComplete()
     // var x = document.getElementById('recorderr')
     if(user.role==='doctor') {
-      var x = document.querySelector('[title="Discard Recording"]')
+      // var x = document.querySelector('[title="Discard Recording"]')
+      var x = document.getElementsByClassName('audio-recorder-mic ')
       console.log('--------------------------------------------')
       console.log(x)
-      x.click()
-      console.log(x.trigger('click'))
+      // const func = async () => {
+      //   x.click()
+      //   x.trigger('click')
+      // }
+      // func()
+      // x.click()
+      // x.trigger('click')
+      // x.stopPropagation()
       console.log('--------------------------------------------')
       navigate('/prescription')
     } else {

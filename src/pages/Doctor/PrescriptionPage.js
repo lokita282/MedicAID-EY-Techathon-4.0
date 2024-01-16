@@ -13,7 +13,7 @@ import {
   circularprog
 } from '../../theme/CssMy'
 
-import { getPrescriptionData, getPrescriptionImage } from '../../services/doctorService'
+import { getPrescriptionData, getPrescriptionImage, updateAppointment } from '../../services/doctorService'
 import Loading from '../../components/loader/Loading'
 import { Buffer } from 'buffer';
 
@@ -223,7 +223,14 @@ Food to Avoid : ${prescriptionData?.diet_plan.food_to_avoid.map(
                               'binary'
                             ).toString('base64')
                             setImage(base64ImageString)
+                            var id = JSON.parse(localStorage.getItem("eyPres"))
+                            console.log(id)
+                            updateAppointment(id, {
+                              prescription: base64ImageString,
+                              status: 'visited'
+                            })
                             setLoad(false)
+
                           })
                         }}
                         variant="contained"

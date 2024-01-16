@@ -103,3 +103,11 @@ export const getPrescriptionImage = (data) => {
   })
 }
 
+export const updateAppointment = (id, data) => {
+  return httpcommon.patch(`/appointments/update/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('eyToken')}`,
+    },
+  })
+}
+
