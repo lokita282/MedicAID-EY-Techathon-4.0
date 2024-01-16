@@ -481,7 +481,8 @@ export default function Reports() {
                                   alignItems: "center",
                                   display: "flex",
                                   ":hover": {
-                                    boxShadow: 2,
+                                    boxShadow: "1",
+                                    transition: "0.3s",
                                   },
                                 }}>
                                 <InsertDriveFileIcon
@@ -631,9 +632,15 @@ export default function Reports() {
                         console.log(dateString);
                         // console.log("Parsed date", parsedDate);
                         return (
-                          <Paper
+                          <ButtonBase
                             sx={{
                               borderRadius: 2,
+                              backgroundColor: "#fff",
+                              transition:
+                                "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                              boxShadow:
+                                "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+                              color: "rgba(0, 0, 0, 0.87)",
                               m: 1,
                               height: 120,
                               width: 200,
@@ -641,6 +648,7 @@ export default function Reports() {
                               p: 1,
                               flexDirection: "column",
                               justifyContent: "space-around",
+                              alignItems: "flex-start",
                             }}
                             onClick={(e) => {
                               e.preventDefault();
@@ -659,7 +667,12 @@ export default function Reports() {
                               }}>
                               {apt?.title}
                             </Typography>
-                            <Box sx={{ display: "flex", flexDirection: "row" }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                paddingRight: 0.5,
+                              }}>
                               <img
                                 src={calLogo}
                                 alt="cal"
@@ -669,7 +682,13 @@ export default function Reports() {
                                   borderRadius: 40,
                                 }}
                               />
-                              <Box>
+                              <Box
+                                sx={{
+                                  marginLeft: 1,
+                                  textAlign: "left",
+                                  justifyContent: "flex-start",
+                                  alignItems: "flex-start",
+                                }}>
                                 <Typography
                                   sx={{
                                     p: 0.5,
@@ -688,7 +707,7 @@ export default function Reports() {
                                 </Typography>
                               </Box>
                             </Box>
-                          </Paper>
+                          </ButtonBase>
                         );
                       })}
                     </Box>
@@ -706,15 +725,29 @@ export default function Reports() {
                       display: "flex",
                       height: 100,
                       marignTop: 1,
-                      padding: 1,
                       justifyContent: "flex-end",
                       alignItems: "end",
                     }}>
-                    <Box onClick={handleOpen}>
+                    <Box
+                      sx={{
+                        padding: 1,
+                        marginRight: -1,
+                        borderRadius: 50,
+                        height: 48,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: 48,
+                        ":hover": {
+                          boxShadow: "1",
+                          transition: "0.3s",
+                        },
+                      }}
+                      onClick={handleOpen}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="40"
-                        height="40"
+                        width="30"
+                        height="30"
                         viewBox="0 0 44 45"
                         fill="none">
                         <path
@@ -763,6 +796,7 @@ export default function Reports() {
                   width: "100% !important",
                   display: "flex",
                   flexDirection: "column",
+                  // justifyContent: "space-around",
                   alignItems: "center",
                   height: "80vh",
                 }}>

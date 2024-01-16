@@ -14,6 +14,8 @@ import {
   Toolbar,
   Tooltip,
 } from "@mui/material";
+import { ButtonBase } from "@mui/material";
+
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -92,6 +94,7 @@ const gridcon = {
 };
 
 export default function SideDrawer(props) {
+  const notification = true;
   const { children } = props;
   const url = window.location.href.split("/")[3];
   const { user, setUser, setToken } = useContext(eycontext);
@@ -115,6 +118,35 @@ export default function SideDrawer(props) {
             alt={user?.contact}
             src={`data:image/svg+xml;utf8,${generateFromString(user?.contact)}`}
           /> */}
+          {isDoc ? (
+            <></>
+          ) : (
+            <ButtonBase
+              sx={{
+                display: "flex",
+                padding: 1,
+                borderRadius: 50,
+                marginRight: "1rem",
+                "&:hover": {
+                  boxShadow: "1",
+                  transition: "0.3s",
+                },
+              }}>
+              {notification ? (
+                <img
+                  alt="bell"
+                  style={{ width: "32px", height: "32px" }}
+                  src={require("../../images/BellAlert.png")}
+                />
+              ) : (
+                <img
+                  alt="bell"
+                  style={{ width: "32px", height: "32px" }}
+                  src={require("../../images/Bell.png")}
+                />
+              )}
+            </ButtonBase>
+          )}
           <Button
             sx={btn}
             onClick={() => {
