@@ -159,7 +159,7 @@ export default function Reports() {
       });
     };
     func();
-    navigate("/reports-summary");
+    // navigate("/reports-summary");
   };
 
   useEffect(() => {

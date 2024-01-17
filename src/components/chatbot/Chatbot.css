@@ -1,6 +1,6 @@
 .chat-app {
-  min-height: 50vh !important;
-  max-height: 50vh !important;
+  min-height: 65vh !important;
+  max-height: 65vh !important;
   display: flex;
   justify-content: center;
   padding: 1rem;
