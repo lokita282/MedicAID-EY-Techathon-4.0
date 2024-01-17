@@ -155,11 +155,11 @@ export default function Reports() {
         var report = {};
         report["base64"] = base;
         report["summary"] = res.data;
-        localStorage.setItem("report", JSON.stringify(report));
       });
     };
-    func();
-    // navigate("/reports-summary");
+    // func();
+    localStorage.setItem("report", JSON.stringify(base));
+    navigate("/reports-summary");
   };
 
   useEffect(() => {

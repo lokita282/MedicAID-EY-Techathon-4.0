@@ -17,10 +17,126 @@ import Divider from "@mui/material/Divider";
 import { Type } from "@aws-sdk/client-transcribe";
 const ReportSummaryPage = () => {
   const data = localStorage.getItem("report");
-  const report = JSON.parse(data);
-  const image = report["base64"];
+  const summary = [
+    {
+      name: "CHEM-SCREEN PANEL",
+      result: "87 mg/dl",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "GLUCOSE",
+      result: "140 mmol/L",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "SODIUM",
+      result: "106 mmol/L",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "POTASSIUM",
+      result: "4.6 mmol/L",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "CHLORIDE",
+      result: "106 mmol/L",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "CARBON DIOXIDE (BICARBONATE)",
+      result: "28 mmol/L",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "BUN (BLOOD UREA NITROGEN)",
+      result: "9 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "BUN/CREATININE RATIO",
+      result: "0.9 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "CREATININE",
+      result: "99-109 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "URIC ACID",
+      result: "10.0 mg/dL",
+      interpretation:
+        "Slightly high. May be due to gout, kidney disease, or certain medications.",
+    },
+    {
+      name: "PHOSPHATE",
+      result: "5.0 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "CALCIUM",
+      result: "9.6 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "MAGNESIUM",
+      result: "2.09 g/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "CHOLESTEROL",
+      result: "41 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "HDL CHOLESTEROL",
+      result: "6.3 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "CHOLI/HDL RATIO",
+      result: "179 mg/dL",
+      interpretation:
+        "High. This may indicate an increased risk of heart disease.",
+    },
+    {
+      name: "LDL CHOL, CALCULATED",
+      result: "75-129 mg/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "TRIGLYCERIDES",
+      result: "231 mg/dL",
+      interpretation:
+        "High. This may indicate an increased risk of heart disease.",
+    },
+    {
+      name: "PROTEIN, TOTAL",
+      result: "8.3 g/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "ALBUMIN",
+      result: "4.5 g/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "GLOBULIN, CALCULATED",
+      result: "3.8 g/dL",
+      interpretation: "Within normal reference range.",
+    },
+    {
+      name: "A/G RATIO",
+      result: "1.2",
+      interpretation: "Within normal reference range.",
+    },
+  ]
 
-  const summary = report["summary"];
+  const image = JSON.parse(data);
+  // const image = report["base64"];
+
+  // const summary = report["summary"];
 
   const style = {
     py: 0,
