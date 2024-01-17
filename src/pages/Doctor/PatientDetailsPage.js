@@ -37,6 +37,7 @@ import {
 import { Icon } from '@iconify/react'
 import { Link } from 'react-router-dom'
 import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
+import Medications from './../../components/medications/Medications';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -144,6 +145,63 @@ const SinglePatientPage = () => {
                 {patient.name[0].toUpperCase() + patient.name.substring(1)}
               </Box>
             </Stack>
+            <Stack direction={"row"} spacing={2} >
+              <Chip icon={<Icon
+                color="#005739"
+                icon="ph:gender-intersex-fill"
+                width="25"
+                height="25"
+              />} label={`${patient.patientDemographics.gender[0].toUpperCase() +
+                patient.patientDemographics.gender.substring(1)} `}
+                sx={{ px: 1, fontWeight: 600, color: '#005739', backgroundColor: "rgba(0,87,57,0.1)", }}
+              />
+              <Chip icon={<Icon
+                color="#005739"
+                icon="game-icons:ages"
+                width="25"
+                height="25"
+              />} label={`${patient?.patientDemographics.age} years`}
+                sx={{ px: 1, fontWeight: 600, color: '#005739', backgroundColor: "rgba(0,87,57,0.1)", }}
+
+              />
+              <Chip icon={<Icon
+                color="#005739"
+                icon="game-icons:weight"
+                width="25"
+                height="25"
+              />} label={`${patient?.patientDemographics.weight}`}
+                sx={{ px: 1, fontWeight: 600, color: '#005739', backgroundColor: "rgba(0,87,57,0.1)", }}
+
+              />
+              <Chip icon={<Icon
+                color="#005739"
+                icon="game-icons:body-height"
+                width="25"
+                height="25"
+              />} label={`${patient?.patientDemographics.height}`}
+                sx={{ px: 1, fontWeight: 600, color: '#005739', backgroundColor: "rgba(0,87,57,0.1)", }}
+
+              />
+              <Chip icon={<Icon
+                color="#005739"
+                icon="mingcute:phone-fill"
+                width="25"
+                height="25"
+              />} label={`${patient?.contact} `}
+                sx={{ px: 1, fontWeight: 600, color: '#005739', backgroundColor: "rgba(0,87,57,0.1)", }}
+
+              />
+              <Chip icon={<Icon
+                color="#005739"
+                icon="mdi:address-marker"
+                width="25"
+                height="25"
+              />} label={`${patient.patientDemographics.address[0].toUpperCase() +
+                patient.patientDemographics.address.substring(1)}`}
+                sx={{ px: 1, fontWeight: 600, color: '#005739', backgroundColor: "rgba(0,87,57,0.1)", }}
+
+              />
+            </Stack>
           </Box>
 
           <Divider sx={{ my: 2 }}> </Divider>
@@ -155,8 +213,24 @@ const SinglePatientPage = () => {
                   px: 1,
                   py: 2,
                   backgroundColor: '#FAFAFA',
-                  height: 'auto',
+                  height: '50vh',
                   borderRadius: 3,
+                  overflow: 'auto',
+                  '&::-webkit-scrollbar': {
+                    // display: 'none'
+                    width: "12px",
+                    borderRadius: "10px",
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    // '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+                    borderRadius: "10px",
+
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'rgba(0,0,0,.1)',
+                    borderRadius: "10px",
+                    // outline: '1px solid slategrey'
+                  }
                 }}
               >
                 <Box sx={{ width: '100%', justifyContent: 'center' }}>
@@ -289,7 +363,7 @@ const SinglePatientPage = () => {
                                     //   color: '#000000',
                                     // }}
                                     >
-          
+
                                       <Button variant="outlined" sx={{ border: "none", borderRadius: 2, color: 'rgba(0,87,57,1)', "&:hover": { border: "none" }, backgroundColor: "rgba(0,87,57,0.1)", }} endIcon={<PlayCircleFilledSharpIcon />}>
                                         Details
                                       </Button>
@@ -403,13 +477,15 @@ const SinglePatientPage = () => {
                   </CustomTabPanel>
                 </Box>
               </Paper>
+              {/* <Paper>hello</Paper> */}
+              <Medications />
             </Grid>
 
             <Grid item xs={7.5} sx={{ pr: 6 }}>
               <Paper
                 sx={{
                   boxShadow: 'none',
-                  p: 2,
+                  px: 1,
                   display: 'flex',
                   flexDirection: 'column',
                 }}
@@ -417,21 +493,21 @@ const SinglePatientPage = () => {
                 {/* <Box sx={{ fontSize: 20, fontWeight: 600 }}>
                   Patient Demographics:
                 </Box> */}
-                <Box
+                {/* <Box
                   sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                   }}
-                ></Box>
-                <Grid container spacing={2}>
+                ></Box> */}
+                {/* <Grid container spacing={2}>
                   <Grid item xs={1}>
                     <Icon
                       color="#005739"
                       icon="game-icons:ages"
                       width="40"
                       height="40"
-                    />{' '}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Stack direction="column" spacing={0}>
@@ -482,8 +558,8 @@ const SinglePatientPage = () => {
                       </Typography>
                     </Stack>
                   </Grid>
-                </Grid>
-                <Grid container spacing={2} sx={{ paddingTop: '1.5em' }}>
+                </Grid> */}
+                {/* <Grid container spacing={2} sx={{ paddingTop: '1.5em' }}>
                   <Grid item xs={1}>
                     <Icon
                       color="#005739"
@@ -541,7 +617,57 @@ const SinglePatientPage = () => {
                       </Typography>
                     </Stack>
                   </Grid>
-                </Grid>
+                </Grid> */}
+                <Paper sx={{ p: 2, borderRadius: 3, boxShadow: "none", pr: 3 }} >
+                  <Box sx={{ fontSize: 20, fontWeight: 700 }}>
+                    Medical History
+                  </Box>
+                  <Grid container spacing={2} direction="column" sx={{ mt: 1 }}>
+                    <Grid item xs={6} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+                        <Box>
+                          <img src="https://i.ibb.co/mcsjV4T/image.png" alt="hello there" height="70px" width="70px" />
+
+                        </Box>
+                        <Stack direction="column" >
+                          <Typography sx={{ fontWeight: 600, fontSize: 20, fontFamily: "poppins" }} > Chronic Disease </Typography>
+                          <Typography sx={{ color: "#6A707F", fontFamily: "poppins" }} > Obesity, Diabetes </Typography>
+                        </Stack>
+                      </Stack>
+                      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+                        <Box>
+                          <img src="https://i.ibb.co/D4r5WBr/image.png" alt="hello there" height="70px" width="70px" />
+                        </Box>
+                        <Stack direction="column" >
+                          <Typography sx={{ fontWeight: 600, fontSize: 20, fontFamily: "poppins" }} > Family History </Typography>
+                          <Typography sx={{ color: "#6A707F", fontFamily: "poppins" }} > Obesity(Father) </Typography>
+                        </Stack>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={6} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "stretch" }}>
+                      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+                        <Box>
+                          <img src="https://i.ibb.co/x8zDWHT/image.png" alt="hello there" height="70px" width="70px" />
+
+                        </Box>
+                        <Stack direction="column" >
+                          <Typography sx={{ fontWeight: 600, fontSize: 20, fontFamily: "poppins" }} > Surgeries </Typography>
+                          <Typography sx={{ color: "#6A707F", fontFamily: "poppins" }} > Liposuction </Typography>
+                        </Stack>
+                      </Stack>
+                      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+                        <Box>
+                          <img src="https://i.ibb.co/nQVbCkf/image.png" alt="hello there" height="70px" width="70px" />
+                        </Box>
+                        <Stack direction="column" sx={{}} >
+                          <Typography sx={{ fontWeight: 600, fontSize: 20, fontFamily: "poppins" }} > Adverse Habit </Typography>
+                          <Typography sx={{ color: "#6A707F", fontFamily: "poppins" }} > Chainsmoker </Typography>
+                        </Stack>
+                      </Stack>
+                    </Grid>
+
+                  </Grid>
+                </Paper>
                 <Box
                   sx={{
                     display: 'flex',
@@ -549,8 +675,8 @@ const SinglePatientPage = () => {
                     mt: 3,
                   }}
                 >
-                  <Box sx={{ fontSize: 20, fontWeight: 600 }}>
-                    Uploaded Files:
+                  <Box sx={{ fontSize: 20, fontWeight: 700, p: 1 }}>
+                    Uploaded Files :
                   </Box>
                 </Box>
                 <ViewReportsGeneral />

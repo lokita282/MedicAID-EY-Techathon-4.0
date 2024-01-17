@@ -15,15 +15,16 @@ import med2 from "../../images/medicine2.png";
 import med3 from "../../images/medicine3.png";
 import med4 from "../../images/medicine4.png";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 
 function createData(path, name, presDate, Freq, Dur) {
   return { path, name, presDate, Freq, Dur };
 }
 const rows = [
-  createData(med1, "Crocin 650", "12/01/23", "1-0-1", "2w"),
-  createData(med2, "Allergy Relief", "12/01/23", "0-1-0", "1w"),
-  createData(med3, "Tylenol", "12/01/23", "0-0-1", "1w"),
-  createData(med4, "Dexamethosane", "15/01/23", "1-0-1", "6w"),
+  createData(med1, "Crocin 650", "12/01/24", "1-0-1", "2w"),
+  createData(med2, "Allergy Relief", "12/01/24", "0-1-0", "1w"),
+  createData(med3, "Tylenol", "12/01/24", "0-0-1", "1w"),
+  createData(med4, "Dexamethosane", "15/01/24", "1-0-1", "6w"),
   // createData(
 
   //   "Crocin 650",
@@ -49,9 +50,9 @@ const rows = [
 
 const Medications = () => {
   return (
-    <Paper sx={{ width: "50%" }}>
+    <Paper sx={{ width: "100%", borderRadius: 3, mt: 3 }}>
       <Typography
-        sx={{ flex: "1 1 100%", pt: 1, pl: 2 }}
+        sx={{ flex: "1 1 100%", pt: 2, pl: 2, fontFamily: "poppins", }}
         variant="h6"
         id="tableTitle"
         component="div">
@@ -113,12 +114,26 @@ const Medications = () => {
 
                       alignItems: "center",
                     }}>
-                    <Icon icon="fe:sunrise" />
-                    {row.Freq.slice("-")[0]}
-                    <Icon icon="charm:sun" />
-                    {row.Freq.slice("-")[2]}
-                    <Icon icon="ph:moon-fill" />
-                    {row.Freq.slice("-")[4]}
+                    {/* <Icon icon="fe:sunrise" /> */}
+                    {row.Freq.slice("-")[0] === "0" ? ("-") : (
+
+                      <Tooltip title="Sunrise">
+                        <Icon icon="fe:sunrise" />
+                      </Tooltip>
+                    )}
+
+                    {row.Freq.slice("-")[1] === "0" ? ("-") : (
+                      <Tooltip title="Afternoon">
+                        <Icon icon="charm:sun" />
+                      </Tooltip>
+                    )}
+                    {/* <Icon icon="ph:moon-fill" /> */}
+                    {row.Freq.slice("-")[2] === "0" ? ("-") : (
+                      <Tooltip title="Bedtime">
+                        <Icon icon="ph:moon-fill" />
+
+                      </Tooltip>
+                    )}
                   </Box>
                 </TableCell>
                 <TableCell align="left">
