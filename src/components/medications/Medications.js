@@ -50,7 +50,7 @@ const rows = [
 
 const Medications = () => {
   return (
-    <Paper sx={{ width: "100%", borderRadius: 3, mt: 3 }}>
+    <Paper sx={{ width: "100%", borderRadius: 3, mt: 3, boxShadow : 3 }}>
       <Typography
         sx={{ flex: "1 1 100%", pt: 2, pl: 2, fontFamily: "poppins", }}
         variant="h6"

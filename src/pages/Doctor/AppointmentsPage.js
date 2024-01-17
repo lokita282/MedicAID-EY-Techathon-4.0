@@ -59,10 +59,10 @@ export default function Appointments() {
   const funcSetPatient = async (id) => {
     // console.log(e.event_id)
     await getSingleAppointmentDetails(id).then((res) => {
-      console.log('first') 
+      console.log('first')
       console.log('res', res.data.appointment.patientId)
-      localStorage.setItem('eyPatient', JSON.stringify( res.data.appointment.patientId))
-      localStorage.setItem('eyPres', JSON.stringify( res.data.appointment._id))
+      localStorage.setItem('eyPatient', JSON.stringify(res.data.appointment.patientId))
+      localStorage.setItem('eyPres', JSON.stringify(res.data.appointment._id))
     })
     // await getAllAppointments().then((res) => {
     //   console.log(res)
@@ -86,7 +86,7 @@ export default function Appointments() {
           view="week"
           draggable={false}
           events={calEvents}
-          onEventClick={async (e)=> {
+          onEventClick={async (e) => {
             funcSetPatient(e.event_id)
           }}
           fields={[
@@ -136,7 +136,7 @@ export default function Appointments() {
             weekStartOn: 6,
             startHour: 9,
             endHour: 23,
-            step: 30,
+            step: 60,
           }}
           viewerExtraComponent={(fields, event) => {
             return (

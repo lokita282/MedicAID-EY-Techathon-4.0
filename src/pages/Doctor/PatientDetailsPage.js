@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react'
 import SideDrawer from '../../components/sidebar/Sidebar'
 import Loading from '../../components/loader/Loading'
 import { df_jc_ac } from '../../theme/CssMy'
-
+import { useNavigate } from 'react-router'
 //MUI Imports
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
@@ -38,6 +38,7 @@ import { Icon } from '@iconify/react'
 import { Link } from 'react-router-dom'
 import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
 import Medications from './../../components/medications/Medications';
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -83,6 +84,8 @@ const SinglePatientPage = () => {
   const [tabSwitch, setTabSwitch] = useState('diagnoses')
   const [reports, setReports] = useState()
   const [value, setValue] = useState(0)
+
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -675,8 +678,24 @@ const SinglePatientPage = () => {
                     mt: 3,
                   }}
                 >
-                  <Box sx={{ fontSize: 20, fontWeight: 700, p: 1 }}>
+                  <Box sx={{ fontSize: 20, fontWeight: 700, p: 1, display: "flex", width: "100%", justifyContent: 'space-between' }}>
                     Uploaded Files :
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        borderColor: 'rgb(0,87,57)',
+                        backgroundColor: '#005739',
+                        color: 'white',
+                        boxShadow: 'none',
+                        width: "30%",
+                        borderRadius: 3,
+                        ml: 4,
+                        py: 1
+                      }}
+                      onClick={() => navigate('mri')}
+                    >
+                      MRI VIEWER
+                    </Button>
                   </Box>
                 </Box>
                 <ViewReportsGeneral />

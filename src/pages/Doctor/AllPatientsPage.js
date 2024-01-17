@@ -18,7 +18,7 @@ import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
-
+import Chip from "@mui/material/Chip";
 import FuzzySearch from 'fuzzy-search';
 
 // INTEGRATION IMPORTS
@@ -222,24 +222,27 @@ export default function AllPatients() {
               <Typography variant="h5" fontWeight="bold">
                 Upcoming Appointments
               </Typography>
-              <Divider sx={{ mt: 3 }} />
+              {/* <Divider sx={{ mt: 3 }} /> */}
 
-              <Grid container spacing={3} direction={'column'}>
+              <Grid container spacing={2} direction={'column'} sx={{ mt: 2 }}>
                 {loading ? (
                   <Box sx={{ ...df_jc_ac, height: '80vh' }}>
                     <Loading />
                   </Box>
                 ) : (
                   appointments.map((patient) => (
-                    <Grid item key={patient?._id}>
-                      <Box sx={{ mt: 1 }}>
-                        <Grid container spacing={2}>
+                    <Grid item key={patient?._id} sx={{ alignItems: "center" }}>
+                      <Box sx={{ px: 2, py: 1, backgroundColor: "#FAFAFA", borderRadius: 3 }}>
+                        <Grid container>
                           <Grid item xs={3}>
-                            <Stack direction="row" spacing={2}>
+                            <Stack direction="row" spacing={2} sx={{ mt: 3, ml: 3 }}>
                               <Avatar
                                 sx={{
-                                  width: 56,
-                                  height: 56,
+                                  width: 65,
+                                  height: 65,
+                                  // pt: 10,
+                                  // pl: 10,
+                                  // m : 40,
                                   bgcolor: deepOrange[500],
                                 }}
                               >
@@ -262,8 +265,11 @@ export default function AllPatients() {
                                   patient?.patientId.name.substring(1)}
                               </Typography>
                               {/* {date !== "" ? new Date(patient?.start) : ""} */}
-                              <Typography>{moment(patient?.start).format('lll')}</Typography>
+                              <Stack direction='column'>
+                                <Typography>{moment(patient?.start).format('lll')}</Typography>
+                              </Stack>
                             </Box>
+                            {/* <Typography>{moment(patient?.start).format('lll')}</Typography> */}
                             <Typography>
                               {patient.patientId.patientDemographics?.gender[0].toUpperCase() +
                                 patient.patientId.patientDemographics?.gender.substring(
@@ -271,21 +277,19 @@ export default function AllPatients() {
                                 )}
                               , {patient.patientId.patientDemographics?.age}
                             </Typography>
-                            <Typography>
-                              {' '}
-                              {patient?.status[0].toUpperCase() +
-                                patient?.status.substring(1)}{' '}
-                            </Typography>
+
                             <Box
                               sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 mt: 1,
+                                alignItems: 'center'
                               }}
                             >
-                              {/* <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgba(74, 177, 102, 0.4)", color: "rgb(74,177,102)", fontWeight: "bold" }} variant="contained" >Accept</Button>
-                            <Button sx={{ boxShadow: "none", width: "45%", backgroundColor: "rgb(255,225,224)", color: "rgb(254,110,111)", fontWeight: "bold" }} variant="contained" >Reject</Button> */}
+                              <Chip label=
+                                {patient?.status[0].toUpperCase() +
+                                  patient?.status.substring(1)} />
                               {patient._id ? (
                                 <Link
                                   style={{
@@ -302,9 +306,15 @@ export default function AllPatients() {
                                 ''
                               )}
                             </Box>
+                            <Typography sx={{ mt: 0.5 }}
+                            > <em>
+                                {moment(patient?.start).fromNow()}
+                              </em>
+                            </Typography>
                           </Grid>
                         </Grid>
                       </Box>
+                      {/* <Divider/> */}
                     </Grid>
                   ))
                 )}

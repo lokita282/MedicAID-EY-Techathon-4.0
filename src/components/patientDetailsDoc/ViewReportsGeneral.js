@@ -35,12 +35,12 @@ const ViewReports = () => {
           //     img: img3,
           //   },
           // ]
-          
+
           items.push({ img: res.data.reports[0].generalReports[i] })
           console.log(items)
         }
       })
-      
+
       setLoading(false)
     }
   }, [])
@@ -52,18 +52,18 @@ const ViewReports = () => {
           <Loading />
         </Box>
       ) : (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2,  display : "flex", justifyContent : "space-between" }}>
           {reports?.map((img) =>
-            
-              <img
-                src={`data:image/jpeg;base64,${img}`}
-                height="50%"
-                width="50%"
-                alt="report"
-                // borderRadius="10px"
-                style={{ 'border-radius': '10px' }}
-              />
-           
+
+            <img
+              src={`data:image/jpeg;base64,${img}`}
+              height="50%"
+              width="45%"
+              alt="report"
+              // borderRadius="10px"
+              style={{ 'border-radius': '10px', "margin": '10px' }}
+            />
+
           )}
           {/* <Carousel
             autoPlay={true}
@@ -101,7 +101,7 @@ const ViewReports = () => {
 function Item(props) {
   return (
     <>
-      <Box sx={{ margin: 0, padding: 0 }}>
+      <Box sx={{ margin: 0, padding: 0, display : "flex", justiifyContent : "space-between" }}>
         {/*
          */}
         <img
