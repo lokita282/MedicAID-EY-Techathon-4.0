@@ -146,7 +146,6 @@ export default function Reports() {
     let name = fileObj[0].data;
     let base = name.split(",")[1];
     console.log("Base64:", base);
-    navigate();
     var data = JSON.stringify({
       pres: base,
     });

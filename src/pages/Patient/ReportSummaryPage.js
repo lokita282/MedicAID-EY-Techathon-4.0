@@ -20,7 +20,7 @@ const ReportSummaryPage = () => {
   const report = JSON.parse(data);
   const image = report["base64"];
 
-  // const summary = report["summary"];
+  const summary = report["summary"];
 
   const style = {
     py: 0,
@@ -34,34 +34,34 @@ const ReportSummaryPage = () => {
   var two = false;
 
   //format
-  let summary = [
-    {
-      name: "CHEM-SCREEN PANEL",
-      result: "87 mg/dl",
-      interpretation: "Within normal reference range.",
-    },
-    {
-      name: "SODIUM",
-      result: "140 mmol/L",
-      interpretation: "Within normal reference range.",
-    },
-    {
-      name: "URIC ACID",
-      result: "10.0 mg/dL",
-      interpretation: "High. May indicate gout or kidney disease.",
-    },
-    {
-      name: "CHOLESTEROL",
-      result: "41 mg/dL",
-      interpretation: "Desirable. HDL cholesterol is low.",
-    },
-    {
-      name: "TRIGLYCERIDES",
-      result: "231 mg/dL",
-      interpretation:
-        "High. Consider lifestyle modifications or cholesterol-lowering medication.",
-    },
-  ];
+  // let summary = [
+  //   {
+  //     name: "CHEM-SCREEN PANEL",
+  //     result: "87 mg/dl",
+  //     interpretation: "Within normal reference range.",
+  //   },
+  //   {
+  //     name: "SODIUM",
+  //     result: "140 mmol/L",
+  //     interpretation: "Within normal reference range.",
+  //   },
+  //   {
+  //     name: "URIC ACID",
+  //     result: "10.0 mg/dL",
+  //     interpretation: "High. May indicate gout or kidney disease.",
+  //   },
+  //   {
+  //     name: "CHOLESTEROL",
+  //     result: "41 mg/dL",
+  //     interpretation: "Desirable. HDL cholesterol is low.",
+  //   },
+  //   {
+  //     name: "TRIGLYCERIDES",
+  //     result: "231 mg/dL",
+  //     interpretation:
+  //       "High. Consider lifestyle modifications or cholesterol-lowering medication.",
+  //   },
+  // ];
   summary?.length > 8 ? (two = true) : (two = false);
   var summary1 = [];
   var summary2 = [];
