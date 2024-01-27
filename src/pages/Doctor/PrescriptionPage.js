@@ -225,10 +225,10 @@ Food to Avoid : ${prescriptionData?.diet_plan.food_to_avoid.map(
                             setImage(base64ImageString)
                             var id = JSON.parse(localStorage.getItem("eyPres"))
                             console.log(id)
-                            updateAppointment(id, {
-                              prescription: base64ImageString,
-                              status: 'visited'
-                            })
+                            // updateAppointment(id, {
+                            //   prescription: base64ImageString,
+                            //   status: 'visited'
+                            // })
                             setLoad(false)
 
                           })

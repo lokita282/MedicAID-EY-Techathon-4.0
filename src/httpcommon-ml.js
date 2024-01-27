@@ -7,8 +7,7 @@ export default axios.create({
 
   //production urL
   // baseURL: `https://ey-ml-backend.onrender.com`,
-  baseURL: `https://c2c1-2405-201-6-41fd-a4a5-84d4-df7d-45dd.ngrok-free.app/`,
-
+  baseURL: `https://9ebb-2405-201-6-41fd-a134-73cc-6ba-58f.ngrok-free.app/`,
 
   headers: {
     'Content-type': 'application/json',

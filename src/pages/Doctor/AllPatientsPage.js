@@ -140,7 +140,7 @@ export default function AllPatients() {
                             sx={{
                               display: 'flex',
                               justifyContent: 'space-between',
-                              alignItems: 'center',
+                              alignItems: 'right',
                             }}
                           >
                             <Box>
