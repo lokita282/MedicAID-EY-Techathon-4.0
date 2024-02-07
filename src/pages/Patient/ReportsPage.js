@@ -846,7 +846,7 @@ export default function Reports() {
           <Paper sx={{ px: 3, py: 2, borderRadius: 3 }}>
             {/* <PatientProfile patientName={patientDetails} /> */}
             {patLoading ? (
-              <Box sx={{ ...df_jc_ac, height: "80vh" }}>
+              <Box sx={{ ...df_jc_ac, height: "60vh" }}>
                 <Loading />
               </Box>
             ) : (
@@ -857,7 +857,7 @@ export default function Reports() {
                   flexDirection: "column",
                   // justifyContent: "space-around",
                   alignItems: "center",
-                  height: "80vh",
+                  height: "auto",
                 }}>
                 <Box
                   sx={{
@@ -871,9 +871,9 @@ export default function Reports() {
                     sx={{
                       color: "#005739",
                       fontWeight: "bold",
-                      fontSize: 22,
+                      fontSize: 18,
                       fontFamily: "Poppins",
-                      marginBottom: 1,
+                      marginBottom: 2,
                     }}>
                     Profile
                   </Typography>
@@ -881,20 +881,12 @@ export default function Reports() {
                     <Icon
                       icon="ri:edit-fill"
                       color="#005739"
-                      width="35"
-                      height="35"
+                      width="20"
+                      height="20"
                     />
                   </Box>
                 </Box>
-                <Avatar
-                  sx={{
-                    width: 150,
-                    height: 150,
-                    marginBottom: 5,
-                  }}
-                  alt={patientDetails?.name}
-                  src="../../images/Avatar.png"
-                />
+
                 <TypoDetails
                   item="Name"
                   value={patientDetails?.name}

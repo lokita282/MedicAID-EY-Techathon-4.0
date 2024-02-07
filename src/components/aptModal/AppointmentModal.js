@@ -112,7 +112,7 @@ const AppointmentModal = ({
       title: myname,
       status: "followup",
       symptoms: symptomChip.map((symptom) => symptom.label),
-      meetingId: `http://localhost:3000?roomID=${roomId}`,
+      meetingId: `http://localhost:3000/${roomId}`,
     });
     // console.log("Data:", data);
     const func = async () => {
@@ -121,7 +121,7 @@ const AppointmentModal = ({
         setAptId(res.data.appointment._id);
         setStartTime(res.data.appointment.start);
         setEndTime(res.data.appointment.end);
-        setMeetingLink(`http://localhost:3000?roomID=${roomId}`);
+        setMeetingLink(`http://localhost:3000/${roomId}`);
       });
       setLoading(false);
     };
@@ -289,6 +289,8 @@ const AppointmentModal = ({
         </Box>
       </Modal>
       <DropzoneDialog
+        dialogTitle="Upload reports and supporting documents"
+        text="Drag and drop files here."
         acceptedFiles={["image/*"]}
         cancelButtonText={"cancel"}
         submitButtonText={"submit"}
